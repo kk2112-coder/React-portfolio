@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import myDp from "./Images/MyDp.jpg";
 import Resume from "./Resume";
-import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 
 
@@ -54,7 +54,7 @@ function Hero() {
                 <section className="order-2 lg:order-1">
 
                     {/* Social */}
-                    <div className="mb-8 hidden gap-10 lg:flex mx-20">
+                    <div className="mb-6 hidden gap-6 lg:flex mx-15">
                         <SocialLink
                             href="https://github.com/"
                             label="GitHub"
@@ -67,6 +67,12 @@ function Hero() {
                             label="LinkedIn"
                         >
                             <FaLinkedin className="text-xl" />
+                        </SocialLink>
+                        <SocialLink
+                            href="/"
+                            label="Twitter"
+                        >
+                            <FaTwitter className="text-xl" />
                         </SocialLink>
 
                         <SocialLink

@@ -1,5 +1,5 @@
 
-import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 
 function Footer() {
@@ -91,6 +91,14 @@ function Footer() {
                 className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-sm font-bold transition hover:bg-indigo-600"
               >
                 <FaLinkedin className="text-xl" />
+              </a>
+              <a
+                href="/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-sm font-bold transition hover:bg-indigo-600"
+              >
+                <FaTwitter className="text-xl" />
               </a>
 
               <a

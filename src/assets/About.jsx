@@ -307,9 +307,9 @@ export default function About() {
           <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 lg:grid-cols-4">
 
             {[
-              ["4+", "Projects Completed"],
-              ["2+", "Years Learning"],
-              ["5+", "Technologies"],
+              ["5+", "Projects Completed"],
+              ["5+", "Years Learning"],
+              ["6+", "Technologies"],
               ["100%", "Dedication"],
             ].map(([number, label], index) => (
               <div
