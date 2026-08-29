@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Navbar from "./Navbar";
+
 
 /* =========================================================
    FAQ DATA
@@ -137,7 +137,6 @@ const ClockIcon = ({ size = 18 }) => (
 ========================================================= */
 
 function Contact() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [activeFaq, setActiveFaq] = useState(null);
   const [loading, setLoading] = useState(false);
   const [formMessage, setFormMessage] = useState("");
@@ -361,11 +360,6 @@ function Contact() {
           NAVBAR
       =================================================== */}
 
-      <Navbar />
-
-      {/* ===================================================
-          MAIN
-      =================================================== */}
 
       <main className="relative z-10 pt-20">
 
@@ -695,7 +689,7 @@ function Contact() {
                   </SocialLink>
 
                   <SocialLink
-                    href="https://www.instagram.com/"
+                    href="https://www.instagram.com/kkrajput_002/"
                     label="Instagram"
                   >
                     <InstagramIcon />
