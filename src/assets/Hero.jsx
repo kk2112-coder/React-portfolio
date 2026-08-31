@@ -198,7 +198,7 @@ export default function Hero() {
           </p>
 
           {/* CTA Buttons */}
-          <div className="mb-8 flex flex-wrap gap-3">
+          <div className="mb-8 mt-5 flex flex-wrap gap-3">
             <a
               href="https://nowfloat1.netlify.app/"
               target="_blank"
@@ -216,13 +216,10 @@ export default function Hero() {
             </Link>
 
             <a
-              href="/resume"
-              onClick={(e) => {
-                e.preventDefault();
-                window.print();
-              }}
-              className="rounded-xl border border-purple-400/30 bg-purple-400/5 px-6 py-3 text-sm font-bold text-purple-300 transition-all duration-300 hover:-translate-y-1 hover:border-purple-400/60 hover:bg-purple-400/10"
-            >
+              href="/Krishan-Kant-Resume.pdf"
+            download="Krishan-Kant-Resume.pdf"
+            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-cyan-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-cyan-500/40 active:translate-y-0"
+          >
               ⬇ Download CV
             </a>
           </div>
