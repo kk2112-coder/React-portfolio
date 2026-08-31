@@ -4,14 +4,14 @@ import myDp from "./Images/MyDp.jpg";
 
 /* ─── Skills ─────────────────────────────────────────────── */
 const SKILLS = [
-  { name: "HTML5",            percentage: 92 },
-  { name: "CSS3",             percentage: 88 },
-  { name: "JavaScript",       percentage: 82 },
-  { name: "React",            percentage: 75 },
-  { name: "Tailwind CSS",     percentage: 70 },
-  { name: "Responsive Design",percentage: 90 },
-  { name: "Git & GitHub",     percentage: 72 },
-  { name: "C Programming",    percentage: 75 },
+  { name: "HTML5", percentage: 92 },
+  { name: "CSS3", percentage: 88 },
+  { name: "JavaScript", percentage: 82 },
+  { name: "React", percentage: 75 },
+  { name: "Tailwind CSS", percentage: 70 },
+  { name: "Responsive Design", percentage: 90 },
+  { name: "Git & GitHub", percentage: 72 },
+  { name: "C Programming", percentage: 75 },
 ];
 
 /* ─── Education ──────────────────────────────────────────── */
@@ -135,9 +135,8 @@ function Reveal({ children, delay = 0, className = "" }) {
     <div
       ref={ref}
       style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-all duration-700 ${
-        visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-      } ${className}`}
+      className={`transition-all duration-700 ${visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+        } ${className}`}
     >
       {children}
     </div>
@@ -211,9 +210,9 @@ export default function About() {
         <section className="border-y border-white/10 bg-white/[0.02] px-5 py-16 sm:px-8">
           <div className="mx-auto grid max-w-7xl grid-cols-2 gap-5 lg:grid-cols-4">
             {[
-              ["5+",   "Projects Completed"],
-              ["5+",   "Years Learning"],
-              ["8+",   "Technologies"],
+              ["5+", "Projects Completed"],
+              ["5+", "Years Learning"],
+              ["8+", "Technologies"],
               ["100%", "Dedication"],
             ].map(([num, label], i) => (
               <Reveal key={label} delay={i * 100}>
@@ -300,11 +299,10 @@ export default function About() {
                         <h3 className="mt-2 text-lg font-bold">{item.title}</h3>
                         <p className="mt-2 text-sm text-gray-400">{item.institute}</p>
                         <span
-                          className={`mt-4 inline-block rounded-full px-3 py-1 text-xs font-semibold ${
-                            item.current
+                          className={`mt-4 inline-block rounded-full px-3 py-1 text-xs font-semibold ${item.current
                               ? "bg-cyan-400/10 text-cyan-400"
                               : "bg-green-400/10 text-green-400"
-                          }`}
+                            }`}
                         >
                           {item.status}
                         </span>

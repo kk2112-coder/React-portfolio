@@ -23,11 +23,10 @@ function BackToTop() {
     <button
       onClick={scrollUp}
       aria-label="Back to top"
-      className={`fixed bottom-8 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-cyan-400/30 bg-slate-900/90 text-cyan-400 shadow-xl shadow-black/40 backdrop-blur transition-all duration-500 hover:-translate-y-1 hover:bg-cyan-400/10 hover:shadow-cyan-500/20 ${
-        show
+      className={`fixed bottom-8 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-cyan-400/30 bg-slate-900/90 text-cyan-400 shadow-xl shadow-black/40 backdrop-blur transition-all duration-500 hover:-translate-y-1 hover:bg-cyan-400/10 hover:shadow-cyan-500/20 ${show
           ? "translate-y-0 scale-100 opacity-100"
           : "translate-y-4 scale-90 opacity-0 pointer-events-none"
-      }`}
+        }`}
     >
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6 1.41 1.41z" />
@@ -70,10 +69,10 @@ export default function Footer() {
               {/* Social icons */}
               <div className="mt-6 flex gap-3">
                 {[
-                  { href: "https://github.com/kk2112-coder",                  Icon: FaGithub,    hover: "hover:bg-gray-700" },
-                  { href: "https://www.linkedin.com/in/krishan-kant-615740305/", Icon: FaLinkedin, hover: "hover:bg-blue-700"  },
-                  { href: "https://x.com/",                                   Icon: FaTwitter,   hover: "hover:bg-sky-700"   },
-                  { href: "https://www.instagram.com/kkrajput_002/",          Icon: FaInstagram, hover: "hover:bg-pink-700"   },
+                  { href: "https://github.com/kk2112-coder", Icon: FaGithub, hover: "hover:bg-gray-700" },
+                  { href: "https://www.linkedin.com/in/krishan-kant-615740305/", Icon: FaLinkedin, hover: "hover:bg-blue-700" },
+                  { href: "https://x.com/", Icon: FaTwitter, hover: "hover:bg-sky-700" },
+                  { href: "https://www.instagram.com/kkrajput_002/", Icon: FaInstagram, hover: "hover:bg-pink-700" },
                 ].map(({ href, Icon, hover }) => (
                   <a
                     key={href}
@@ -91,11 +90,11 @@ export default function Footer() {
             {/* Quick Links */}
             <FooterColumn title="Quick Links">
               {[
-                ["/",        "Home"     ],
-                ["/about",   "About"    ],
-                ["/work",    "Portfolio"],
-                ["/resume",  "Resume"   ],
-                ["/contact", "Contact"  ],
+                ["/", "Home"],
+                ["/about", "About"],
+                ["/work", "Portfolio"],
+                ["/resume", "Resume"],
+                ["/contact", "Contact"],
               ].map(([to, label]) => (
                 <FooterLink key={to} to={to}>{label}</FooterLink>
               ))}

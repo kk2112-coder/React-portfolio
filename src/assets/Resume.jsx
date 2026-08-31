@@ -114,9 +114,6 @@ export default function Resume() {
         {/* ── Top action bar ──────────────────────────────── */}
         <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center print:hidden">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.3em] text-cyan-400">
-              Curriculum Vitae
-            </p>
             <h1 className="mt-1 text-3xl font-extrabold">My Resume</h1>
           </div>
 

@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import image1 from "./Images/NowFloat.png";
 import image2 from "./Images/WomanSecurity.png";
-import image3 from "./Images/Portfolio.png";
+import image3 from "./Images/PortFolio.png";
+import image4 from "./Images/PhishingDetector.png"
+
 
 /* ─── Projects data ─────────────────────────────────────── */
 const PROJECTS = [
@@ -39,11 +41,11 @@ const PROJECTS = [
     title: "Phishing Website Detector",
     description:
       "A full-stack tool that analyses URLs to detect potential phishing threats using a Node.js backend and a JSON database.",
-    image: image3,
+    image: image4,
     live: "#",
     code: "https://github.com/kk2112-coder",
     categories: ["All", "JavaScript"],
-    technologies: ["HTML5", "CSS3", "Node.js", "Express.js"],
+    technologies: ["React", "Vite", "Node.js", "Express.js"],
   },
 ];
 

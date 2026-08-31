@@ -46,9 +46,9 @@ const SOCIALS = [
 
 /* ─── Stats ──────────────────────────────────────────────── */
 const STATS = [
-  { value: "5+",   label: "Projects" },
-  { value: "6+",   label: "Technologies" },
-  { value: "1yr",  label: "Experience" },
+  { value: "5+", label: "Projects" },
+  { value: "6+", label: "Technologies" },
+  { value: "2yr", label: "Experience" },
   { value: "100%", label: "Dedication" },
 ];
 
@@ -111,9 +111,9 @@ function SocialLink({ href, label, icon, hover }) {
 /* ─── Hero ───────────────────────────────────────────────── */
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
-  const [text,      setText]      = useState("");
-  const [deleting,  setDeleting]  = useState(false);
-  const [visible,   setVisible]   = useState(false);
+  const [text, setText] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   /* Fade-in on mount */
   useEffect(() => {
@@ -160,9 +160,8 @@ export default function Hero() {
       />
 
       <div
-        className={`relative z-10 mx-auto grid min-h-screen max-w-7xl items-center gap-12 px-5 pb-20 pt-28 transition-all duration-1000 sm:px-8 lg:grid-cols-2 lg:pt-0 xl:px-16 ${
-          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-        }`}
+        className={`relative z-10 mx-auto grid min-h-screen max-w-7xl items-center gap-12 px-5 pb-20 pt-28 transition-all duration-1000 sm:px-8 lg:grid-cols-2 lg:pt-0 xl:px-16 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          }`}
       >
         {/* ── Left ─────────────────────────────────────────── */}
         <section className="order-2 lg:order-1">
