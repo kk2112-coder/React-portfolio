@@ -30,8 +30,8 @@ function App() {
       </Routes>
 
       {/* Single global Footer (includes Back-to-Top button) */}
-      <Work />
       <About />
+      <Work />
       <Footer />
     </BrowserRouter>
   );
