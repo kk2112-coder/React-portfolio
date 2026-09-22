@@ -3,7 +3,8 @@ import image1 from "./Images/NowFloat.png";
 import image2 from "./Images/WomanSecurity.png";
 import image3 from "./Images/PortFolio.png";
 import image4 from "./Images/PhishingDetector.png"
-import image5 from "./Images/NowFloat.png"
+import image5 from "./Images/Phishing-DetectorURL.jpg"
+import image6 from "./Images/LifeOs.jpg"
 
 
 /* ─── Projects data ─────────────────────────────────────── */
@@ -12,7 +13,7 @@ const PROJECTS = [
     title: "NowFloat",
     description:
       "A modern web application built with HTML, CSS, and JavaScript featuring responsive design and an interactive user interface.",
-    image: image5,
+    image: image1,
     live: "https://nowfloat1.netlify.app/",
     code: "https://github.com/kk2112-coder",
     categories: ["All", "HTML/CSS", "JavaScript"],
@@ -48,6 +49,26 @@ const PROJECTS = [
     categories: ["All", "JavaScript"],
     technologies: ["React", "Vite", "Node.js", "Express.js"],
   },
+  {
+    title: "Phishing Website Detector App",
+    description:
+      "A full-stack tool that analyses URLs to detect potential phishing threats using a Node.js backend and a JSON database.",
+    image: image5,
+    live: "/",
+    code: "https://github.com/kk2112-coder",
+    categories: ["All", "React Native"],
+    technologies: ["React Native", "Node.js", "API's", "Expo"],
+  },
+  {
+    title: "LifeOs",
+    description:
+      "A futuristic React Native app integrating AI, tasks, goals, history, and insights into one advanced personal operating system.",
+    image: image6,
+    live: "/",
+    code: "https://github.com/kk2112-coder",
+    categories: ["All", "React Native"],
+    technologies: ["React Native","Node.js", "API's", "Expo"],
+  },
 ];
 
 /* ─── Skills data ───────────────────────────────────────── */
@@ -57,12 +78,12 @@ const SKILLS = [
   { name: "JavaScript",       icon: "JS",   desc: "Interactive functionality and modern ES6+",        color: "from-yellow-400/20 to-amber-500/20",  text: "text-yellow-400" },
   { name: "React",            icon: "⚛",   desc: "Component-based UI and state management",          color: "from-cyan-400/20 to-blue-500/20",     text: "text-cyan-400"   },
   { name: "Tailwind CSS",     icon: "TW",   desc: "Utility-first CSS for rapid UI building",          color: "from-teal-400/20 to-cyan-500/20",     text: "text-teal-400"   },
-  { name: "Responsive Design",icon: "RWD",  desc: "Mobile-first, cross-device compatibility",         color: "from-purple-400/20 to-pink-500/20",   text: "text-purple-400" },
+  { name: "React Native",     icon: "RN",  desc: "Mobile-first, cross-device Android / IOS App ",      color: "from-purple-400/20 to-pink-500/20",   text: "text-purple-400" },
   { name: "Git & GitHub",     icon: "Git",  desc: "Version control and collaborative development",    color: "from-gray-400/20 to-slate-500/20",    text: "text-gray-300"   },
   { name: "Node.js",          icon: "Node", desc: "Server-side JavaScript and REST APIs",             color: "from-green-400/20 to-emerald-500/20", text: "text-green-400"  },
 ];
 
-const FILTER_TABS = ["All", "HTML/CSS", "JavaScript", "React"];
+const FILTER_TABS = ["All", "HTML/CSS", "JavaScript", "React","React Native"];
 
 /* ─── External link icon ─────────────────────────────────── */
 function ExternalIcon() {

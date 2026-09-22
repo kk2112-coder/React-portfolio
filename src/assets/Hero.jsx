@@ -47,7 +47,7 @@ const SOCIALS = [
 /* ─── Stats ──────────────────────────────────────────────── */
 const STATS = [
   { value: "5+", label: "Projects" },
-  { value: "6+", label: "Technologies" },
+  { value: "8+", label: "Technologies" },
   { value: "2yr", label: "Experience" },
   { value: "100%", label: "Dedication" },
 ];
