@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../firebase";
 import { SittingCharacterIllustration } from "./CharacterIllustrations";
 import { IridescentOrb, CrystalPrism } from "./IridescentSpheres";
 import { FaInstagram, FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
@@ -44,7 +42,7 @@ export default function Contact() {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setFormMessage("");
     setMessageType("");
@@ -55,29 +53,16 @@ export default function Contact() {
       return;
     }
 
-    try {
-      setIsSubmitting(true);
+    setIsSubmitting(true);
 
-      // Save to Firebase Firestore
-      await addDoc(collection(db, "contactMessages"), {
-        name: formData.name.trim(),
-        email: formData.email.trim().toLowerCase(),
-        subject: formData.subject.trim(),
-        message: formData.message.trim(),
-        createdAt: serverTimestamp(),
-      });
-
+    // Simulated submission delay (replace with alternative backend call like EmailJS, Web3Forms, etc. if needed)
+    setTimeout(() => {
       setFormMessage("Thank you! Your message has been sent successfully.");
       setMessageType("success");
       setFormData({ name: "", email: "", subject: "", message: "" });
       setErrors({});
-    } catch (err) {
-      console.error("Firebase contact submission error:", err);
-      setFormMessage("Could not send message. Please check your network or try again.");
-      setMessageType("error");
-    } finally {
       setIsSubmitting(false);
-    }
+    }, 1000);
   };
 
   return (
@@ -94,7 +79,7 @@ export default function Contact() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-5xl w-full">
-        {/* Main Frosted Glass Panel Container matching reference UI */}
+        {/* Main Frosted Glass Panel Container */}
         <div className="glass-panel rounded-3xl p-6 sm:p-10 lg:p-12 shadow-[0_25px_60px_rgba(0,0,0,0.5)] border border-white/10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             
@@ -106,7 +91,7 @@ export default function Contact() {
                 <SittingCharacterIllustration />
               </div>
 
-              {/* Get In Touch Title & Copy matching reference UI */}
+              {/* Get In Touch Title & Copy */}
               <div className="space-y-2">
                 <h3 className="text-2xl sm:text-3xl font-black text-white">
                   Get in touch
@@ -132,7 +117,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* Social Icons matching reference UI footer */}
+              {/* Social Icons */}
               <div className="flex items-center gap-3 pt-2">
                 {[
                   { href: "https://www.instagram.com/kkrajput_002/", Icon: FaInstagram, color: "hover:text-pink-400 hover:border-pink-500/40" },
@@ -153,7 +138,7 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* ── Right Column: "Send me a message" Form matching reference UI ── */}
+            {/* ── Right Column: "Send me a message" Form ── */}
             <div className="lg:col-span-6 bg-slate-950/40 rounded-2xl p-6 sm:p-8 border border-white/10 backdrop-blur-xl">
               <h4 className="text-lg sm:text-xl font-bold text-white mb-5">
                 Send me a message
@@ -252,7 +237,7 @@ export default function Contact() {
                   )}
                 </div>
 
-                {/* Purple / Violet Gradient Send Button matching reference */}
+                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={isSubmitting}
