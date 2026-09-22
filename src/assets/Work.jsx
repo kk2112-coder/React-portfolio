@@ -1,367 +1,379 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import image1 from "./Images/NowFloat.png";
 import image2 from "./Images/WomanSecurity.png";
 import image3 from "./Images/PortFolio.png";
-import image4 from "./Images/PhishingDetector.png"
-import image5 from "./Images/Phishing-DetectorURL.jpg"
-import image6 from "./Images/LifeOs.jpg"
+import image4 from "./Images/PhishingDetector.png";
+import image5 from "./Images/Phishing-DetectorURL.jpg";
+import image6 from "./Images/LifeOs.jpg";
+import { IridescentOrb, CrystalPrism } from "./IridescentSpheres";
 
-
-/* ─── Projects data ─────────────────────────────────────── */
 const PROJECTS = [
   {
-    title: "NowFloat",
-    description:
-      "A modern web application built with HTML, CSS, and JavaScript featuring responsive design and an interactive user interface.",
-    image: image1,
-    live: "https://nowfloat1.netlify.app/",
-    code: "https://github.com/kk2112-coder",
-    categories: ["All", "HTML/CSS", "JavaScript"],
-    technologies: ["HTML5", "CSS3", "JavaScript", "Responsive"],
-  },
-  {
-    title: "Women Security App",
-    description:
-      "A safety-focused web application designed to enhance women's security with emergency features and real-time assistance.",
-    image: image2,
-    live: "https://womensecurity.netlify.app/",
-    code: "https://github.com/kk2112-coder",
-    categories: ["All", "HTML/CSS", "JavaScript"],
-    technologies: ["HTML5", "CSS3", "JavaScript", "Security"],
-  },
-  {
-    title: "Personal Portfolio",
-    description:
-      "A modern, responsive portfolio website showcasing skills and projects with dynamic animations and a dark cyber theme.",
-    image: image3,
-    live: "/",
-    code: "https://github.com/kk2112-coder",
-    categories: ["All", "React"],
-    technologies: ["React", "Tailwind CSS", "Vite", "Animations"],
-  },
-  {
+    id: 1,
     title: "Phishing Website Detector",
+    tagline: "AI & Full-Stack Security Engine",
+    category: "AI & Full Stack",
     description:
-      "A full-stack tool that analyses URLs to detect potential phishing threats using a Node.js backend and a JSON database.",
+      "A comprehensive intelligent security platform that evaluates URLs for phishing indicators and cyber threats using a Node.js API backend and JSON heuristic analysis.",
     image: image4,
     live: "https://phishguard00.netlify.app/",
     code: "https://github.com/kk2112-coder",
-    categories: ["All", "JavaScript"],
-    technologies: ["React", "Vite", "Node.js", "Express.js"],
+    technologies: ["React", "Node.js", "Express.js", "Threat Analysis", "Tailwind CSS"],
+    badge: "Featured AI Project",
   },
   {
-    title: "Phishing Website Detector App",
+    id: 2,
+    title: "LifeOS Mobile",
+    tagline: "Futuristic Personal Intelligence Operating System",
+    category: "Mobile / React Native",
     description:
-      "A full-stack tool that analyses URLs to detect potential phishing threats using a Node.js backend and a JSON database.",
-    image: image5,
-    live: "/",
-    code: "https://github.com/kk2112-coder",
-    categories: ["All", "React Native"],
-    technologies: ["React Native", "Node.js", "API's", "Expo"],
-  },
-  {
-    title: "LifeOs",
-    description:
-      "A futuristic React Native app integrating AI, tasks, goals, history, and insights into one advanced personal operating system.",
+      "A futuristic React Native mobile app integrating task intelligence, goal architecture, analytics, and intelligent insights into a unified personal dashboard.",
     image: image6,
     live: "/",
     code: "https://github.com/kk2112-coder",
-    categories: ["All", "React Native"],
-    technologies: ["React Native","Node.js", "API's", "Expo"],
+    technologies: ["React Native", "Expo", "Node.js", "Mobile UX", "APIs"],
+    badge: "Mobile OS",
+  },
+  {
+    id: 3,
+    title: "AI User Interface Portfolio",
+    tagline: "Cosmic Glassmorphic Web Architecture",
+    category: "UI Designs",
+    description:
+      "A state-of-the-art developer portfolio featuring 3D iridescent floating spheres, planetary orbits, interactive AI assistant, and a frosted glass interface.",
+    image: image3,
+    live: "/",
+    code: "https://github.com/kk2112-coder",
+    technologies: ["React", "Tailwind CSS", "Vite", "3D Motion", "Firebase"],
+    badge: "This Project",
+  },
+  {
+    id: 4,
+    title: "Women Security App",
+    tagline: "Emergency Safety & Real-Time Rescue Portal",
+    category: "Web Apps",
+    description:
+      "A responsive safety portal engineered for rapid emergency alerting, location transmission, and instant police/guardian communication.",
+    image: image2,
+    live: "https://womensecurity.netlify.app/",
+    code: "https://github.com/kk2112-coder",
+    technologies: ["HTML5", "CSS3", "JavaScript", "Security Protocols"],
+    badge: "Public Good",
+  },
+  {
+    id: 5,
+    title: "NowFloat Experience",
+    tagline: "Interactive Floating Web Architecture",
+    category: "Web Apps",
+    description:
+      "An interactive web platform designed with smooth kinetic animations, fluid responsive grids, and clean component interactions.",
+    image: image1,
+    live: "https://nowfloat1.netlify.app/",
+    code: "https://github.com/kk2112-coder",
+    technologies: ["HTML5", "CSS3", "JavaScript", "Interactive UI"],
+  },
+  {
+    id: 6,
+    title: "Phishing Detector App (Mobile)",
+    tagline: "Cross-Platform Threat Scanner",
+    category: "Mobile / React Native",
+    description:
+      "Mobile threat scanning client developed with React Native and Expo for real-time mobile URL verification.",
+    image: image5,
+    live: "/",
+    code: "https://github.com/kk2112-coder",
+    technologies: ["React Native", "Expo", "Mobile Security", "REST API"],
   },
 ];
 
-/* ─── Skills data ───────────────────────────────────────── */
-const SKILLS = [
-  { name: "HTML5",            icon: "HTML", desc: "Semantic markup & modern web standards",           color: "from-orange-400/20 to-red-500/20",   text: "text-orange-400" },
-  { name: "CSS3",             icon: "CSS",  desc: "Advanced styling and responsive design",           color: "from-blue-400/20 to-cyan-500/20",     text: "text-blue-400"   },
-  { name: "JavaScript",       icon: "JS",   desc: "Interactive functionality and modern ES6+",        color: "from-yellow-400/20 to-amber-500/20",  text: "text-yellow-400" },
-  { name: "React",            icon: "⚛",   desc: "Component-based UI and state management",          color: "from-cyan-400/20 to-blue-500/20",     text: "text-cyan-400"   },
-  { name: "Tailwind CSS",     icon: "TW",   desc: "Utility-first CSS for rapid UI building",          color: "from-teal-400/20 to-cyan-500/20",     text: "text-teal-400"   },
-  { name: "React Native",     icon: "RN",  desc: "Mobile-first, cross-device Android / IOS App ",      color: "from-purple-400/20 to-pink-500/20",   text: "text-purple-400" },
-  { name: "Git & GitHub",     icon: "Git",  desc: "Version control and collaborative development",    color: "from-gray-400/20 to-slate-500/20",    text: "text-gray-300"   },
-  { name: "Node.js",          icon: "Node", desc: "Server-side JavaScript and REST APIs",             color: "from-green-400/20 to-emerald-500/20", text: "text-green-400"  },
-];
+const CATEGORIES = ["All", "UI Designs", "AI & Full Stack", "Mobile / React Native", "Web Apps"];
 
-const FILTER_TABS = ["All", "HTML/CSS", "JavaScript", "React","React Native"];
+export default function Work() {
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [selectedProject, setSelectedProject] = useState(null);
 
-/* ─── External link icon ─────────────────────────────────── */
-function ExternalIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0 0 21,19V12H19V19Z" />
-    </svg>
-  );
-}
+  const filteredProjects =
+    activeCategory === "All"
+      ? PROJECTS
+      : PROJECTS.filter((p) => p.category === activeCategory);
 
-function GithubIcon() {
-  return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-    </svg>
-  );
-}
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % filteredProjects.length);
+  };
 
-/* ─── Project Card ───────────────────────────────────────── */
-function ProjectCard({ project, index }) {
-  const [visible, setVisible] = useState(false);
-  const ref = useRef(null);
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + filteredProjects.length) % filteredProjects.length);
+  };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
+  // Safe active project
+  const currentProject = filteredProjects[activeIndex] || filteredProjects[0];
+  const prevProject =
+    filteredProjects[(activeIndex - 1 + filteredProjects.length) % filteredProjects.length];
+  const nextProject = filteredProjects[(activeIndex + 1) % filteredProjects.length];
 
   return (
-    <article
-      ref={ref}
-      style={{ transitionDelay: `${index * 80}ms` }}
-      className={`group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] shadow-xl shadow-black/20 backdrop-blur transition-all duration-700 hover:-translate-y-2 hover:border-cyan-400/40 hover:shadow-2xl hover:shadow-cyan-500/10 ${
-        visible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-      }`}
+    <section
+      id="work"
+      className="relative min-h-screen py-24 px-5 sm:px-10 lg:px-16 overflow-hidden cosmic-nebula flex flex-col justify-center"
     >
-      {/* Image */}
-      <div className="relative h-52 overflow-hidden bg-gradient-to-br from-cyan-950 to-purple-950">
-        <img
-          src={project.image}
-          alt={project.title}
-          className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
-          loading="lazy"
-        />
-
-        {/* Shine sweep */}
-        <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-
-        {/* Hover overlay */}
-        <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/70 opacity-0 backdrop-blur-sm transition duration-500 group-hover:opacity-100">
-          {project.live !== "#" && (
-            <a
-              href={project.live}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-lg bg-cyan-500 px-4 py-2 text-sm font-bold text-black transition hover:bg-cyan-300"
-            >
-              <ExternalIcon /> Live Demo
-            </a>
-          )}
-          <a
-            href={project.code}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-lg border border-white/30 bg-white/10 px-4 py-2 text-sm font-bold text-white backdrop-blur transition hover:bg-white/20"
-          >
-            <GithubIcon /> Code
-          </a>
-        </div>
+      {/* Background accents */}
+      <div className="absolute top-20 left-10 hidden xl:block opacity-70">
+        <IridescentOrb size={70} glowColor="pink" />
+      </div>
+      <div className="absolute bottom-10 right-10 hidden xl:block opacity-60">
+        <CrystalPrism size={90} />
       </div>
 
-      {/* Info */}
-      <div className="flex flex-1 flex-col p-5">
-        <h3 className="text-lg font-bold text-white transition group-hover:text-cyan-400">
-          {project.title}
-        </h3>
+      <div className="relative z-10 mx-auto max-w-7xl w-full">
+        {/* Centered Heading matching reference UI ("My recent work") */}
+        <div className="text-center mb-10 space-y-2">
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+            My recent work
+          </h2>
+          <p className="max-w-md mx-auto text-xs sm:text-sm text-slate-400">
+            Showcase of web applications, AI tools, mobile designs, and responsive UI mockups.
+          </p>
+        </div>
 
-        <p className="mt-2 flex-1 text-sm leading-7 text-gray-400">
-          {project.description}
-        </p>
-
-        <div className="mt-4 flex flex-wrap gap-2">
-          {project.technologies.map((t) => (
-            <span
-              key={t}
-              className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2.5 py-0.5 text-xs font-medium text-cyan-300"
+        {/* Category Filter Pills matching reference UI */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => {
+                setActiveCategory(cat);
+                setActiveIndex(0);
+              }}
+              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 ${
+                activeCategory === cat
+                  ? "bg-white text-slate-900 shadow-[0_0_20px_rgba(255,255,255,0.6)] scale-105"
+                  : "bg-white/[0.05] hover:bg-white/[0.12] text-slate-300 border border-white/10"
+              }`}
             >
-              {t}
-            </span>
+              {cat}
+            </button>
           ))}
         </div>
-      </div>
-    </article>
-  );
-}
 
-/* ─── Skill Card ─────────────────────────────────────────── */
-function SkillCard({ skill, index }) {
-  const [visible, setVisible] = useState(false);
-  const ref = useRef(null);
+        {/* ── 3D Showcase Carousel matching Reference UI ── */}
+        <div className="relative flex items-center justify-center max-w-5xl mx-auto my-8">
+          
+          {/* Ambient Glow behind carousel */}
+          <div className="absolute w-[600px] h-[300px] rounded-full bg-gradient-to-r from-purple-600/20 via-cyan-500/20 to-pink-500/20 blur-[80px] pointer-events-none" />
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) { setVisible(true); observer.disconnect(); }
-      },
-      { threshold: 0.1 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      style={{ transitionDelay: `${index * 70}ms` }}
-      className={`rounded-2xl border border-white/10 bg-white/[0.04] p-5 text-center backdrop-blur transition-all duration-700 hover:-translate-y-2 hover:border-cyan-400/40 hover:shadow-xl hover:shadow-cyan-500/10 ${
-        visible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-      }`}
-    >
-      <div
-        className={`mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${skill.color} text-lg font-black ${skill.text}`}
-      >
-        {skill.icon}
-      </div>
-      <h3 className="text-sm font-bold text-white">{skill.name}</h3>
-      <p className="mt-2 text-xs leading-5 text-gray-400">{skill.desc}</p>
-    </div>
-  );
-}
-
-/* ─── Work page ──────────────────────────────────────────── */
-export default function Work() {
-  const [activeFilter, setActiveFilter] = useState("All");
-
-  const filtered = PROJECTS.filter((p) =>
-    p.categories.includes(activeFilter)
-  );
-
-  return (
-    <div className="min-h-screen overflow-hidden bg-[#020617] text-white">
-
-      {/* Background blobs */}
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-[5%]  top-[10%] h-72 w-72 rounded-full bg-purple-600/10 blur-3xl" />
-        <div className="absolute right-[5%] top-[25%] h-96 w-96 rounded-full bg-cyan-500/10  blur-3xl" />
-        <div className="absolute bottom-[10%] left-[35%] h-80 w-80 rounded-full bg-blue-600/10 blur-3xl" />
-        {/* Floating dots */}
-        <div className="absolute left-[15%] top-[20%] h-2 w-2 animate-pulse rounded-full bg-cyan-400"   />
-        <div className="absolute right-[20%] top-[40%] h-2 w-2 animate-pulse rounded-full bg-purple-400"/>
-        <div className="absolute bottom-[30%] left-[70%] h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400"   />
-      </div>
-
-      <main className="relative z-10">
-
-        {/* ── Hero ─────────────────────────────────────────── */}
-        <section className="flex min-h-screen flex-col items-center justify-center px-5 pb-16 pt-28 text-center">
-          <div className="mx-auto max-w-3xl">
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.35em] text-cyan-400">
-              Portfolio
-            </p>
-
-            <h1 className="bg-gradient-to-r from-white via-cyan-300 to-purple-400 bg-clip-text text-5xl font-extrabold text-transparent sm:text-6xl md:text-7xl">
-              My Work
-            </h1>
-
-            <p className="mx-auto mt-6 max-w-xl text-base leading-8 text-gray-400 sm:text-lg">
-              Explore my portfolio of web development projects, showcasing
-              modern design and cutting-edge technologies.
-            </p>
-
-            {/* Decorative */}
-            <div className="mx-auto mt-8 flex items-center justify-center gap-3">
-              <span className="h-px w-12 bg-gradient-to-r from-transparent to-cyan-400" />
-              <span className="h-2 w-2 rounded-full bg-cyan-400 shadow-lg shadow-cyan-400/50" />
-              <span className="h-px w-12 bg-gradient-to-l from-transparent to-purple-400" />
-            </div>
-          </div>
-        </section>
-
-        {/* ── Projects ─────────────────────────────────────── */}
-        <section className="px-5 py-20 sm:px-8 lg:px-16">
-          <div className="mx-auto max-w-7xl">
-
-            {/* Section heading */}
-            <div className="mb-10 text-center">
-              <h2 className="text-3xl font-bold sm:text-4xl">
-                Featured{" "}
-                <span className="text-cyan-400">Projects</span>
-              </h2>
-              <div className="mx-auto mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500" />
-            </div>
-
-            {/* Filter Tabs */}
-            <div className="mb-10 flex flex-wrap justify-center gap-2">
-              {FILTER_TABS.map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveFilter(tab)}
-                  className={`rounded-full border px-5 py-2 text-sm font-semibold transition-all duration-300 ${
-                    activeFilter === tab
-                      ? "border-cyan-400 bg-cyan-400/10 text-cyan-400 shadow-lg shadow-cyan-400/10"
-                      : "border-white/10 bg-white/[0.03] text-gray-400 hover:border-cyan-400/40 hover:text-gray-200"
-                  }`}
-                >
-                  {tab}
-                </button>
-              ))}
-            </div>
-
-            {/* Cards grid */}
-            <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((project, index) => (
-                <ProjectCard key={project.title} project={project} index={index} />
-              ))}
-            </div>
-
-            {/* Empty state */}
-            {filtered.length === 0 && (
-              <p className="py-20 text-center text-gray-500">
-                No projects in this category yet.
-              </p>
-            )}
-          </div>
-        </section>
-
-        {/* ── Skills / Tech ─────────────────────────────────── */}
-        <section className="border-y border-white/5 bg-white/[0.02] px-5 py-24 sm:px-8 lg:px-16">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-14 text-center">
-              <h2 className="text-3xl font-bold sm:text-4xl">
-                Technologies I{" "}
-                <span className="text-cyan-400">Work With</span>
-              </h2>
-              <div className="mx-auto mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500" />
-            </div>
-
-            <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {SKILLS.map((skill, index) => (
-                <SkillCard key={skill.name} skill={skill} index={index} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── GitHub CTA ───────────────────────────────────── */}
-        <section className="px-5 py-20 text-center sm:px-8">
-          <div className="mx-auto max-w-2xl">
-            <h2 className="text-3xl font-bold">
-              See All on{" "}
-              <span className="text-cyan-400">GitHub</span>
-            </h2>
-            <p className="mt-4 leading-7 text-gray-400">
-              Explore more of my open-source projects, experiments, and code
-              contributions on GitHub.
-            </p>
-            <a
-              href="https://github.com/kk2112-coder"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-8 py-3.5 font-bold text-white transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/40 hover:bg-white/10"
+          {/* Left Flanking Card (Mockup) */}
+          {filteredProjects.length > 1 && (
+            <div
+              onClick={handlePrev}
+              className="hidden md:block w-64 lg:w-72 h-80 rounded-2xl overflow-hidden glass-card opacity-50 hover:opacity-80 transform -translate-x-12 scale-90 -rotate-3 transition-all duration-500 cursor-pointer shadow-xl select-none"
             >
-              <GithubIcon />
-              View GitHub Profile
-            </a>
-          </div>
-        </section>
+              <div className="h-44 w-full bg-slate-950 overflow-hidden">
+                <img
+                  src={prevProject?.image}
+                  alt={prevProject?.title}
+                  className="w-full h-full object-cover object-top opacity-70"
+                />
+              </div>
+              <div className="p-4 bg-slate-900/80">
+                <span className="text-[11px] text-cyan-400 font-medium">Mockup</span>
+                <h4 className="text-sm font-bold text-white truncate">{prevProject?.title}</h4>
+                <p className="text-xs text-slate-400 truncate mt-1">{prevProject?.tagline}</p>
+              </div>
+            </div>
+          )}
 
-      </main>
-    </div>
+          {/* Center Elevated Active Card ("UI Designs" / Active Project) */}
+          {currentProject && (
+            <div className="relative z-20 w-full max-w-md sm:max-w-lg rounded-3xl overflow-hidden glass-panel border border-cyan-400/40 shadow-[0_20px_60px_rgba(56,189,248,0.25)] transform scale-105 transition-all duration-500">
+              {/* Card Image Banner with Mockup Frame */}
+              <div className="relative h-56 sm:h-64 w-full bg-slate-950 overflow-hidden group">
+                <img
+                  src={currentProject.image}
+                  alt={currentProject.title}
+                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#070817] via-transparent to-transparent opacity-80" />
+
+                {/* Badge */}
+                {currentProject.badge && (
+                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/90 text-slate-950 shadow-md backdrop-blur-md">
+                    {currentProject.badge}
+                  </span>
+                )}
+
+                <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold bg-purple-900/80 border border-purple-400/30 text-purple-200 backdrop-blur-md">
+                  {currentProject.category}
+                </span>
+              </div>
+
+              {/* Card Details */}
+              <div className="p-6 sm:p-7 space-y-4">
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-extrabold text-white">
+                    {currentProject.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm font-medium text-cyan-400 mt-0.5">
+                    {currentProject.tagline}
+                  </p>
+                </div>
+
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed line-clamp-3">
+                  {currentProject.description}
+                </p>
+
+                {/* Tech Badges */}
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {currentProject.technologies.map((tech, i) => (
+                    <span
+                      key={i}
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-white/[0.06] text-slate-300 border border-white/10"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex items-center gap-3 pt-2">
+                  {currentProject.live && currentProject.live !== "/" ? (
+                    <a
+                      href={currentProject.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs sm:text-sm text-center shadow-[0_0_20px_rgba(56,189,248,0.3)] transition-all flex items-center justify-center gap-1.5"
+                    >
+                      <span>Live Demo</span>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+                      </svg>
+                    </a>
+                  ) : (
+                    <button
+                      onClick={() => setSelectedProject(currentProject)}
+                      className="flex-1 py-2.5 rounded-xl bg-purple-600/30 hover:bg-purple-600/50 border border-purple-400/40 text-purple-200 font-semibold text-xs sm:text-sm text-center transition-all"
+                    >
+                      View Details
+                    </button>
+                  )}
+
+                  <a
+                    href={currentProject.code}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 text-white font-medium text-xs sm:text-sm transition-all flex items-center gap-1.5"
+                  >
+                    <span>Code</span>
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
+                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Right Flanking Card (Mockup) */}
+          {filteredProjects.length > 2 && (
+            <div
+              onClick={handleNext}
+              className="hidden md:block w-64 lg:w-72 h-80 rounded-2xl overflow-hidden glass-card opacity-50 hover:opacity-80 transform translate-x-12 scale-90 rotate-3 transition-all duration-500 cursor-pointer shadow-xl select-none"
+            >
+              <div className="h-44 w-full bg-slate-950 overflow-hidden">
+                <img
+                  src={nextProject?.image}
+                  alt={nextProject?.title}
+                  className="w-full h-full object-cover object-top opacity-70"
+                />
+              </div>
+              <div className="p-4 bg-slate-900/80">
+                <span className="text-[11px] text-purple-400 font-medium">Mockup</span>
+                <h4 className="text-sm font-bold text-white truncate">{nextProject?.title}</h4>
+                <p className="text-xs text-slate-400 truncate mt-1">{nextProject?.tagline}</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Carousel Navigation Arrows & Dots */}
+        <div className="flex items-center justify-center gap-4 mt-6">
+          <button
+            onClick={handlePrev}
+            className="w-10 h-10 rounded-full bg-white/[0.08] hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all"
+            aria-label="Previous Project"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+
+          {/* Indicators */}
+          <div className="flex items-center gap-2">
+            {filteredProjects.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  activeIndex === i ? "w-6 bg-cyan-400 shadow-[0_0_10px_#38bdf8]" : "w-2 bg-slate-700"
+                }`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={handleNext}
+            className="w-10 h-10 rounded-full bg-white/[0.08] hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all"
+            aria-label="Next Project"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Project Details Modal */}
+      {selectedProject && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
+          <div className="relative w-full max-w-2xl rounded-3xl glass-panel p-6 sm:p-8 space-y-4 max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => setSelectedProject(null)}
+              className="absolute top-5 right-5 p-1.5 rounded-lg text-slate-400 hover:text-white bg-white/5"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+
+            <img
+              src={selectedProject.image}
+              alt={selectedProject.title}
+              className="w-full h-64 object-cover rounded-2xl"
+            />
+            <h3 className="text-2xl font-bold text-white">{selectedProject.title}</h3>
+            <p className="text-sm text-slate-300 leading-relaxed">{selectedProject.description}</p>
+            <div className="flex flex-wrap gap-2 pt-2">
+              {selectedProject.technologies.map((t, idx) => (
+                <span key={idx} className="px-3 py-1 rounded-full text-xs bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">
+                  {t}
+                </span>
+              ))}
+            </div>
+            <div className="pt-4 flex gap-3">
+              <a
+                href={selectedProject.code}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-2.5 rounded-xl bg-purple-600 text-white text-xs font-semibold"
+              >
+                GitHub Repository
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
   );
 }

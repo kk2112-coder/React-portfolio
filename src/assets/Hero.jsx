@@ -1,127 +1,20 @@
-import { useEffect, useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import myDp from "./Images/MyDp.jpg";
-import {
-  FaGithub,
-  FaInstagram,
-  FaLinkedin,
-  FaTwitter,
-} from "react-icons/fa";
+import { HeroPlanetaryOrb, IridescentOrb, CrystalPrism } from "./IridescentSpheres";
 
-/* ─── Typewriter config ──────────────────────────────────── */
 const ROLES = [
-  "Web Developer",
-  "Frontend Developer",
-  "UI/UX Designer",
-  "React Developer",
+  "Creative AI & Web Developer",
+  "React & Next.js Engineer",
+  "Interactive UI/UX Designer",
+  "Full-Stack Web Architect",
 ];
 
-/* ─── Social links ───────────────────────────────────────── */
-const SOCIALS = [
-  {
-    href: "https://github.com/kk2112-coder",
-    label: "GitHub",
-    icon: <FaGithub className="text-lg" />,
-    hover: "hover:bg-gray-700 hover:border-gray-500",
-  },
-  {
-    href: "https://www.linkedin.com/in/krishan-kant-615740305/",
-    label: "LinkedIn",
-    icon: <FaLinkedin className="text-lg" />,
-    hover: "hover:bg-blue-700 hover:border-blue-500",
-  },
-  {
-    href: "https://x.com/",
-    label: "Twitter / X",
-    icon: <FaTwitter className="text-lg" />,
-    hover: "hover:bg-sky-700 hover:border-sky-500",
-  },
-  {
-    href: "https://www.instagram.com/kkrajput_002/",
-    label: "Instagram",
-    icon: <FaInstagram className="text-lg" />,
-    hover: "hover:bg-pink-700 hover:border-pink-500",
-  },
-];
-
-/* ─── Stats ──────────────────────────────────────────────── */
-const STATS = [
-  { value: "5+", label: "Projects" },
-  { value: "8+", label: "Technologies" },
-  { value: "2yr", label: "Experience" },
-  { value: "100%", label: "Dedication" },
-];
-
-/* ─── Particle component ─────────────────────────────────── */
-function Particles() {
-  const particles = useMemo(
-    () =>
-      Array.from({ length: 50 }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 2.5 + 0.5,
-        dur: Math.random() * 8 + 4,
-        delay: Math.random() * 6,
-        opacity: Math.random() * 0.6 + 0.2,
-      })),
-    []
-  );
-
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {particles.map((p) => (
-        <span
-          key={p.id}
-          className="absolute rounded-full bg-cyan-400"
-          style={{
-            left: `${p.x}%`,
-            top: `${p.y}%`,
-            width: p.size,
-            height: p.size,
-            opacity: p.opacity,
-            animation: `particle-drift ${p.dur}s ${p.delay}s ease-in-out infinite alternate`,
-          }}
-        />
-      ))}
-
-      {/* Ambient blobs */}
-      <div className="absolute left-[10%] top-[20%] h-80 w-80 rounded-full bg-cyan-600/10 blur-[100px]" />
-      <div className="absolute right-[5%] top-[30%] h-96 w-96 rounded-full bg-purple-600/10 blur-[120px]" />
-      <div className="absolute bottom-[10%] left-[40%] h-72 w-72 rounded-full bg-blue-600/10 blur-[100px]" />
-    </div>
-  );
-}
-
-/* ─── Social link button ─────────────────────────────────── */
-function SocialLink({ href, label, icon, hover }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={label}
-      className={`flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-gray-400 transition-all duration-300 hover:-translate-y-1 hover:text-white ${hover}`}
-    >
-      {icon}
-    </a>
-  );
-}
-
-/* ─── Hero ───────────────────────────────────────────────── */
-export default function Hero() {
+export default function Hero({ onOpenAI }) {
   const [roleIndex, setRoleIndex] = useState(0);
   const [text, setText] = useState("");
   const [deleting, setDeleting] = useState(false);
-  const [visible, setVisible] = useState(false);
 
-  /* Fade-in on mount */
-  useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 100);
-    return () => clearTimeout(t);
-  }, []);
-
-  /* Typewriter */
+  // Typewriter effect
   useEffect(() => {
     const current = ROLES[roleIndex];
     const timeout = setTimeout(
@@ -137,175 +30,164 @@ export default function Hero() {
           }
         }
       },
-      deleting ? 55 : text === current ? 1800 : 95
+      deleting ? 45 : text === current ? 1800 : 85
     );
     return () => clearTimeout(timeout);
   }, [text, deleting, roleIndex]);
 
-  return (
-    <main
-      id="home"
-      className="relative min-h-screen overflow-hidden bg-[#020617] text-white"
-    >
-      <Particles />
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
-      {/* Grid overlay */}
+  return (
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16 lg:py-0 cosmic-nebula"
+    >
+      {/* Top-left Glowing 3D Iridescent Pearl matching reference UI */}
+      <div className="absolute top-12 left-6 lg:left-24 z-10 hidden sm:block animate-float">
+        <IridescentOrb size={95} glowColor="purple" />
+      </div>
+
+      {/* Ambient background particles & grid */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.02]"
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
+            "radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)",
+          backgroundSize: "36px 36px",
         }}
       />
 
-      <div
-        className={`relative z-10 mx-auto grid min-h-screen max-w-7xl items-center gap-12 px-5 pb-20 pt-28 transition-all duration-1000 sm:px-8 lg:grid-cols-2 lg:pt-0 xl:px-16 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
-      >
-        {/* ── Left ─────────────────────────────────────────── */}
-        <section className="order-2 lg:order-1">
-
-          {/* Available badge */}
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-1.5 text-xs font-semibold text-emerald-400">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-            Available for hire
+      {/* Main Hero Container */}
+      <div className="relative z-20 mx-auto max-w-7xl w-full px-6 sm:px-10 lg:px-16 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center min-h-[82vh]">
+        
+        {/* ── Left Column: Typography & Action Buttons ── */}
+        <div className="lg:col-span-7 flex flex-col justify-center space-y-6 lg:pl-10">
+          
+          {/* AI Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-400/25 backdrop-blur-md w-fit shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            <span className="text-xs font-semibold tracking-wide text-cyan-300 uppercase">
+              AI User Interface Portfolio
+            </span>
           </div>
 
-          {/* Greeting */}
-          <p className="mb-2 text-base font-medium text-gray-400 sm:text-lg">
-            Hi! I'm{" "}
-            <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text font-bold text-transparent">
+          {/* Heading matching reference UI layout */}
+          <div className="space-y-1">
+            <p className="text-lg sm:text-xl font-medium text-slate-300">
+              Creative UI Designer &amp; Developer
+            </p>
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight">
               Krishan Kant
-            </span>
+            </h1>
+            <p className="text-base sm:text-lg font-medium text-purple-300/90 pt-1">
+              Based in India • Building Next-Gen Web &amp; AI Experiences
+            </p>
+          </div>
+
+          {/* Dynamic Typewriter Role */}
+          <div className="flex items-center gap-2 text-sm sm:text-base font-mono text-cyan-400 bg-slate-950/40 border border-white/10 px-4 py-2 rounded-xl w-fit backdrop-blur-md">
+            <span>&gt;</span>
+            <span>{text}</span>
+            <span className="inline-block w-2 h-4 bg-cyan-400 animate-pulse" />
+          </div>
+
+          {/* Bio paragraph */}
+          <p className="max-w-xl text-sm sm:text-base leading-relaxed text-slate-400">
+            Crafting responsive, high-performance web applications and sleek intelligent user interfaces.
+            Combining modern React engineering with dynamic animations, glassmorphism aesthetics, and full-stack capabilities.
           </p>
 
-          {/* Typewriter heading */}
-          <h1 className="mb-5 min-h-[1.2em] text-4xl font-black leading-tight sm:text-5xl md:text-6xl">
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
-              {text}
-            </span>
-            <span className="ml-0.5 animate-blink text-cyan-400">|</span>
-          </h1>
-
-          {/* Bio */}
-          <p className="mb-8 max-w-xl text-sm leading-8 text-gray-400 sm:text-base">
-            A passionate and self-motivated Web Developer with a strong interest
-            in building user-friendly and visually appealing websites. I
-            specialize in creating responsive front-end designs using HTML, CSS,
-            JavaScript, and modern frameworks like React. Always eager to learn,
-            solve real-world problems, and contribute to meaningful projects.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="mb-8 mt-5 flex flex-wrap gap-3">
-            <a
-              href="https://nowfloat1.netlify.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-cyan-500/25 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-500/40"
+          {/* CTA Action Buttons matching reference UI pills */}
+          <div className="flex flex-wrap items-center gap-4 pt-2">
+            {/* Pill 1: Hire Me (frosted glass pill) */}
+            <button
+              onClick={() => scrollTo("contact")}
+              className="px-7 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/20 hover:border-cyan-400/50 text-white font-semibold text-sm transition-all duration-300 hover:shadow-[0_0_25px_rgba(56,189,248,0.3)] hover:-translate-y-0.5 active:translate-y-0"
             >
-              View Project
-            </a>
+              Hire Me
+            </button>
 
-            <Link
-              to="/resume"
-              className="rounded-xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-bold text-gray-200 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/40 hover:bg-white/10 hover:text-white"
-            >
-              View Resume
-            </Link>
-
+            {/* Pill 2: Download CV (purple/magenta gradient pill matching reference) */}
             <a
               href="/Krishan-Kant-Resume.pdf"
-            download="Krishan-Kant-Resume.pdf"
-            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-cyan-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-cyan-500/40 active:translate-y-0"
-          >
-              ⬇ Download Resume
+              download="Krishan-Kant-Resume.pdf"
+              className="px-7 py-3 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 hover:from-purple-500 hover:via-pink-500 hover:to-indigo-500 text-white font-semibold text-sm shadow-[0_0_30px_rgba(168,85,247,0.4)] hover:shadow-[0_0_40px_rgba(244,114,182,0.6)] transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2"
+            >
+              <span>Download CV</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+              </svg>
             </a>
-          </div>
 
-          {/* Social Icons */}
-          <div className="flex gap-3">
-            {SOCIALS.map((s) => (
-              <SocialLink key={s.label} {...s} />
-            ))}
-          </div>
-        </section>
-
-        {/* ── Right ────────────────────────────────────────── */}
-        <section className="order-1 flex flex-col items-center gap-8 lg:order-2">
-
-          {/* Profile image with rings */}
-          <div className="relative flex h-72 w-72 items-center justify-center sm:h-80 sm:w-80 lg:h-96 lg:w-96">
-
-            {/* Spinning outer ring */}
-            <div
-              className="absolute inset-0 animate-spin rounded-full border border-dashed border-cyan-400/20"
-              style={{ animationDuration: "25s" }}
-            />
-
-            {/* Spinning mid ring */}
-            <div
-              className="absolute -inset-4 animate-spin rounded-full border border-purple-400/15"
-              style={{ animationDuration: "18s", animationDirection: "reverse" }}
-            />
-
-            {/* Gradient glow ring */}
-            <div className="absolute inset-0 animate-glow-pulse rounded-full" />
-
-            {/* Image */}
-            <div className="relative h-56 w-56 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 p-0.5 shadow-2xl sm:h-64 sm:w-64 lg:h-72 lg:w-72">
-              <div className="h-full w-full overflow-hidden rounded-full bg-slate-900">
-                <img
-                  src={myDp}
-                  alt="Krishan Kant — Web Developer"
-                  className="h-full w-full object-cover"
-                  loading="eager"
-                />
-              </div>
-            </div>
-
-            {/* Floating badge — top */}
-            <div className="absolute -right-2 top-6 flex items-center gap-2 rounded-2xl border border-white/10 bg-slate-900/80 px-3 py-2 text-xs font-semibold backdrop-blur sm:-right-6">
-              <span className="text-base">⚡</span>
-              <span className="text-gray-200">React Dev</span>
-            </div>
-
-            {/* Floating badge — bottom */}
-            <div className="absolute -left-2 bottom-8 flex items-center gap-2 rounded-2xl border border-white/10 bg-slate-900/80 px-3 py-2 text-xs font-semibold backdrop-blur sm:-left-6">
-              <span className="text-base">🎨</span>
-              <span className="text-gray-200">UI/UX Design</span>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="grid w-full max-w-sm grid-cols-4 gap-3 sm:max-w-md">
-            {STATS.map(({ value, label }) => (
-              <div
-                key={label}
-                className="flex flex-col items-center rounded-xl border border-white/10 bg-white/[0.04] py-3 px-1 text-center backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/30"
+            {/* Pill 3: Ask AI Assistant */}
+            {onOpenAI && (
+              <button
+                onClick={onOpenAI}
+                className="px-5 py-3 rounded-full bg-purple-900/30 hover:bg-purple-800/40 border border-purple-500/40 text-cyan-300 font-medium text-xs sm:text-sm backdrop-blur-md transition-all duration-300 hover:border-cyan-400 flex items-center gap-2 shadow-[0_0_20px_rgba(168,85,247,0.25)]"
               >
-                <span className="text-lg font-extrabold text-cyan-400 sm:text-xl">
-                  {value}
-                </span>
-                <span className="mt-0.5 text-[10px] leading-tight text-gray-400 sm:text-xs">
-                  {label}
-                </span>
-              </div>
-            ))}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4 text-cyan-400">
+                  <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z" />
+                </svg>
+                <span>Ask AI Agent</span>
+              </button>
+            )}
           </div>
-        </section>
-      </div>
 
-      {/* ── Scroll indicator ─────────────────────────────── */}
-      <div className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 lg:flex">
-        <span className="text-xs font-medium tracking-widest text-gray-500 uppercase">
-          Scroll
-        </span>
-        <div className="flex h-8 w-5 items-start justify-center rounded-full border border-white/20 p-1">
-          <span className="h-1.5 w-1.5 animate-bounce-arrow rounded-full bg-cyan-400" />
+          {/* Quick Metrics / Stats Pills */}
+          <div className="pt-4 grid grid-cols-3 gap-3 max-w-md">
+            <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-md text-center">
+              <span className="block text-xl font-black text-cyan-400">6+</span>
+              <span className="text-[11px] text-slate-400">Featured Projects</span>
+            </div>
+            <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-md text-center">
+              <span className="block text-xl font-black text-purple-400">8+</span>
+              <span className="text-[11px] text-slate-400">Core Tech Stacks</span>
+            </div>
+            <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-md text-center">
+              <span className="block text-xl font-black text-pink-400">100%</span>
+              <span className="text-[11px] text-slate-400">Dedication</span>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Right Column: 3D Iridescent Planetary Orb System matching reference ── */}
+        <div className="lg:col-span-5 relative flex items-center justify-center py-8">
+          <HeroPlanetaryOrb />
+
+          {/* Floating UI Chips */}
+          <div className="absolute top-4 right-2 sm:right-6 px-3.5 py-2 rounded-2xl bg-slate-900/80 border border-white/10 backdrop-blur-md shadow-lg text-xs font-semibold text-slate-200 flex items-center gap-2 animate-float-slow">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+            <span>React &amp; Vite</span>
+          </div>
+
+          <div className="absolute bottom-6 left-2 sm:left-4 px-3.5 py-2 rounded-2xl bg-slate-900/80 border border-white/10 backdrop-blur-md shadow-lg text-xs font-semibold text-slate-200 flex items-center gap-2 animate-float">
+            <span>✨</span>
+            <span>Intelligent UI Systems</span>
+          </div>
         </div>
       </div>
-    </main>
+
+      {/* Bottom-left Prismatic Crystal Gem */}
+      <div className="absolute bottom-4 left-6 hidden xl:block">
+        <CrystalPrism size={85} />
+      </div>
+
+      {/* Scroll indicator */}
+      <button
+        onClick={() => scrollTo("about")}
+        aria-label="Scroll down to about"
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-400 hover:text-white transition-colors cursor-pointer group"
+      >
+        <span className="text-[11px] uppercase tracking-widest text-slate-500 group-hover:text-cyan-400 transition-colors">
+          Explore
+        </span>
+        <div className="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center p-1">
+          <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce" />
+        </div>
+      </button>
+    </section>
   );
 }

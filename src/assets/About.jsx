@@ -1,382 +1,261 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import myDp from "./Images/MyDp.jpg";
+import { StandingCharacterIllustration } from "./CharacterIllustrations";
+import { PlanetaryOrbitFrame, IridescentOrb, CrystalPrism } from "./IridescentSpheres";
 
-/* ─── Skills ─────────────────────────────────────────────── */
 const SKILLS = [
-  { name: "HTML5", percentage: 92 },
-  { name: "CSS3", percentage: 88 },
-  { name: "JavaScript", percentage: 82 },
-  { name: "React", percentage: 75 },
-  { name: "React Native", percentage: 60 },
-  { name: "Tailwind CSS", percentage: 70 },
-  { name: "Responsive Design", percentage: 90 },
-  { name: "Git & GitHub", percentage: 72 },
-  { name: "C Programming", percentage: 75 },
+  { name: "React & Next.js", level: 90, category: "Frontend" },
+  { name: "JavaScript / ES6+", level: 88, category: "Frontend" },
+  { name: "Tailwind CSS & Glassmorphism", level: 92, category: "UI/UX" },
+  { name: "React Native (Mobile)", level: 75, category: "Mobile" },
+  { name: "Node.js & Express APIs", level: 78, category: "Backend" },
+  { name: "Firebase & Firestore", level: 82, category: "Backend" },
+  { name: "AI UI & Prompt Interfaces", level: 85, category: "AI Engineering" },
+  { name: "Git & Collaborative Dev", level: 80, category: "Tools" },
 ];
 
-/* ─── Education ──────────────────────────────────────────── */
 const EDUCATION = [
   {
     year: "2025 – 2027",
-    title: "Master of Computer Applications (M.C.A.)",
-    institute: "Dr. A.P.J. Abdul Kalam Technical University (AKTU)",
+    degree: "Master of Computer Applications (M.C.A.)",
+    institution: "Dr. A.P.J. Abdul Kalam Technical University (AKTU)",
     status: "Currently Pursuing",
-    current: true,
+    badge: "In Progress",
+    highlight: true,
   },
   {
     year: "2022 – 2025",
-    title: "Bachelor of Computer Applications (B.C.A.)",
-    institute: "Chaudhary Charan Singh University (CCSU)",
+    degree: "Bachelor of Computer Applications (B.C.A.)",
+    institution: "Chaudhary Charan Singh University (CCSU)",
     status: "Completed",
+    badge: "Graduated",
   },
   {
     year: "2022",
-    title: "Higher Secondary Education (12th)",
-    institute: "Central Board of Secondary Education (C.B.S.E)",
-    status: "Completed",
-  },
-  {
-    year: "2020",
-    title: "Secondary Education (10th)",
-    institute: "Central Board of Secondary Education (C.B.S.E)",
+    degree: "Higher Secondary (12th)",
+    institution: "Central Board of Secondary Education (C.B.S.E)",
     status: "Completed",
   },
 ];
 
-/* ─── Interests ──────────────────────────────────────────── */
-const INTERESTS = [
-  {
-    icon: "✈️",
-    title: "Travel & Exploration",
-    description:
-      "I love exploring new places and experiencing different cultures. Travel broadens my perspective and inspires creativity in my work.",
-  },
-  {
-    icon: "⚽",
-    title: "Sports & Fitness",
-    description:
-      "Staying active through outdoor games and sports helps me maintain a healthy work-life balance and keeps my mind sharp.",
-  },
-  {
-    icon: "✦",
-    title: "Continuous Learning",
-    description:
-      "Technology evolves rapidly, and I'm passionate about staying updated with the latest trends, frameworks, and best practices in web development.",
-  },
-];
-
-/* ─── Background shapes ──────────────────────────────────── */
-function BgShapes() {
-  return (
-    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      <div className="absolute -left-20 top-[15%] h-72 w-72 rounded-full bg-cyan-500/10   blur-3xl" />
-      <div className="absolute -right-16 top-[25%] h-80 w-80 rounded-full bg-purple-500/10 blur-3xl" />
-      <div className="absolute bottom-[10%] left-[30%] h-64 w-64 rounded-full bg-blue-500/10 blur-3xl" />
-      <div className="absolute left-[15%] top-[20%]  h-2 w-2 animate-pulse rounded-full bg-cyan-400   shadow-[0_0_20px_#22d3ee]" />
-      <div className="absolute right-[20%] top-[35%] h-2 w-2 animate-pulse rounded-full bg-purple-400 shadow-[0_0_20px_#a855f7]" />
-      <div className="absolute bottom-[25%] left-[10%] h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400" />
-      <div className="absolute bottom-[15%] right-[15%] h-2 w-2 animate-pulse rounded-full bg-cyan-400" />
-    </div>
-  );
-}
-
-/* ─── Animated Skill Bar ─────────────────────────────────── */
-function SkillBar({ skill, index }) {
-  const [width, setWidth] = useState(0);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setWidth(skill.percentage), index * 80);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.3 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [skill.percentage, index]);
-
-  return (
-    <div ref={ref}>
-      <div className="mb-1.5 flex justify-between text-sm">
-        <span className="font-medium text-gray-200">{skill.name}</span>
-        <span className="font-semibold text-cyan-400">{skill.percentage}%</span>
-      </div>
-      <div className="h-2.5 overflow-hidden rounded-full bg-white/10">
-        <div
-          className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 transition-all duration-1000 ease-out"
-          style={{ width: `${width}%` }}
-        />
-      </div>
-    </div>
-  );
-}
-
-/* ─── Scroll-reveal wrapper ──────────────────────────────── */
-function Reveal({ children, delay = 0, className = "" }) {
-  const [visible, setVisible] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) { setVisible(true); observer.disconnect(); }
-      },
-      { threshold: 0.1 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-all duration-700 ${visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-        } ${className}`}
-    >
-      {children}
-    </div>
-  );
-}
-
-/* ─── About page ─────────────────────────────────────────── */
 export default function About() {
+  const [viewMode, setViewMode] = useState("illustration"); // "illustration" | "photo"
+  const [activeTab, setActiveTab] = useState("skills"); // "skills" | "education" | "story"
+
   return (
-    <div className="min-h-screen overflow-hidden bg-slate-950 text-white">
-      <BgShapes />
+    <section
+      id="about"
+      className="relative min-h-screen py-24 px-5 sm:px-10 lg:px-16 overflow-hidden cosmic-nebula flex flex-col justify-center"
+    >
+      {/* Background Floating Orbs */}
+      <div className="absolute top-10 right-10 hidden lg:block opacity-60">
+        <IridescentOrb size={80} glowColor="cyan" />
+      </div>
 
-      <main>
+      <div className="relative z-10 mx-auto max-w-7xl w-full">
+        {/* Section Header */}
+        <div className="text-center mb-16 space-y-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-500/10 border border-purple-400/20 text-xs font-semibold text-purple-300">
+            <span>✦</span>
+            <span>Creative Background</span>
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+            About Me
+          </h2>
+          <p className="max-w-xl mx-auto text-sm sm:text-base text-slate-400">
+            Passionate developer blending artistic visual design with robust engineering and modern AI concepts.
+          </p>
+        </div>
 
-        {/* ── Hero ─────────────────────────────────────────── */}
-        <section className="px-5 py-24 sm:px-8 lg:px-16 lg:py-32">
-          <div className="mx-auto max-w-7xl">
-            <div className="grid items-center gap-14 lg:grid-cols-2">
-
-              {/* Text */}
-              <div>
-                <p className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-cyan-400">
-                  Get To Know Me
-                </p>
-
-                <h1 className="text-5xl font-extrabold leading-tight sm:text-6xl lg:text-7xl">
-                  About{" "}
-                  <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                    Me
-                  </span>
-                </h1>
-
-                <p className="mt-4 text-lg font-medium text-gray-300">
-                  Passionate Web Developer &amp; Creative Problem Solver
-                </p>
-
-                {/* Available badge */}
-                <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-1.5 text-xs font-semibold text-emerald-400">
-                  <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-                  Available for hire
+        {/* Main Content Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          {/* ── Left / Center Column: Concentric Planetary Orbit with Character Illustration ── */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
+            <PlanetaryOrbitFrame size={380} className="w-full max-w-[380px] h-[380px]">
+              {viewMode === "illustration" ? (
+                <StandingCharacterIllustration />
+              ) : (
+                <div className="relative w-52 h-52 rounded-full overflow-hidden border-2 border-cyan-400/60 shadow-[0_0_35px_rgba(56,189,248,0.5)]">
+                  <img
+                    src={myDp}
+                    alt="Krishan Kant"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
+              )}
+            </PlanetaryOrbitFrame>
 
-                <p className="mt-6 max-w-xl text-base leading-8 text-gray-400">
-                  I'm a dedicated web developer with a passion for creating
-                  beautiful, functional, and user-friendly websites. Currently
-                  pursuing my Master's in Computer Applications, I combine
-                  academic knowledge with practical experience to deliver
-                  exceptional digital solutions.
-                </p>
-              </div>
-
-              {/* Image */}
-              <div className="flex justify-center lg:justify-end">
-                <div className="relative">
-                  <div className="absolute -inset-5 rounded-full bg-gradient-to-r from-cyan-500/30 to-purple-500/30 blur-2xl" />
-                  <div className="relative h-72 w-72 overflow-hidden rounded-full border-4 border-cyan-400/40 shadow-[0_0_60px_rgba(34,211,238,0.2)] sm:h-80 sm:w-80">
-                    <img
-                      src={myDp}
-                      alt="Krishan Kant"
-                      className="h-full w-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/20 to-transparent" />
-                  </div>
-                </div>
-              </div>
+            {/* Toggle view: Illustration vs Real Photo */}
+            <div className="mt-6 flex items-center gap-2 p-1 rounded-full bg-slate-900/80 border border-white/10 backdrop-blur-md">
+              <button
+                onClick={() => setViewMode("illustration")}
+                className={`px-3.5 py-1 rounded-full text-xs font-medium transition-all ${
+                  viewMode === "illustration"
+                    ? "bg-purple-600 text-white shadow-md"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                Art Illustration
+              </button>
+              <button
+                onClick={() => setViewMode("photo")}
+                className={`px-3.5 py-1 rounded-full text-xs font-medium transition-all ${
+                  viewMode === "photo"
+                    ? "bg-cyan-500 text-slate-950 font-bold shadow-md"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                Real Photo
+              </button>
             </div>
           </div>
-        </section>
 
-        {/* ── Stats ────────────────────────────────────────── */}
-        <section className="border-y border-white/10 bg-white/[0.02] px-5 py-16 sm:px-8">
-          <div className="mx-auto grid max-w-7xl grid-cols-2 gap-5 lg:grid-cols-4">
-            {[
-              ["5+", "Projects Completed"],
-              ["5+", "Years Learning"],
-              ["8+", "Technologies"],
-              ["100%", "Dedication"],
-            ].map(([num, label], i) => (
-              <Reveal key={label} delay={i * 100}>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7 text-center transition-all duration-300 hover:-translate-y-2 hover:border-cyan-400/30">
-                  <div className="text-4xl font-extrabold text-cyan-400">{num}</div>
-                  <div className="mt-2 text-sm text-gray-400">{label}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-
-        {/* ── Story + Skills ────────────────────────────────── */}
-        <section className="px-5 py-24 sm:px-8 lg:px-16">
-          <div className="mx-auto max-w-7xl">
-            <div className="grid gap-14 lg:grid-cols-2">
-
-              {/* Story */}
-              <Reveal>
-                <h2 className="text-3xl font-bold sm:text-4xl">
-                  My <span className="text-cyan-400">Story</span>
-                </h2>
-                <div className="mt-7 space-y-5 leading-8 text-gray-400">
-                  <p>
-                    My journey into web development began during my Bachelor's
-                    in Computer Applications at CCSU. What started as curiosity
-                    about how websites work quickly evolved into a deep passion
-                    for creating digital experiences that make a difference.
-                  </p>
-                  <p>
-                    Currently pursuing my Master's degree at AKTU, I'm
-                    constantly expanding my knowledge and staying up-to-date
-                    with the latest web technologies. I believe in the power of
-                    continuous learning and always strive to improve my skills.
-                  </p>
-                  <p>
-                    When I'm not coding, you'll find me exploring new places,
-                    playing outdoor games, or researching the latest trends in
-                    web development. I'm always excited to take on new
-                    challenges and create something amazing.
-                  </p>
-                </div>
-              </Reveal>
-
-              {/* Skills */}
-              <Reveal delay={150}>
-                <h2 className="text-3xl font-bold sm:text-4xl">
-                  Technical{" "}
-                  <span className="text-purple-400">Skills</span>
-                </h2>
-                <div className="mt-8 space-y-6">
-                  {SKILLS.map((skill, i) => (
-                    <SkillBar key={skill.name} skill={skill} index={i} />
-                  ))}
-                </div>
-              </Reveal>
-
-            </div>
-          </div>
-        </section>
-
-        {/* ── Education ─────────────────────────────────────── */}
-        <section className="bg-white/[0.02] px-5 py-24 sm:px-8 lg:px-16">
-          <div className="mx-auto max-w-5xl">
-            <div className="mb-14 text-center">
-              <p className="text-xs uppercase tracking-[0.3em] text-cyan-400">
-                My Academic Background
-              </p>
-              <h2 className="mt-3 text-4xl font-bold">Education Journey</h2>
-            </div>
-
-            <div className="relative">
-              {/* Timeline line */}
-              <div className="absolute left-3 top-0 h-full w-px bg-gradient-to-b from-cyan-400 via-purple-500 to-transparent md:left-1/2" />
-
-              <div className="space-y-10">
-                {EDUCATION.map((item, i) => (
-                  <Reveal key={item.title} delay={i * 100}>
-                    <div className={`ml-10 md:ml-0 md:w-[calc(50%-30px)] ${i % 2 === 1 ? "md:ml-auto" : ""}`}>
-                      <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-6 backdrop-blur transition hover:border-cyan-400/30">
-                        <span className="text-sm font-semibold text-cyan-400">
-                          {item.year}
-                        </span>
-                        <h3 className="mt-2 text-lg font-bold">{item.title}</h3>
-                        <p className="mt-2 text-sm text-gray-400">{item.institute}</p>
-                        <span
-                          className={`mt-4 inline-block rounded-full px-3 py-1 text-xs font-semibold ${item.current
-                              ? "bg-cyan-400/10 text-cyan-400"
-                              : "bg-green-400/10 text-green-400"
-                            }`}
-                        >
-                          {item.status}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Dot */}
-                    <div className="absolute left-0 top-7 h-7 w-7 rounded-full border-4 border-slate-950 bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.6)] md:left-1/2 md:-translate-x-1/2" />
-                  </Reveal>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Interests ─────────────────────────────────────── */}
-        <section className="px-5 py-24 sm:px-8 lg:px-16">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-12 text-center">
-              <h2 className="text-4xl font-bold">
-                Beyond <span className="text-cyan-400">Coding</span>
-              </h2>
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-3">
-              {INTERESTS.map((item, i) => (
-                <Reveal key={item.title} delay={i * 100}>
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 transition-all duration-300 hover:-translate-y-2 hover:border-cyan-400/30 hover:bg-white/[0.05]">
-                    <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-400/10 text-2xl">
-                      {item.icon}
-                    </div>
-                    <h3 className="text-lg font-bold">{item.title}</h3>
-                    <p className="mt-3 leading-7 text-sm text-gray-400">{item.description}</p>
-                  </div>
-                </Reveal>
+          {/* ── Right Column: Frosted Glass Bio, Skills & Education Tabs ── */}
+          <div className="lg:col-span-7 space-y-6">
+            
+            {/* Glass Navigation Tabs */}
+            <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-900/60 border border-white/10 backdrop-blur-md w-fit">
+              {[
+                { id: "skills", label: "Skills & AI Stack" },
+                { id: "education", label: "Education" },
+                { id: "story", label: "Bio & Journey" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
+                    activeTab === tab.id
+                      ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-[0_0_20px_rgba(168,85,247,0.4)]"
+                      : "text-slate-400 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  {tab.label}
+                </button>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* ── CTA ───────────────────────────────────────────── */}
-        <section className="px-5 pb-24 sm:px-8">
-          <div className="mx-auto max-w-4xl">
-            <div className="relative overflow-hidden rounded-3xl border border-cyan-400/20 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 px-6 py-16 text-center sm:px-12">
-              <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-cyan-400/10 blur-3xl" />
-              <div className="relative">
-                <h2 className="text-3xl font-bold sm:text-4xl">
-                  Let's Work Together
-                </h2>
-                <p className="mx-auto mt-5 max-w-xl leading-7 text-gray-400">
-                  I'm always excited to collaborate on new projects and bring
-                  creative ideas to life. Let's create something amazing!
-                </p>
-                <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-                  <Link
-                    to="/contact"
-                    className="rounded-lg bg-cyan-500 px-7 py-3 font-bold text-slate-950 transition hover:bg-cyan-400 hover:shadow-[0_0_30px_rgba(34,211,238,0.3)]"
-                  >
-                    Get In Touch
-                  </Link>
+            {/* Tab 1: Skills & AI Stack */}
+            {activeTab === "skills" && (
+              <div className="glass-panel p-6 sm:p-8 rounded-3xl space-y-6 animate-fade-in">
+                <div>
+                  <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                    <span>Technical Proficiencies</span>
+                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">
+                      Frontend &amp; AI
+                    </span>
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-400 mt-1">
+                    Modern frameworks, design tools, and intelligent user interaction models.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {SKILLS.map((skill, idx) => (
+                    <div
+                      key={idx}
+                      className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-purple-400/30 transition-all duration-300"
+                    >
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-xs sm:text-sm font-semibold text-slate-200">
+                          {skill.name}
+                        </span>
+                        <span className="text-xs font-mono text-cyan-400 font-bold">
+                          {skill.level}%
+                        </span>
+                      </div>
+                      <div className="w-full h-1.5 rounded-full bg-slate-800/80 overflow-hidden">
+                        <div
+                          className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 transition-all duration-1000"
+                          style={{ width: `${skill.level}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* AI Competencies Banner */}
+                <div className="p-4 rounded-2xl bg-purple-950/40 border border-purple-500/30 flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">⚡</span>
+                    <div>
+                      <h4 className="text-xs sm:text-sm font-bold text-white">AI-Powered Portfolio &amp; Interfaces</h4>
+                      <p className="text-xs text-slate-400">Integrating conversational agents, generative UI, and smart predictive UX.</p>
+                    </div>
+                  </div>
                   <Link
                     to="/resume"
-                    className="rounded-lg border border-white/20 bg-white/5 px-7 py-3 font-bold text-white transition hover:border-cyan-400 hover:text-cyan-400"
+                    className="shrink-0 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white border border-white/10"
                   >
-                    View Resume
+                    View All
                   </Link>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
+            )}
 
-      </main>
-    </div>
+            {/* Tab 2: Education */}
+            {activeTab === "education" && (
+              <div className="glass-panel p-6 sm:p-8 rounded-3xl space-y-6 animate-fade-in">
+                <h3 className="text-xl font-bold text-white">Academic Journey</h3>
+                <div className="space-y-4">
+                  {EDUCATION.map((edu, idx) => (
+                    <div
+                      key={idx}
+                      className={`p-4 rounded-2xl border transition-all ${
+                        edu.highlight
+                          ? "bg-purple-900/20 border-purple-400/40 shadow-[0_0_25px_rgba(168,85,247,0.15)]"
+                          : "bg-white/[0.03] border-white/10"
+                      }`}
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span className="text-xs font-mono font-bold text-cyan-400">
+                          {edu.year}
+                        </span>
+                        {edu.badge && (
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                            {edu.badge}
+                          </span>
+                        )}
+                      </div>
+                      <h4 className="text-base font-bold text-white mt-1">
+                        {edu.degree}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+                        {edu.institution}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Tab 3: Bio & Journey */}
+            {activeTab === "story" && (
+              <div className="glass-panel p-6 sm:p-8 rounded-3xl space-y-4 animate-fade-in">
+                <h3 className="text-xl font-bold text-white">About Krishan Kant</h3>
+                <p className="text-sm leading-relaxed text-slate-300">
+                  I am a passionate software developer focused on frontend innovation, interactive user experiences, and web applications. My philosophy is grounded in creating designs that are not only aesthetically breathtaking through glassmorphism and motion, but also intuitive, accessible, and fast.
+                </p>
+                <p className="text-sm leading-relaxed text-slate-300">
+                  Whether developing full-stack security tools like the Phishing Detector, emergency response apps like the Women Security App, or futuristic mobile systems like LifeOS, I embrace solving complex problems with elegance.
+                </p>
+                <div className="pt-3 flex flex-wrap gap-2">
+                  <span className="px-3 py-1 rounded-full text-xs bg-cyan-500/10 text-cyan-300 border border-cyan-400/20">
+                    Clean Code
+                  </span>
+                  <span className="px-3 py-1 rounded-full text-xs bg-purple-500/10 text-purple-300 border border-purple-400/20">
+                    Generative UI &amp; AI
+                  </span>
+                  <span className="px-3 py-1 rounded-full text-xs bg-pink-500/10 text-pink-300 border border-pink-400/20">
+                    Full Responsive
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

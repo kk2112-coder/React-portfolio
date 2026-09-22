@@ -1,27 +1,29 @@
 import { useState, useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { FaInstagram, FaGithub } from "react-icons/fa";
+import ThemeToggle from "./ThemeToggle";
 
-/* ─── Nav links config ─────────────────────────────────── */
-const NAV_LINKS = [
-  { to: "/",        label: "Home"    },
-  { to: "/work",    label: "Work"    },
-  { to: "/about",   label: "About"   },
-  { to: "/contact", label: "Contact" },
-];
-
-export default function Navbar() {
-  const [menuOpen,  setMenuOpen]  = useState(false);
-  const [scrolled,  setScrolled]  = useState(false);
+/**
+ * Top Navigation Bar matching the reference portfolio UI
+ * Features:
+ * - Top-left social handle pills (@kkrajput_002, @kk2112-coder)
+ * - Centered glowing monogram logo
+ * - Smooth section links: Home, About, Work, Contact
+ * - Dark/Light Theme Toggle
+ * - AI Assistant launch button & Resume link
+ */
+export default function Navbar({ onOpenAI }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const mobileMenuRef = useRef(null);
+  const location = useLocation();
 
-  /* ── Scroll-based glass effect ── */
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* ── Close menu on outside click ── */
   useEffect(() => {
     const handler = (e) => {
       if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
@@ -32,143 +34,163 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  /* ── Close menu on route change (escape key) ── */
-  useEffect(() => {
-    const onKey = (e) => e.key === "Escape" && setMenuOpen(false);
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, []);
+  const scrollTo = (id) => {
+    setMenuOpen(false);
+    if (location.pathname !== "/") {
+      window.location.href = `/#${id}`;
+      return;
+    }
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
-  const navLinkClass = ({ isActive }) =>
-    `relative text-sm font-medium transition-all duration-300 ${
-      isActive
-        ? "text-cyan-400"
-        : "text-gray-300 hover:text-white"
-    }`;
+  const navLinks = [
+    { id: "home", label: "Home", action: () => scrollTo("home") },
+    { id: "about", label: "About", action: () => scrollTo("about") },
+    { id: "work", label: "Work", action: () => scrollTo("work") },
+    { id: "contact", label: "Contact", action: () => scrollTo("contact") },
+  ];
 
   return (
-    <nav
+    <header
       ref={mobileMenuRef}
-      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${
-        scrolled || menuOpen
-          ? "border-b border-white/10 bg-slate-950/80 backdrop-blur-2xl shadow-xl shadow-black/30"
+      className={`fixed left-0 right-0 top-0 z-40 transition-all duration-300 ${
+        scrolled
+          ? "bg-[#070817]/80 backdrop-blur-xl border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-10 lg:px-16">
-
-        {/* ── Logo ── */}
-        <NavLink
-          to="/"
-          onClick={() => setMenuOpen(false)}
-          className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-2xl font-extrabold text-transparent transition-all duration-300 hover:scale-105"
-        >
-          KK.dev
-        </NavLink>
-
-        {/* ── Desktop Menu ── */}
-        <ul className="hidden items-center gap-8 md:flex">
-          {NAV_LINKS.map(({ to, label }) => (
-            <li key={to}>
-              <NavLink to={to} className={navLinkClass} end={to === "/"}>
-                {({ isActive }) => (
-                  <>
-                    {label}
-                    <span
-                      className={`absolute -bottom-1.5 left-0 h-0.5 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 transition-all duration-300 ${
-                        isActive ? "w-full" : "w-0"
-                      }`}
-                    />
-                  </>
-                )}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-
-        {/* ── Desktop Resume CTA ── */}
-        <div className="hidden md:flex items-center gap-4">
-          <NavLink
-            to="/resume"
-            className={({ isActive }) =>
-              `rounded-lg border px-4 py-2 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 ${
-                isActive
-                  ? "border-cyan-400 bg-cyan-400/10 text-cyan-400"
-                  : "border-cyan-400/40 text-cyan-400 hover:border-cyan-400 hover:bg-cyan-400/10"
-              }`
-            }
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-8 lg:px-12">
+        {/* ── Left: Social Badges matching reference (@Sourasith.design style) ── */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <a
+            href="https://www.instagram.com/kkrajput_002/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.06] hover:bg-pink-500/20 border border-white/10 hover:border-pink-500/40 text-xs font-medium text-slate-300 hover:text-white transition-all duration-300 group"
           >
-            Resume
-          </NavLink>
+            <FaInstagram className="text-pink-400 group-hover:scale-110 transition-transform" />
+            <span className="hidden sm:inline">@kkrajput_002</span>
+          </a>
+
+          <a
+            href="https://github.com/kk2112-coder"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.06] hover:bg-cyan-500/20 border border-white/10 hover:border-cyan-500/40 text-xs font-medium text-slate-300 hover:text-white transition-all duration-300 group"
+          >
+            <FaGithub className="text-cyan-400 group-hover:scale-110 transition-transform" />
+            <span className="hidden sm:inline">@kk2112-coder</span>
+          </a>
         </div>
 
-        {/* ── Hamburger ── */}
-        <button
-          onClick={() => setMenuOpen((v) => !v)}
-          className="flex flex-col gap-1.5 rounded-lg p-2 transition hover:bg-white/10 md:hidden"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={menuOpen}
-        >
-          <span
-            className={`h-0.5 w-6 rounded-full bg-white transition-all duration-300 ${
-              menuOpen ? "translate-y-2 rotate-45" : ""
-            }`}
-          />
-          <span
-            className={`h-0.5 w-6 rounded-full bg-white transition-all duration-300 ${
-              menuOpen ? "opacity-0 scale-x-0" : ""
-            }`}
-          />
-          <span
-            className={`h-0.5 w-6 rounded-full bg-white transition-all duration-300 ${
-              menuOpen ? "-translate-y-2 -rotate-45" : ""
-            }`}
-          />
-        </button>
+        {/* ── Center: Monogram Logo & Nav Links ── */}
+        <div className="flex items-center gap-8">
+          {/* Centered Glowing Monogram Emblem */}
+          <button
+            onClick={() => scrollTo("home")}
+            className="group relative flex items-center justify-center w-10 h-10 rounded-full border border-purple-400/40 bg-slate-900/80 shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(56,189,248,0.7)] transition-all duration-300 hover:scale-105"
+            aria-label="Home"
+          >
+            <div className="absolute inset-0.5 rounded-full bg-gradient-to-tr from-purple-600 via-indigo-600 to-cyan-400 opacity-20 group-hover:opacity-40 transition-opacity" />
+            <span className="relative text-sm font-extrabold tracking-wider bg-gradient-to-r from-cyan-300 via-purple-300 to-pink-300 bg-clip-text text-transparent">
+              KK
+            </span>
+          </button>
+
+          {/* Desktop Nav Links */}
+          <nav className="hidden lg:flex items-center gap-6">
+            {navLinks.map((link) => (
+              <button
+                key={link.id}
+                onClick={link.action}
+                className="relative py-1 text-sm font-medium text-slate-300 hover:text-white transition-colors duration-200 group"
+              >
+                {link.label}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300 rounded-full" />
+              </button>
+            ))}
+          </nav>
+        </div>
+
+        {/* ── Right: Theme Toggle, AI Assistant & Resume CTA ── */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Dark / Light Theme Toggle */}
+          <ThemeToggle />
+
+          {onOpenAI && (
+            <button
+              onClick={onOpenAI}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-purple-600/30 to-cyan-600/30 hover:from-purple-600/50 hover:to-cyan-600/50 border border-purple-400/40 text-xs font-semibold text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(56,189,248,0.5)] transition-all duration-300"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5 text-cyan-300 animate-spin" style={{ animationDuration: "8s" }}>
+                <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z" />
+              </svg>
+              <span>AI Assistant</span>
+            </button>
+          )}
+
+          <Link
+            to="/resume"
+            className="hidden sm:inline-flex items-center px-4 py-1.5 rounded-full border border-white/15 bg-white/[0.05] hover:bg-white/[0.12] text-xs font-semibold text-slate-200 hover:text-white transition-all duration-300"
+          >
+            Resume
+          </Link>
+
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="lg:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition"
+            aria-label="Toggle navigation"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+              {menuOpen ? (
+                <path d="M18 6 6 18M6 6l12 12" />
+              ) : (
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
       </div>
 
-      {/* ── Mobile Menu ── */}
-      <div
-        className={`overflow-hidden border-t border-white/5 bg-slate-950/95 backdrop-blur-2xl transition-all duration-300 md:hidden ${
-          menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <ul className="flex flex-col gap-1 px-5 py-4">
-          {NAV_LINKS.map(({ to, label }) => (
-            <li key={to}>
-              <NavLink
-                to={to}
-                end={to === "/"}
-                onClick={() => setMenuOpen(false)}
-                className={({ isActive }) =>
-                  `block rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 ${
-                    isActive
-                      ? "bg-cyan-400/10 text-cyan-400"
-                      : "text-gray-300 hover:bg-white/5 hover:text-white"
-                  }`
-                }
-              >
-                {label}
-              </NavLink>
-            </li>
+      {/* Mobile Dropdown Menu */}
+      {menuOpen && (
+        <div className="lg:hidden px-6 py-4 bg-[#070817]/95 backdrop-blur-2xl border-b border-white/10 space-y-3">
+          {navLinks.map((link) => (
+            <button
+              key={link.id}
+              onClick={link.action}
+              className="block w-full text-left py-2 text-sm font-medium text-slate-300 hover:text-cyan-400"
+            >
+              {link.label}
+            </button>
           ))}
-          <li>
-            <NavLink
+          <div className="pt-2 border-t border-white/10 flex items-center gap-3">
+            <ThemeToggle />
+            <Link
               to="/resume"
               onClick={() => setMenuOpen(false)}
-              className={({ isActive }) =>
-                `block rounded-lg px-4 py-3 text-sm font-semibold transition-all duration-200 ${
-                  isActive
-                    ? "bg-cyan-400/10 text-cyan-400"
-                    : "border border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10"
-                }`
-              }
+              className="px-4 py-2 rounded-xl bg-white/10 text-xs font-semibold text-white"
             >
-              Resume
-            </NavLink>
-          </li>
-        </ul>
-      </div>
-    </nav>
+              View Resume
+            </Link>
+            {onOpenAI && (
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  onOpenAI();
+                }}
+                className="px-4 py-2 rounded-xl bg-purple-600/40 border border-purple-400/40 text-xs font-semibold text-cyan-300"
+              >
+                AI Assistant
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+    </header>
   );
 }
