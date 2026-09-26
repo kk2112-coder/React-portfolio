@@ -105,11 +105,11 @@ export default function Contact() {
               <div className="space-y-2 text-xs sm:text-sm text-slate-300">
                 <div className="flex items-center justify-center lg:justify-start gap-2.5">
                   <span className="text-cyan-400">📞</span>
-                  <span>+91 9315482322</span>
+                  <span>+91 8810419209</span>
                 </div>
                 <div className="flex items-center justify-center lg:justify-start gap-2.5">
                   <span className="text-purple-400">✉️</span>
-                  <span>kkrishankant17@gmail.com</span>
+                  <span>krishankant2112@gmail.com</span>
                 </div>
                 <div className="flex items-center justify-center lg:justify-start gap-2.5">
                   <span className="text-pink-400">📍</span>
