@@ -1,0 +1,42 @@
+<svg viewBox="0 0 40 40" width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="kk-fav-bg" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#030712" />
+    </linearGradient>
+    <linearGradient id="kk-fav-border" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+    <linearGradient id="kk-fav-cyan" x1="10" y1="10" x2="22" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="kk-fav-purple" x1="20" y1="10" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#a78bfa" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+    <radialGradient id="kk-fav-core" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#c084fc" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="url(#kk-fav-bg)" stroke="url(#kk-fav-border)" stroke-width="1.5" />
+  <rect x="3" y="3" width="34" height="34" rx="9.5" fill="none" stroke="white" stroke-opacity="0.12" stroke-width="1" />
+
+  <!-- Monogram: First K Vertical Spine -->
+  <path d="M12.5 11V29" stroke="url(#kk-fav-cyan)" stroke-width="2.75" stroke-linecap="round" />
+  <!-- First K Diagonal Arms -->
+  <path d="M14 20L21 12" stroke="url(#kk-fav-cyan)" stroke-width="2.5" stroke-linecap="round" />
+  <path d="M14 20L21 28" stroke="url(#kk-fav-cyan)" stroke-width="2.5" stroke-linecap="round" />
+  <!-- Second K Interlocking Chevrons -->
+  <path d="M20.5 19.5L27.5 12" stroke="url(#kk-fav-purple)" stroke-width="2.5" stroke-linecap="round" />
+  <path d="M20.5 20.5L27.5 28" stroke="url(#kk-fav-purple)" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- Quantum AI Core -->
+  <circle cx="20.5" cy="20" r="1.6" fill="url(#kk-fav-core)" />
+  <circle cx="20.5" cy="20" r="0.75" fill="#ffffff" />
+  <circle cx="28" cy="12" r="1" fill="#38bdf8" />
+</svg>

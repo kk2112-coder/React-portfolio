@@ -1,39 +1,111 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { HeroPlanetaryOrb, IridescentOrb, CrystalPrism } from "./IridescentSpheres";
+import { FaArrowDown, FaPaperPlane, FaCopy, FaCheck, FaExternalLinkAlt } from "react-icons/fa";
+import Tilt3DCard from "./Tilt3DCard";
 
 const ROLES = [
-  "Creative AI & Web Developer",
-  "React & Next.js Engineer",
-  "Interactive UI/UX Designer",
-  "Full-Stack Web Architect",
+  "Full-Stack Web Developer",
+  "React 19 & Next.js Engineer",
+  "AI & Threat Heuristics Builder",
+  "Mobile App Creator (React Native)",
 ];
 
-export default function Hero({ onOpenAI }) {
+const QUICK_PROMPTS = [
+  { label: "💡 Top Skills", q: "What are Krishan's top skills?" },
+  { label: "🪪 Office ID Badge", q: "Show me Krishan's office ID card and credentials" },
+  { label: "🛡️ Phishing Detector", q: "How does the Phishing Website Detector work?" },
+  { label: "📱 LifeOS Mobile", q: "What is LifeOS Mobile?" },
+  { label: "🎓 Education", q: "What is Krishan's education and degree?" },
+  { label: "📬 How to Hire", q: "How can I contact or hire Krishan?" },
+];
+
+const ANSWERS = {
+  skills:
+    "Krishan specializes in modern full-stack web and AI architectures: React 19, JavaScript (ES6+), Next.js, Tailwind CSS, Node.js & Express REST APIs, Firebase, and React Native mobile development.",
+  idcard:
+    "Krishan's official 3D Office ID Card is featured in the About section! It features Level-4 engineering clearance, authentic RFID chip/barcode simulation, credentials at AKTU, and an interactive 3D flip card with scannable QR verification.",
+  phishing:
+    "The Phishing Website Detector is Krishan's flagship security project. It evaluates URLs for threat indicators, suspicious domain entropy, homoglyph spoofing, and SSL certificate anomalies via a Node.js API to protect users from malicious sites.",
+  lifeos:
+    "LifeOS Mobile is a personal intelligence operating system built with React Native and Expo. It unifies daily habits, task management, focus blocks, and telemetry into a clean, distraction-free mobile dashboard.",
+  education:
+    "Krishan is currently pursuing his Master of Computer Applications (M.C.A.) (2025–2027) at Dr. A.P.J. Abdul Kalam Technical University (AKTU). He completed his Bachelor of Computer Applications (B.C.A.) (2022–2025) at CCSU with 1st Division honors.",
+  hire:
+    "Krishan is open to full-time engineering roles, high-impact web contracts, and freelance projects! Reach him at kkrishankantrajput2112@gmail.com, on GitHub @kk2112-coder, or use the contact form below.",
+};
+
+export default function Hero({ onOpenAI, onOpenID }) {
   const [roleIndex, setRoleIndex] = useState(0);
   const [text, setText] = useState("");
-  const [deleting, setDeleting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // In-Hero Interactive AI Query Bar
+  const [input, setInput] = useState("");
+  const [response, setResponse] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   // Typewriter effect
   useEffect(() => {
     const current = ROLES[roleIndex];
     const timeout = setTimeout(
       () => {
-        if (!deleting) {
+        if (!isDeleting) {
           setText(current.substring(0, text.length + 1));
-          if (text === current) setDeleting(true);
+          if (text === current) {
+            setIsDeleting(true);
+          }
         } else {
           setText(current.substring(0, text.length - 1));
           if (text === "") {
-            setDeleting(false);
-            setRoleIndex((i) => (i + 1) % ROLES.length);
+            setIsDeleting(false);
+            setRoleIndex((prev) => (prev + 1) % ROLES.length);
           }
         }
       },
-      deleting ? 45 : text === current ? 1800 : 85
+      isDeleting ? 35 : text === current ? 2200 : 70
     );
     return () => clearTimeout(timeout);
-  }, [text, deleting, roleIndex]);
+  }, [text, isDeleting, roleIndex]);
+
+  const handleAsk = (queryText) => {
+    const q = (queryText || input).trim();
+    if (!q) return;
+
+    setIsLoading(true);
+    setResponse(null);
+
+    setTimeout(() => {
+      const lower = q.toLowerCase();
+      let ans = "";
+
+      if (lower.includes("skill") || lower.includes("stack") || lower.includes("tech")) {
+        ans = ANSWERS.skills;
+      } else if (lower.includes("id") || lower.includes("card") || lower.includes("badge")) {
+        ans = ANSWERS.idcard;
+      } else if (lower.includes("phishing") || lower.includes("security") || lower.includes("detector")) {
+        ans = ANSWERS.phishing;
+      } else if (lower.includes("lifeos") || lower.includes("mobile") || lower.includes("app")) {
+        ans = ANSWERS.lifeos;
+      } else if (lower.includes("education") || lower.includes("degree") || lower.includes("mca") || lower.includes("aktu") || lower.includes("bca")) {
+        ans = ANSWERS.education;
+      } else if (lower.includes("hire") || lower.includes("contact") || lower.includes("email") || lower.includes("reach")) {
+        ans = ANSWERS.hire;
+      } else {
+        ans = `Krishan Kant is a Full-Stack & AI Developer based in India, pursuing his M.C.A. at AKTU. He builds high-performance web systems and AI tools. Ask the full AI assistant for more details!`;
+      }
+
+      setResponse({ query: q, answer: ans });
+      setIsLoading(false);
+    }, 400);
+  };
+
+  const handleCopy = () => {
+    if (!response) return;
+    navigator.clipboard.writeText(response.answer);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
@@ -42,152 +114,195 @@ export default function Hero({ onOpenAI }) {
 
   return (
     <section
-      id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16 lg:py-0 cosmic-nebula"
+      id="hero"
+      className="relative min-h-[92vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
-      {/* Top-left Glowing 3D Iridescent Pearl matching reference UI */}
-      <div className="absolute top-12 left-6 lg:left-24 z-10 hidden sm:block animate-float">
-        <IridescentOrb size={95} glowColor="purple" />
-      </div>
+      {/* Subtle ambient background glow */}
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-cyan-500/10 via-purple-500/10 to-pink-500/10 blur-[120px] rounded-full pointer-events-none" />
 
-      {/* Ambient background particles & grid */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)",
-          backgroundSize: "36px 36px",
-        }}
-      />
-
-      {/* Main Hero Container */}
-      <div className="relative z-20 mx-auto max-w-7xl w-full px-6 sm:px-10 lg:px-16 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center min-h-[82vh]">
+      <div className="max-w-4xl w-full mx-auto text-center space-y-8 relative z-10 flex flex-col items-center">
         
-        {/* ── Left Column: Typography & Action Buttons ── */}
-        <div className="lg:col-span-7 flex flex-col justify-center space-y-6 lg:pl-10">
-          
-          {/* AI Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-400/25 backdrop-blur-md w-fit shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-            <span className="text-xs font-semibold tracking-wide text-cyan-300 uppercase">
-              AI User Interface Portfolio
-            </span>
+        {/* Availability Badge */}
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/25 text-xs font-medium text-cyan-300">
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+          <span>Full-Stack &amp; AI Developer • Based in India</span>
+        </div>
+
+        {/* Headline */}
+        <div className="space-y-4 text-center w-full flex flex-col items-center">
+          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-center text-slate-100 dark:text-slate-100 leading-[1.12]">
+            Hi, I’m <span className="bg-gradient-to-r from-cyan-400 via-sky-300 to-purple-400 bg-clip-text text-transparent">Krishan Kant</span>.
+            <br />
+            I build modern web apps &amp; AI tools.
+          </h1>
+
+          {/* Dynamic Role Typewriter */}
+          <div className="flex items-center justify-center gap-2 text-sm sm:text-base font-mono text-cyan-400">
+            <span className="text-slate-400">&gt;</span>
+            <span className="font-semibold">{text}</span>
+            <span className="w-1.5 h-4 bg-cyan-400 animate-pulse inline-block" />
           </div>
 
-          {/* Heading matching reference UI layout */}
-          <div className="space-y-1">
-            <p className="text-lg sm:text-xl font-medium text-slate-300">
-              Creative UI Designer &amp; Developer
-            </p>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight">
-              Krishan Kant
-            </h1>
-            <p className="text-base sm:text-lg font-medium text-purple-300/90 pt-1">
-              Based in India • Building Next-Gen Web &amp; AI Experiences
-            </p>
-          </div>
-
-          {/* Dynamic Typewriter Role */}
-          <div className="flex items-center gap-2 text-sm sm:text-base font-mono text-cyan-400 bg-slate-950/40 border border-white/10 px-4 py-2 rounded-xl w-fit backdrop-blur-md">
-            <span>&gt;</span>
-            <span>{text}</span>
-            <span className="inline-block w-2 h-4 bg-cyan-400 animate-pulse" />
-          </div>
-
-          {/* Bio paragraph */}
-          <p className="max-w-xl text-sm sm:text-base leading-relaxed text-slate-400">
-            Crafting responsive, high-performance web applications and sleek intelligent user interfaces.
-            Combining modern React engineering with dynamic animations, glassmorphism aesthetics, and full-stack capabilities.
+          <p className="max-w-xl mx-auto text-center text-sm sm:text-base text-slate-400 leading-relaxed pt-1">
+            M.C.A. scholar at AKTU creating high-performance React frontends, resilient Node backends, and intelligent heuristic software with a focus on simplicity.
           </p>
+        </div>
 
-          {/* CTA Action Buttons matching reference UI pills */}
-          <div className="flex flex-wrap items-center gap-4 pt-2">
-            {/* Pill 1: Hire Me (frosted glass pill) */}
+        {/* ── Interactive In-Hero AI Widget ── */}
+        <div className="max-w-xl mx-auto rounded-3xl bg-slate-900/65 dark:bg-slate-900/65 border border-white/15 p-5 sm:p-6 shadow-[0_12px_40px_0_rgba(0,0,0,0.4)] backdrop-blur-2xl text-left space-y-3.5">
+          
+          <div className="flex items-center justify-between text-xs text-slate-400 pb-1">
+            <span className="font-medium text-slate-200 flex items-center gap-1.5">
+              <span className="text-cyan-400">✦</span> Ask my AI anything:
+            </span>
+            <span className="text-[11px] text-slate-500 font-mono">Instant Answer</span>
+          </div>
+
+          {/* Search/Prompt Input Form */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleAsk();
+            }}
+            className="flex items-center gap-2"
+          >
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask me anything... (skills, projects, education)"
+              aria-label="Ask AI"
+              className="flex-1 px-4 py-2.5 rounded-xl bg-white/90 dark:bg-black/35 backdrop-blur-md border border-slate-200 dark:border-white/15 focus:border-cyan-500 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-cyan-400/30 transition-all"
+            />
             <button
-              onClick={() => scrollTo("contact")}
-              className="px-7 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/20 hover:border-cyan-400/50 text-white font-semibold text-sm transition-all duration-300 hover:shadow-[0_0_25px_rgba(56,189,248,0.3)] hover:-translate-y-0.5 active:translate-y-0"
+              type="submit"
+              disabled={isLoading}
+              className="px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-semibold text-xs sm:text-sm flex items-center gap-1.5 transition-all shadow-md cursor-pointer disabled:opacity-50"
             >
-              Hire Me
+              {isLoading ? (
+                <span className="animate-spin">✦</span>
+              ) : (
+                <FaPaperPlane className="text-[10px]" />
+              )}
+              <span>Ask</span>
             </button>
+          </form>
 
-            {/* Pill 2: Download CV (purple/magenta gradient pill matching reference) */}
-            <a
-              href="/Krishan-Kant-Resume.pdf"
-              download="Krishan-Kant-Resume.pdf"
-              className="px-7 py-3 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 hover:from-purple-500 hover:via-pink-500 hover:to-indigo-500 text-white font-semibold text-sm shadow-[0_0_30px_rgba(168,85,247,0.4)] hover:shadow-[0_0_40px_rgba(244,114,182,0.6)] transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2"
-            >
-              <span>Download CV</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-              </svg>
-            </a>
-
-            {/* Pill 3: Ask AI Assistant */}
-            {onOpenAI && (
+          {/* Preset Chips */}
+          <div className="flex flex-wrap justify-center gap-1.5 pt-1">
+            {QUICK_PROMPTS.map((item, idx) => (
               <button
-                onClick={onOpenAI}
-                className="px-5 py-3 rounded-full bg-purple-900/30 hover:bg-purple-800/40 border border-purple-500/40 text-cyan-300 font-medium text-xs sm:text-sm backdrop-blur-md transition-all duration-300 hover:border-cyan-400 flex items-center gap-2 shadow-[0_0_20px_rgba(168,85,247,0.25)]"
+                key={idx}
+                type="button"
+                onClick={() => {
+                  setInput(item.q);
+                  handleAsk(item.q);
+                }}
+                className="text-[11px] px-2.5 py-1 rounded-lg bg-white/[0.06] hover:bg-cyan-500/20 border border-white/15 hover:border-cyan-400/50 text-slate-300 hover:text-cyan-200 backdrop-blur-md transition-all cursor-pointer shadow-sm"
               >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4 text-cyan-400">
-                  <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z" />
-                </svg>
-                <span>Ask AI Agent</span>
+                {item.label}
               </button>
-            )}
+            ))}
           </div>
 
-          {/* Quick Metrics / Stats Pills */}
-          <div className="pt-4 grid grid-cols-3 gap-3 max-w-md">
-            <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-md text-center">
-              <span className="block text-xl font-black text-cyan-400">6+</span>
-              <span className="text-[11px] text-slate-400">Featured Projects</span>
+          {/* Instant AI Answer Card */}
+          {response && (
+            <div className="ai-response mt-3 p-4 rounded-2xl bg-black/45 backdrop-blur-xl border border-cyan-400/40 text-xs text-slate-200 space-y-2 shadow-lg animate-fade-in">
+              <div className="flex items-center justify-between text-[11px]">
+                <span className="font-semibold text-cyan-400 flex items-center gap-1">
+                  <span>✦</span> Answer
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleCopy}
+                    className="text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer"
+                    title="Copy Answer"
+                  >
+                    {copied ? <FaCheck className="text-emerald-400" /> : <FaCopy />}
+                    <span>{copied ? "Copied" : "Copy"}</span>
+                  </button>
+                  <button
+                    onClick={onOpenAI}
+                    className="text-purple-300 hover:text-white underline cursor-pointer"
+                  >
+                    Open Full Copilot →
+                  </button>
+                </div>
+              </div>
+              <p className="text-slate-300 leading-relaxed font-sans">{response.answer}</p>
             </div>
-            <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-md text-center">
-              <span className="block text-xl font-black text-purple-400">8+</span>
-              <span className="text-[11px] text-slate-400">Core Tech Stacks</span>
-            </div>
-            <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-md text-center">
-              <span className="block text-xl font-black text-pink-400">100%</span>
-              <span className="text-[11px] text-slate-400">Dedication</span>
-            </div>
-          </div>
+          )}
+
         </div>
 
-        {/* ── Right Column: 3D Iridescent Planetary Orb System matching reference ── */}
-        <div className="lg:col-span-5 relative flex items-center justify-center py-8">
-          <HeroPlanetaryOrb />
+        {/* ── Call To Action Buttons ── */}
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-2" data-testid="hero-cta-group">
+          <button
+            onClick={() => scrollTo("projects")}
+            className="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-semibold text-sm flex items-center gap-2 shadow-md hover:shadow-cyan-500/25 transition-all cursor-pointer"
+          >
+            <span>Explore Projects</span>
+            <FaArrowDown className="text-xs" />
+          </button>
 
-          {/* Floating UI Chips */}
-          <div className="absolute top-4 right-2 sm:right-6 px-3.5 py-2 rounded-2xl bg-slate-900/80 border border-white/10 backdrop-blur-md shadow-lg text-xs font-semibold text-slate-200 flex items-center gap-2 animate-float-slow">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-            <span>React &amp; Vite</span>
-          </div>
+          <button
+            onClick={onOpenID}
+            className="px-5 py-3 rounded-xl bg-white/[0.07] hover:bg-cyan-500/15 border border-white/15 hover:border-cyan-400/50 text-slate-200 hover:text-cyan-300 font-semibold text-sm flex items-center gap-2 backdrop-blur-xl transition-all cursor-pointer group shadow-sm"
+            title="Inspect Official 3D Office ID Badge"
+          >
+            <span className="text-cyan-400 group-hover:scale-110 transition-transform">🪪</span>
+            <span>View ID Pass</span>
+          </button>
 
-          <div className="absolute bottom-6 left-2 sm:left-4 px-3.5 py-2 rounded-2xl bg-slate-900/80 border border-white/10 backdrop-blur-md shadow-lg text-xs font-semibold text-slate-200 flex items-center gap-2 animate-float">
-            <span>✨</span>
-            <span>Intelligent UI Systems</span>
-          </div>
+          <button
+            onClick={onOpenAI}
+            className="px-5 py-3 rounded-xl bg-white/[0.07] hover:bg-white/[0.14] border border-white/15 text-slate-200 font-semibold text-sm flex items-center gap-2 backdrop-blur-xl transition-all cursor-pointer shadow-sm"
+          >
+            <span>Ask AI</span>
+            <span className="text-cyan-400">✦</span>
+          </button>
+
+          <Link
+            to="/resume"
+            className="px-5 py-3 rounded-xl bg-purple-500/15 hover:bg-purple-500/25 border border-purple-400/30 text-purple-300 hover:text-white font-semibold text-sm flex items-center gap-1.5 backdrop-blur-xl transition-all shadow-sm"
+          >
+            <span>Resume</span>
+            <FaExternalLinkAlt className="text-[10px]" />
+          </Link>
         </div>
+
+        {/* ── Quick Stats Grid with 3D Perspective Tilt ── */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto pt-4 text-center">
+          <Tilt3DCard maxTilt={14} className="rounded-2xl">
+            <div className="p-3.5 rounded-2xl bg-slate-900/55 backdrop-blur-xl border border-white/12 hover:border-cyan-400/30 transition-all shadow-sm">
+              <div className="text-xl sm:text-2xl font-bold text-slate-100">6+</div>
+              <div className="text-[11px] text-slate-400">Projects Built</div>
+            </div>
+          </Tilt3DCard>
+
+          <Tilt3DCard maxTilt={14} className="rounded-2xl">
+            <div className="p-3.5 rounded-2xl bg-slate-900/55 backdrop-blur-xl border border-white/12 hover:border-cyan-400/30 transition-all shadow-sm">
+              <div className="text-xl sm:text-2xl font-bold text-cyan-400">React JS</div>
+              <div className="text-[11px] text-slate-400">Modern Frontend</div>
+            </div>
+          </Tilt3DCard>
+
+          <Tilt3DCard maxTilt={14} className="rounded-2xl">
+            <div className="p-3.5 rounded-2xl bg-slate-900/55 backdrop-blur-xl border border-white/12 hover:border-cyan-400/30 transition-all shadow-sm">
+              <div className="text-xl sm:text-2xl font-bold text-purple-400">Node.js</div>
+              <div className="text-[11px] text-slate-400">REST APIs</div>
+            </div>
+          </Tilt3DCard>
+
+          <Tilt3DCard maxTilt={14} className="rounded-2xl">
+            <div className="p-3.5 rounded-2xl bg-slate-900/55 backdrop-blur-xl border border-white/12 hover:border-cyan-400/30 transition-all shadow-sm">
+              <div className="text-xl sm:text-2xl font-bold text-emerald-400">AKTU</div>
+              <div className="text-[11px] text-slate-400">M.C.A. Scholar</div>
+            </div>
+          </Tilt3DCard>
+        </div>
+
       </div>
-
-      {/* Bottom-left Prismatic Crystal Gem */}
-      <div className="absolute bottom-4 left-6 hidden xl:block">
-        <CrystalPrism size={85} />
-      </div>
-
-      {/* Scroll indicator */}
-      <button
-        onClick={() => scrollTo("about")}
-        aria-label="Scroll down to about"
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-400 hover:text-white transition-colors cursor-pointer group"
-      >
-        <span className="text-[11px] uppercase tracking-widest text-slate-500 group-hover:text-cyan-400 transition-colors">
-          Explore
-        </span>
-        <div className="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center p-1">
-          <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce" />
-        </div>
-      </button>
     </section>
   );
 }

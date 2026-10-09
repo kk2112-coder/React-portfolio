@@ -1,37 +1,47 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaInstagram, FaGithub } from "react-icons/fa";
-import ThemeToggle from "./ThemeToggle";
+import { FaInstagram, FaGithub, FaBars, FaTimes, FaFileAlt } from "react-icons/fa";
+import { ThemeToggle } from "./ThemeToggle";
+import Logo from "./Logo";
 
 /**
- * Top Navigation Bar matching the reference portfolio UI
- * Features:
- * - Top-left social handle pills (@kkrajput_002, @kk2112-coder)
- * - Centered glowing monogram logo
- * - Smooth section links: Home, About, Work, Contact
- * - Dark/Light Theme Toggle
- * - AI Assistant launch button & Resume link
+ * Navbar Component: Clean, Minimal, and Highly Interactive
  */
-export default function Navbar({ onOpenAI }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+export default function Navbar({ onOpenAI, onOpenID }) {
   const [scrolled, setScrolled] = useState(false);
-  const mobileMenuRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const navRef = useRef(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Keyboard shortcut listener (Cmd/Ctrl + K) to open AI Assistant
   useEffect(() => {
-    const handler = (e) => {
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        onOpenAI();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onOpenAI]);
+
+  // Close menu on click outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (navRef.current && !navRef.current.contains(e.target)) {
         setMenuOpen(false);
       }
     };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const scrollTo = (id) => {
@@ -47,147 +57,182 @@ export default function Navbar({ onOpenAI }) {
   };
 
   const navLinks = [
-    { id: "home", label: "Home", action: () => scrollTo("home") },
+    { id: "hero", label: "Home", action: () => scrollTo("hero") },
+    { id: "projects", label: "Projects", action: () => scrollTo("projects") },
     { id: "about", label: "About", action: () => scrollTo("about") },
-    { id: "work", label: "Work", action: () => scrollTo("work") },
     { id: "contact", label: "Contact", action: () => scrollTo("contact") },
   ];
 
   return (
     <header
-      ref={mobileMenuRef}
-      className={`fixed left-0 right-0 top-0 z-40 transition-all duration-300 ${
+      ref={navRef}
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         scrolled
-          ? "bg-[#070817]/80 backdrop-blur-xl border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
-          : "bg-transparent"
+          ? "bg-slate-950/70 dark:bg-slate-950/70 backdrop-blur-2xl border-b border-white/15 dark:border-white/15 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] py-3"
+          : "bg-transparent py-4 sm:py-5"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-8 lg:px-12">
-        {/* ── Left: Social Badges matching reference (@Sourasith.design style) ── */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          <a
-            href="https://www.instagram.com/kkrajput_002/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.06] hover:bg-pink-500/20 border border-white/10 hover:border-pink-500/40 text-xs font-medium text-slate-300 hover:text-white transition-all duration-300 group"
-          >
-            <FaInstagram className="text-pink-400 group-hover:scale-110 transition-transform" />
-            <span className="hidden sm:inline">@kkrajput_002</span>
-          </a>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        
+        {/* ── Brand Logo with Availability Status ── */}
+        <a
+          href="#hero"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollTo("hero");
+          }}
+          className="group flex items-center focus:outline-none cursor-pointer h-10"
+          aria-label="My Portfolio - Krishan Kant"
+        >
+          <Logo variant="full" size={38} showStatus={true} />
+        </a>
 
-          <a
-            href="https://github.com/kk2112-coder"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.06] hover:bg-cyan-500/20 border border-white/10 hover:border-cyan-500/40 text-xs font-medium text-slate-300 hover:text-white transition-all duration-300 group"
+        {/* ── Center: Clean Navigation Links ── */}
+        <nav className="hidden md:flex items-center gap-1 px-4 py-0 h-10 rounded-full bg-white/[0.06] dark:bg-slate-900/60 border border-white/15 backdrop-blur-2xl shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.15)]">
+          {navLinks.map((link) => (
+            <a
+              key={link.id}
+              href={`#${link.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                link.action();
+              }}
+              aria-label={link.label}
+              className="px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white hover:bg-white/[0.08] transition-all cursor-pointer h-10 flex items-center"
+            >
+              {link.label}
+            </a>
+          ))}
+          <Link
+            to="/resume"
+            className="px-3.5 py-1.5 rounded-full text-xs font-medium text-purple-300 hover:text-white hover:bg-purple-500/20 transition-all h-10 flex items-center gap-1.5"
+            aria-label="Resume"
           >
-            <FaGithub className="text-cyan-400 group-hover:scale-110 transition-transform" />
-            <span className="hidden sm:inline">@kk2112-coder</span>
-          </a>
-        </div>
+            <FaFileAlt className="text-[10px]" />
+            Resume
+          </Link>
+        </nav>
 
-        {/* ── Center: Monogram Logo & Nav Links ── */}
-        <div className="flex items-center gap-8">
-          {/* Centered Glowing Monogram Emblem */}
+        {/* ── Right: AI Assistant, Theme, and Socials ── */}
+        <div className="flex items-center gap-2.5">
+          
+          {/* Interactive 3D Office ID Badge Trigger */}
           <button
-            onClick={() => scrollTo("home")}
-            className="group relative flex items-center justify-center w-10 h-10 rounded-full border border-purple-400/40 bg-slate-900/80 shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(56,189,248,0.7)] transition-all duration-300 hover:scale-105"
-            aria-label="Home"
+            onClick={onOpenID}
+            type="button"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.06] hover:bg-cyan-500/15 border border-white/15 hover:border-cyan-400/50 text-slate-200 hover:text-cyan-300 font-medium text-xs shadow-sm backdrop-blur-xl transition-all cursor-pointer group"
+            title="Inspect 3D Office ID Badge"
+            aria-label="View 3D Office ID Badge"
           >
-            <div className="absolute inset-0.5 rounded-full bg-gradient-to-tr from-purple-600 via-indigo-600 to-cyan-400 opacity-20 group-hover:opacity-40 transition-opacity" />
-            <span className="relative text-sm font-extrabold tracking-wider bg-gradient-to-r from-cyan-300 via-purple-300 to-pink-300 bg-clip-text text-transparent">
+            <span className="text-cyan-400 group-hover:scale-110 transition-transform">🪪</span>
+            <span>ID Pass</span>
+          </button>
+
+          {/* Interactive AI Button */}
+          <button
+            onClick={onOpenAI}
+            type="button"
+            className="flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/15 via-purple-500/15 to-pink-500/15 hover:from-cyan-500/25 hover:via-purple-500/25 hover:to-pink-500/25 border border-cyan-400/40 hover:border-cyan-400/60 text-slate-100 font-medium text-xs shadow-sm hover:shadow-[0_0_20px_rgba(56,189,248,0.25)] backdrop-blur-xl transition-all cursor-pointer group"
+            title="Ask Krishan's AI Assistant (⌘K)"
+          >
+            <span className="text-cyan-400 group-hover:scale-110 transition-transform">✦</span>
+            <span className="font-semibold">Ask AI</span>
+            <span className="hidden sm:inline-block text-[10px] font-mono px-1 py-0.2 rounded bg-black/40 text-slate-400 border border-white/10">
               KK
             </span>
           </button>
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-6">
-            {navLinks.map((link) => (
-              <button
-                key={link.id}
-                onClick={link.action}
-                className="relative py-1 text-sm font-medium text-slate-300 hover:text-white transition-colors duration-200 group"
-              >
-                {link.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300 rounded-full" />
-              </button>
-            ))}
-          </nav>
-        </div>
+          {/* Theme Toggle */}
+          <ThemeToggle compact />
 
-        {/* ── Right: Theme Toggle, AI Assistant & Resume CTA ── */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Dark / Light Theme Toggle */}
-          <ThemeToggle />
-
-          {onOpenAI && (
-            <button
-              onClick={onOpenAI}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-purple-600/30 to-cyan-600/30 hover:from-purple-600/50 hover:to-cyan-600/50 border border-purple-400/40 text-xs font-semibold text-white shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(56,189,248,0.5)] transition-all duration-300"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5 text-cyan-300 animate-spin" style={{ animationDuration: "8s" }}>
-                <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z" />
-              </svg>
-              <span>AI Assistant</span>
-            </button>
-          )}
-
-          <Link
-            to="/resume"
-            className="hidden sm:inline-flex items-center px-4 py-1.5 rounded-full border border-white/15 bg-white/[0.05] hover:bg-white/[0.12] text-xs font-semibold text-slate-200 hover:text-white transition-all duration-300"
+          {/* GitHub Icon Link */}
+          <a
+            href="https://github.com/kk2112-coder"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.14] border border-white/15 text-slate-300 hover:text-white transition-all text-sm backdrop-blur-md"
+            aria-label="GitHub"
           >
-            Resume
-          </Link>
+            <FaGithub />
+          </a>
 
-          {/* Mobile hamburger */}
+          {/* Instagram Icon Link */}
+          <a
+            href="https://www.instagram.com/kkrajput_002/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.14] border border-white/15 text-slate-300 hover:text-pink-300 transition-all text-sm backdrop-blur-md"
+            aria-label="Instagram"
+          >
+            <FaInstagram />
+          </a>
+
+          {/* Mobile Hamburger Toggle */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition"
-            aria-label="Toggle navigation"
+            className="md:hidden flex items-center justify-center w-8 h-8 rounded-full bg-white/[0.06] border border-white/15 text-slate-300 hover:text-white backdrop-blur-md"
+            aria-label="Menu"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
-              {menuOpen ? (
-                <path d="M18 6 6 18M6 6l12 12" />
-              ) : (
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
+            {menuOpen ? <FaTimes /> : <FaBars />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu */}
+      {/* ── Mobile Menu Dropdown ── */}
       {menuOpen && (
-        <div className="lg:hidden px-6 py-4 bg-[#070817]/95 backdrop-blur-2xl border-b border-white/10 space-y-3">
+        <div className="md:hidden mx-4 mt-3 rounded-2xl bg-slate-950/80 border border-white/15 p-4 shadow-2xl backdrop-blur-2xl space-y-2 animate-fade-in">
           {navLinks.map((link) => (
             <button
               key={link.id}
               onClick={link.action}
-              className="block w-full text-left py-2 text-sm font-medium text-slate-300 hover:text-cyan-400"
+              className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-200 hover:text-white hover:bg-white/[0.06] transition-all"
             >
               {link.label}
             </button>
           ))}
-          <div className="pt-2 border-t border-white/10 flex items-center gap-3">
-            <ThemeToggle />
-            <Link
-              to="/resume"
-              onClick={() => setMenuOpen(false)}
-              className="px-4 py-2 rounded-xl bg-white/10 text-xs font-semibold text-white"
+          <button
+            onClick={() => {
+              setMenuOpen(false);
+              onOpenID();
+            }}
+            className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-cyan-300 hover:bg-white/[0.06] transition-all flex items-center gap-2"
+          >
+            <span>🪪</span>
+            <span>View 3D Office ID Pass</span>
+          </button>
+          <Link
+            to="/resume"
+            onClick={() => setMenuOpen(false)}
+            className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-purple-300 hover:bg-purple-500/10 transition-all"
+          >
+            <FaFileAlt className="text-xs" /> Resume (PDF)
+          </Link>
+          <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
+            <a
+              href="https://github.com/kk2112-coder"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white"
             >
-              View Resume
-            </Link>
-            {onOpenAI && (
-              <button
-                onClick={() => {
-                  setMenuOpen(false);
-                  onOpenAI();
-                }}
-                className="px-4 py-2 rounded-xl bg-purple-600/40 border border-purple-400/40 text-xs font-semibold text-cyan-300"
-              >
-                AI Assistant
-              </button>
-            )}
+              GitHub
+            </a>
+            <a
+              href="https://www.instagram.com/kkrajput_002/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-pink-300"
+            >
+              Instagram
+            </a>
+            <button
+              onClick={() => {
+                setMenuOpen(false);
+                onOpenAI();
+              }}
+              className="text-cyan-400 font-semibold"
+            >
+              ✦ Ask AI
+            </button>
           </div>
         </div>
       )}

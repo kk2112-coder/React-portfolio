@@ -1,379 +1,835 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import {
+  FaExternalLinkAlt,
+  FaGithub,
+  FaInfoCircle,
+  FaTimes,
+  FaCheck,
+  FaChevronLeft,
+  FaChevronRight,
+  FaThLarge,
+  FaSlidersH,
+  FaShieldAlt,
+  FaBolt,
+  FaMobileAlt,
+  FaCodeBranch,
+} from "react-icons/fa";
+
 import image1 from "./Images/NowFloat.png";
 import image2 from "./Images/WomanSecurity.png";
 import image3 from "./Images/PortFolio.png";
 import image4 from "./Images/PhishingDetector.png";
 import image5 from "./Images/Phishing-DetectorURL.jpg";
 import image6 from "./Images/LifeOs.jpg";
-import { IridescentOrb, CrystalPrism } from "./IridescentSpheres";
+import Tilt3DCard from "./Tilt3DCard";
 
 const PROJECTS = [
   {
     id: 1,
+    sysId: "SYS.01",
     title: "Phishing Website Detector",
-    tagline: "AI & Full-Stack Security Engine",
-    category: "AI & Full Stack",
-    description:
-      "A comprehensive intelligent security platform that evaluates URLs for phishing indicators and cyber threats using a Node.js API backend and JSON heuristic analysis.",
+    tagline: "Heuristic Threat & Deceptive URL Scanner",
+    category: "AI & Cyber Defense",
+    badge: "Flagship AI Project",
+    status: "Live Engine",
+    metric: "<75ms Response",
+    metricLabel: "Classification Speed",
     image: image4,
     live: "https://phishguard00.netlify.app/",
     code: "https://github.com/kk2112-coder",
-    technologies: ["React", "Node.js", "Express.js", "Threat Analysis", "Tailwind CSS"],
-    badge: "Featured AI Project",
+    description:
+      "A full-stack cybersecurity web tool that scans URLs for phishing signatures, deceptive subdomains, and SSL anomalies via a Node.js API and heuristic analysis.",
+    architecture: {
+      challenge:
+        "Phishing attacks use deceptive homoglyphs, multiple nested subdomains, and obfuscated redirects that bypass static rule engines.",
+      solution:
+        "Built a multi-heuristic classifier scanning lexical entropy, character distributions, domain reputation, and SSL signatures with Node.js.",
+    },
+    highlights: [
+      "Real-time URL lexical feature parsing",
+      "Node.js & Express REST API backend",
+      "Sub-75ms response classification",
+      "Clean cyber defense user interface",
+    ],
+    technologies: ["React", "Node.js", "Express.js", "Heuristic Logic", "Tailwind CSS"],
   },
   {
     id: 2,
+    sysId: "SYS.02",
     title: "LifeOS Mobile",
     tagline: "Futuristic Personal Intelligence Operating System",
-    category: "Mobile / React Native",
-    description:
-      "A futuristic React Native mobile app integrating task intelligence, goal architecture, analytics, and intelligent insights into a unified personal dashboard.",
+    category: "Mobile Apps",
+    badge: "React Native",
+    status: "Expo Mobile",
+    metric: "Offline-First",
+    metricLabel: "Local State Cache",
     image: image6,
     live: "/",
     code: "https://github.com/kk2112-coder",
-    technologies: ["React Native", "Expo", "Node.js", "Mobile UX", "APIs"],
-    badge: "Mobile OS",
+    description:
+      "A cross-platform mobile application uniting daily focus architecture, routines, habit tracking, and personal analytics into a clean mobile operating system.",
+    architecture: {
+      challenge:
+        "Productivity apps are often overly complex or require constant internet connectivity, disrupting workflow in low-connectivity areas.",
+      solution:
+        "Architected an offline-first mobile engine in React Native & Expo with reactive storage and low-friction gestural routines.",
+    },
+    highlights: [
+      "Cross-platform React Native & Expo build",
+      "Offline-first local state persistence",
+      "Interactive gestural widgets",
+      "Minimalist distraction-free dashboard",
+    ],
+    technologies: ["React Native", "Expo", "JavaScript (ES6+)", "Mobile UX", "Async Storage"],
   },
   {
     id: 3,
+    sysId: "SYS.03",
     title: "AI User Interface Portfolio",
-    tagline: "Cosmic Glassmorphic Web Architecture",
-    category: "UI Designs",
-    description:
-      "A state-of-the-art developer portfolio featuring 3D iridescent floating spheres, planetary orbits, interactive AI assistant, and a frosted glass interface.",
+    tagline: "Next-Gen Web Architecture with AI Copilot",
+    category: "Web Apps",
+    badge: "This Website",
+    status: "Production UI",
+    metric: "Sub-50ms",
+    metricLabel: "Client Interaction",
     image: image3,
     live: "/",
     code: "https://github.com/kk2112-coder",
-    technologies: ["React", "Tailwind CSS", "Vite", "3D Motion", "Firebase"],
-    badge: "This Project",
+    description:
+      "A modern, highly interactive personal portfolio featuring an interactive in-hero AI Q&A prompt box, dark/light theme switching, and smooth glassmorphism.",
+    architecture: {
+      challenge:
+        "Standard developer portfolios feel static and resume-like without interactive proof of engineering mastery.",
+      solution:
+        "Engineered an interactive copilot modal, in-hero natural query answers, 3D interactive office ID card, and fluid glassmorphism.",
+    },
+    highlights: [
+      "React 19 & Tailwind CSS v4",
+      "Interactive in-hero AI prompt widget",
+      "Full conversational AI Copilot (⌘K)",
+      "Accessible dark and light themes with persistence",
+    ],
+    technologies: ["React 19", "Tailwind CSS", "Vite", "AI Assistant", "CSS Motion"],
   },
   {
     id: 4,
+    sysId: "SYS.04",
     title: "Women Security App",
-    tagline: "Emergency Safety & Real-Time Rescue Portal",
+    tagline: "Emergency Safety & Real-Time SOS Rescue Network",
     category: "Web Apps",
-    description:
-      "A responsive safety portal engineered for rapid emergency alerting, location transmission, and instant police/guardian communication.",
+    badge: "Social Impact",
+    status: "Live Portal",
+    metric: "Instant Dispatch",
+    metricLabel: "Emergency Trigger",
     image: image2,
     live: "https://womensecurity.netlify.app/",
     code: "https://github.com/kk2112-coder",
-    technologies: ["HTML5", "CSS3", "JavaScript", "Security Protocols"],
-    badge: "Public Good",
+    description:
+      "A safety-first responsive web portal designed for rapid emergency alerting, location transmission, and instant police/guardian communication.",
+    architecture: {
+      challenge:
+        "Emergency alerting tools fail if they require multiple taps, complex navigation, or heavy client bundles during crisis situations.",
+      solution:
+        "Implemented high-contrast one-tap emergency triggers and direct GPS coordinate forwarding to guardian networks.",
+    },
+    highlights: [
+      "Instant SOS emergency dispatch trigger",
+      "Real-time location coordinate transmission",
+      "High-contrast, one-touch mobile interface",
+      "Zero-latency lightweight frontend",
+    ],
+    technologies: ["HTML5", "CSS3", "JavaScript", "Security Protocols", "Netlify"],
   },
   {
     id: 5,
+    sysId: "SYS.05",
     title: "NowFloat Experience",
-    tagline: "Interactive Floating Web Architecture",
+    tagline: "Kinetic Interactive Floating Web Architecture",
     category: "Web Apps",
-    description:
-      "An interactive web platform designed with smooth kinetic animations, fluid responsive grids, and clean component interactions.",
+    badge: "Interactive UI",
+    status: "Live Web",
+    metric: "60 FPS",
+    metricLabel: "GPU Physics",
     image: image1,
     live: "https://nowfloat1.netlify.app/",
     code: "https://github.com/kk2112-coder",
-    technologies: ["HTML5", "CSS3", "JavaScript", "Interactive UI"],
+    description:
+      "An interactive web platform featuring smooth physics-driven floating animations, kinetic hover interactions, and responsive card layouts.",
+    architecture: {
+      challenge:
+        "Complex floating animations often trigger layout thrashing and drop frames on non-desktop hardware.",
+      solution:
+        "Used CSS transforms and requestAnimationFrame timing to guarantee butter-smooth 60fps rendering without CPU spikes.",
+    },
+    highlights: [
+      "Hardware-accelerated CSS animations",
+      "Smooth kinetic hover effects",
+      "Clean fluid typography and spacing",
+      "Full cross-browser responsiveness",
+    ],
+    technologies: ["HTML5", "CSS3", "JavaScript", "Interactive Motion"],
   },
   {
     id: 6,
-    title: "Phishing Detector App (Mobile)",
-    tagline: "Cross-Platform Threat Scanner",
-    category: "Mobile / React Native",
-    description:
-      "Mobile threat scanning client developed with React Native and Expo for real-time mobile URL verification.",
+    sysId: "SYS.06",
+    title: "Phishing Detector Mobile",
+    tagline: "Handheld Threat Scanner for Mobile Browsing",
+    category: "Mobile Apps",
+    badge: "Mobile Security",
+    status: "Mobile Native",
+    metric: "Portable",
+    metricLabel: "Handheld Defense",
     image: image5,
     live: "/",
     code: "https://github.com/kk2112-coder",
-    technologies: ["React Native", "Expo", "Mobile Security", "REST API"],
+    description:
+      "A handheld mobile threat scanner designed to evaluate deceptive SMS links and phishing URLs on Android and iOS devices.",
+    architecture: {
+      challenge:
+        "Mobile SMS phishing ('smishing') is increasing exponentially while native mobile browsers have limited inspection telemetry.",
+      solution:
+        "Built a mobile companion app running cross-platform on Android and iOS to quickly parse SMS payloads and evaluate risk scores.",
+    },
+    highlights: [
+      "Built with React Native & Expo",
+      "Fast cloud API integration",
+      "Visual threat indicator cards",
+      "Minimalist mobile layout",
+    ],
+    technologies: ["React Native", "Expo", "REST API", "Mobile Security"],
   },
 ];
 
-const CATEGORIES = ["All", "UI Designs", "AI & Full Stack", "Mobile / React Native", "Web Apps"];
+const CATEGORIES = ["All", "AI & Cyber Defense", "Mobile Apps", "Web Apps"];
 
 export default function Work() {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [activeModalProject, setActiveModalProject] = useState(null);
+  const [viewMode, setViewMode] = useState("gallery"); // "gallery" | "grid"
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isAutoPlay, setIsAutoPlay] = useState(true);
+
+  const galleryRef = useRef(null);
 
   const filteredProjects =
     activeCategory === "All"
       ? PROJECTS
       : PROJECTS.filter((p) => p.category === activeCategory);
 
-  const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % filteredProjects.length);
+  // Close modal on escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setActiveModalProject(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Update current slide index on horizontal scroll
+  const handleScroll = () => {
+    if (!galleryRef.current) return;
+    const { scrollLeft, clientWidth } = galleryRef.current;
+    if (clientWidth > 0) {
+      const idx = Math.round(scrollLeft / (clientWidth * 0.75));
+      setCurrentSlide(Math.min(Math.max(idx, 0), filteredProjects.length - 1));
+    }
   };
 
-  const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + filteredProjects.length) % filteredProjects.length);
+  const scrollGallery = (direction) => {
+    if (!galleryRef.current) return;
+    const cardWidth = 420;
+    const scrollAmount = direction === "left" ? -cardWidth : cardWidth;
+    galleryRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
   };
 
-  // Safe active project
-  const currentProject = filteredProjects[activeIndex] || filteredProjects[0];
-  const prevProject =
-    filteredProjects[(activeIndex - 1 + filteredProjects.length) % filteredProjects.length];
-  const nextProject = filteredProjects[(activeIndex + 1) % filteredProjects.length];
+  const scrollToSlide = (index) => {
+    if (!galleryRef.current) return;
+    const cardWidth = 420;
+    galleryRef.current.scrollTo({ left: index * cardWidth, behavior: "smooth" });
+    setCurrentSlide(index);
+  };
+
+  const handleCategorySelect = (cat) => {
+    setActiveCategory(cat);
+    setCurrentSlide(0);
+    if (galleryRef.current) {
+      galleryRef.current.scrollTo({ left: 0, behavior: "smooth" });
+    }
+  };
+
+  // Auto horizontally scroll projects showcase
+  useEffect(() => {
+    if (viewMode !== "gallery" || isHovered || !isAutoPlay) return;
+
+    const interval = setInterval(() => {
+      if (!galleryRef.current) return;
+      const { scrollLeft, scrollWidth, clientWidth } = galleryRef.current;
+      const maxScroll = scrollWidth - clientWidth;
+
+      if (scrollLeft >= maxScroll - 30) {
+        // Loop back smoothly to the beginning
+        galleryRef.current.scrollTo({ left: 0, behavior: "smooth" });
+        setCurrentSlide(0);
+      } else {
+        const itemWidth = galleryRef.current.firstElementChild?.offsetWidth || 420;
+        const gap = 24; // gap-6
+        galleryRef.current.scrollBy({ left: itemWidth + gap, behavior: "smooth" });
+      }
+    }, 3800);
+
+    return () => clearInterval(interval);
+  }, [viewMode, isHovered, isAutoPlay, filteredProjects.length]);
 
   return (
-    <section
-      id="work"
-      className="relative min-h-screen py-24 px-5 sm:px-10 lg:px-16 overflow-hidden cosmic-nebula flex flex-col justify-center"
-    >
-      {/* Background accents */}
-      <div className="absolute top-20 left-10 hidden xl:block opacity-70">
-        <IridescentOrb size={70} glowColor="pink" />
-      </div>
-      <div className="absolute bottom-10 right-10 hidden xl:block opacity-60">
-        <CrystalPrism size={90} />
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-7xl w-full">
-        {/* Centered Heading matching reference UI ("My recent work") */}
-        <div className="text-center mb-10 space-y-2">
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            My recent work
+    <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto overflow-hidden">
+      
+      {/* ── Section Header ── */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-white/10">
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-xs font-medium text-cyan-300">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
+            </span>
+            <span>Interactive System Gallery</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-100 tracking-tight">
+            Projects &amp; Systems.
           </h2>
-          <p className="max-w-md mx-auto text-xs sm:text-sm text-slate-400">
-            Showcase of web applications, AI tools, mobile designs, and responsive UI mockups.
+          <p className="text-sm sm:text-base text-slate-400 max-w-xl">
+            A curated horizontal showcase of AI cybersecurity engines, mobile intelligence apps, and interactive web architecture.
           </p>
         </div>
 
-        {/* Category Filter Pills matching reference UI */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => {
-                setActiveCategory(cat);
-                setActiveIndex(0);
-              }}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 ${
-                activeCategory === cat
-                  ? "bg-white text-slate-900 shadow-[0_0_20px_rgba(255,255,255,0.6)] scale-105"
-                  : "bg-white/[0.05] hover:bg-white/[0.12] text-slate-300 border border-white/10"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* ── 3D Showcase Carousel matching Reference UI ── */}
-        <div className="relative flex items-center justify-center max-w-5xl mx-auto my-8">
-          
-          {/* Ambient Glow behind carousel */}
-          <div className="absolute w-[600px] h-[300px] rounded-full bg-gradient-to-r from-purple-600/20 via-cyan-500/20 to-pink-500/20 blur-[80px] pointer-events-none" />
-
-          {/* Left Flanking Card (Mockup) */}
-          {filteredProjects.length > 1 && (
-            <div
-              onClick={handlePrev}
-              className="hidden md:block w-64 lg:w-72 h-80 rounded-2xl overflow-hidden glass-card opacity-50 hover:opacity-80 transform -translate-x-12 scale-90 -rotate-3 transition-all duration-500 cursor-pointer shadow-xl select-none"
-            >
-              <div className="h-44 w-full bg-slate-950 overflow-hidden">
-                <img
-                  src={prevProject?.image}
-                  alt={prevProject?.title}
-                  className="w-full h-full object-cover object-top opacity-70"
-                />
-              </div>
-              <div className="p-4 bg-slate-900/80">
-                <span className="text-[11px] text-cyan-400 font-medium">Mockup</span>
-                <h4 className="text-sm font-bold text-white truncate">{prevProject?.title}</h4>
-                <p className="text-xs text-slate-400 truncate mt-1">{prevProject?.tagline}</p>
-              </div>
-            </div>
-          )}
-
-          {/* Center Elevated Active Card ("UI Designs" / Active Project) */}
-          {currentProject && (
-            <div className="relative z-20 w-full max-w-md sm:max-w-lg rounded-3xl overflow-hidden glass-panel border border-cyan-400/40 shadow-[0_20px_60px_rgba(56,189,248,0.25)] transform scale-105 transition-all duration-500">
-              {/* Card Image Banner with Mockup Frame */}
-              <div className="relative h-56 sm:h-64 w-full bg-slate-950 overflow-hidden group">
-                <img
-                  src={currentProject.image}
-                  alt={currentProject.title}
-                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#070817] via-transparent to-transparent opacity-80" />
-
-                {/* Badge */}
-                {currentProject.badge && (
-                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/90 text-slate-950 shadow-md backdrop-blur-md">
-                    {currentProject.badge}
-                  </span>
-                )}
-
-                <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold bg-purple-900/80 border border-purple-400/30 text-purple-200 backdrop-blur-md">
-                  {currentProject.category}
-                </span>
-              </div>
-
-              {/* Card Details */}
-              <div className="p-6 sm:p-7 space-y-4">
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-extrabold text-white">
-                    {currentProject.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm font-medium text-cyan-400 mt-0.5">
-                    {currentProject.tagline}
-                  </p>
-                </div>
-
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed line-clamp-3">
-                  {currentProject.description}
-                </p>
-
-                {/* Tech Badges */}
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {currentProject.technologies.map((tech, i) => (
-                    <span
-                      key={i}
-                      className="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-white/[0.06] text-slate-300 border border-white/10"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex items-center gap-3 pt-2">
-                  {currentProject.live && currentProject.live !== "/" ? (
-                    <a
-                      href={currentProject.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs sm:text-sm text-center shadow-[0_0_20px_rgba(56,189,248,0.3)] transition-all flex items-center justify-center gap-1.5"
-                    >
-                      <span>Live Demo</span>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
-                      </svg>
-                    </a>
-                  ) : (
-                    <button
-                      onClick={() => setSelectedProject(currentProject)}
-                      className="flex-1 py-2.5 rounded-xl bg-purple-600/30 hover:bg-purple-600/50 border border-purple-400/40 text-purple-200 font-semibold text-xs sm:text-sm text-center transition-all"
-                    >
-                      View Details
-                    </button>
-                  )}
-
-                  <a
-                    href={currentProject.code}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 text-white font-medium text-xs sm:text-sm transition-all flex items-center gap-1.5"
-                  >
-                    <span>Code</span>
-                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
-                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Right Flanking Card (Mockup) */}
-          {filteredProjects.length > 2 && (
-            <div
-              onClick={handleNext}
-              className="hidden md:block w-64 lg:w-72 h-80 rounded-2xl overflow-hidden glass-card opacity-50 hover:opacity-80 transform translate-x-12 scale-90 rotate-3 transition-all duration-500 cursor-pointer shadow-xl select-none"
-            >
-              <div className="h-44 w-full bg-slate-950 overflow-hidden">
-                <img
-                  src={nextProject?.image}
-                  alt={nextProject?.title}
-                  className="w-full h-full object-cover object-top opacity-70"
-                />
-              </div>
-              <div className="p-4 bg-slate-900/80">
-                <span className="text-[11px] text-purple-400 font-medium">Mockup</span>
-                <h4 className="text-sm font-bold text-white truncate">{nextProject?.title}</h4>
-                <p className="text-xs text-slate-400 truncate mt-1">{nextProject?.tagline}</p>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Carousel Navigation Arrows & Dots */}
-        <div className="flex items-center justify-center gap-4 mt-6">
-          <button
-            onClick={handlePrev}
-            className="w-10 h-10 rounded-full bg-white/[0.08] hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all"
-            aria-label="Previous Project"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
-
-          {/* Indicators */}
-          <div className="flex items-center gap-2">
-            {filteredProjects.map((_, i) => (
+        {/* Controls Bar: Category Filters & View Mode */}
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Category Filter Pills */}
+          <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-white/[0.06] border border-white/15 backdrop-blur-2xl shadow-sm">
+            {CATEGORIES.map((cat) => (
               <button
-                key={i}
-                onClick={() => setActiveIndex(i)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  activeIndex === i ? "w-6 bg-cyan-400 shadow-[0_0_10px_#38bdf8]" : "w-2 bg-slate-700"
+                key={cat}
+                onClick={() => handleCategorySelect(cat)}
+                aria-label={cat}
+                className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                  activeCategory === cat
+                    ? "bg-cyan-500 text-black font-semibold shadow-md"
+                    : "text-slate-400 hover:text-white"
                 }`}
-                aria-label={`Go to slide ${i + 1}`}
-              />
+              >
+                {cat}
+              </button>
             ))}
           </div>
 
-          <button
-            onClick={handleNext}
-            className="w-10 h-10 rounded-full bg-white/[0.08] hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all"
-            aria-label="Next Project"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5">
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
+          {/* View Mode Switcher (Gallery Reel vs Grid Matrix) */}
+          <div className="flex items-center gap-1 p-1.5 rounded-2xl bg-white/[0.06] border border-white/15 backdrop-blur-2xl shadow-sm">
+            <button
+              onClick={() => setViewMode("gallery")}
+              className={`p-1.5 sm:px-2.5 sm:py-1 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer ${
+                viewMode === "gallery"
+                  ? "bg-purple-600 text-white shadow-md"
+                  : "text-slate-400 hover:text-white"
+              }`}
+              title="Horizontal Gallery Reel"
+              aria-label="Gallery View"
+            >
+              <FaSlidersH className="text-xs" />
+              <span className="hidden sm:inline">Gallery</span>
+            </button>
+            <button
+              onClick={() => setViewMode("grid")}
+              className={`p-1.5 sm:px-2.5 sm:py-1 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer ${
+                viewMode === "grid"
+                  ? "bg-purple-600 text-white shadow-md"
+                  : "text-slate-400 hover:text-white"
+              }`}
+              title="Standard Grid Matrix"
+              aria-label="Grid View"
+            >
+              <FaThLarge className="text-xs" />
+              <span className="hidden sm:inline">Grid</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Project Details Modal */}
-      {selectedProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
-          <div className="relative w-full max-w-2xl rounded-3xl glass-panel p-6 sm:p-8 space-y-4 max-h-[90vh] overflow-y-auto">
+      {/* ── Gallery Reel Navigation Header (Only in Gallery Mode) ── */}
+      {viewMode === "gallery" && (
+        <div className="pt-6 pb-2 flex items-center justify-between">
+          <div className="flex items-center gap-2.5 text-xs font-mono text-slate-400">
+            <span className="px-2.5 py-1 rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-400/25 font-semibold backdrop-blur-md">
+              INDEX [{String(currentSlide + 1).padStart(2, "0")} / {String(filteredProjects.length).padStart(2, "0")}]
+            </span>
             <button
-              onClick={() => setSelectedProject(null)}
-              className="absolute top-5 right-5 p-1.5 rounded-lg text-slate-400 hover:text-white bg-white/5"
+              type="button"
+              onClick={() => setIsAutoPlay((prev) => !prev)}
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-mono border transition-all cursor-pointer ${
+                isAutoPlay
+                  ? "bg-cyan-500/10 text-cyan-300 border-cyan-400/30 hover:bg-cyan-500/20"
+                  : "bg-slate-800/50 text-slate-400 border-white/10 hover:text-white"
+              }`}
+              title={
+                isAutoPlay
+                  ? "Auto-scrolling active (hover card to pause). Click to turn off."
+                  : "Auto-scroll paused. Click to turn on."
+              }
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  isAutoPlay
+                    ? isHovered
+                      ? "bg-amber-400"
+                      : "bg-emerald-400 animate-pulse"
+                    : "bg-slate-500"
+                }`}
+              />
+              <span>{isAutoPlay ? (isHovered ? "Auto: Paused" : "Auto: On") : "Auto: Off"}</span>
             </button>
+            <span className="hidden md:inline text-slate-500">
+              Hover to pause • Smooth horizontal glide
+            </span>
+          </div>
 
-            <img
-              src={selectedProject.image}
-              alt={selectedProject.title}
-              className="w-full h-64 object-cover rounded-2xl"
-            />
-            <h3 className="text-2xl font-bold text-white">{selectedProject.title}</h3>
-            <p className="text-sm text-slate-300 leading-relaxed">{selectedProject.description}</p>
-            <div className="flex flex-wrap gap-2 pt-2">
-              {selectedProject.technologies.map((t, idx) => (
-                <span key={idx} className="px-3 py-1 rounded-full text-xs bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">
-                  {t}
-                </span>
-              ))}
-            </div>
-            <div className="pt-4 flex gap-3">
-              <a
-                href={selectedProject.code}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-5 py-2.5 rounded-xl bg-purple-600 text-white text-xs font-semibold"
-              >
-                GitHub Repository
-              </a>
-            </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => scrollGallery("left")}
+              className="p-2 sm:px-3 sm:py-2 rounded-xl bg-slate-900/60 backdrop-blur-xl border border-white/15 hover:border-cyan-400/50 text-slate-300 hover:text-cyan-300 transition-all cursor-pointer shadow-md hover:scale-105 active:scale-95"
+              title="Previous Project"
+              aria-label="Previous Project"
+            >
+              <FaChevronLeft className="text-xs" />
+            </button>
+            <button
+              onClick={() => scrollGallery("right")}
+              className="p-2 sm:px-3 sm:py-2 rounded-xl bg-slate-900/60 backdrop-blur-xl border border-white/15 hover:border-cyan-400/50 text-slate-300 hover:text-cyan-300 transition-all cursor-pointer shadow-md hover:scale-105 active:scale-95"
+              title="Next Project"
+              aria-label="Next Project"
+            >
+              <FaChevronRight className="text-xs" />
+            </button>
           </div>
         </div>
       )}
+
+      {/* ── Main Showcase Display: Gallery or Grid ── */}
+      <div className="pt-4">
+        {viewMode === "gallery" ? (
+          /* ── Horizontal Gallery Reel Mode ── */
+          <div className="relative">
+            <div
+              ref={galleryRef}
+              onScroll={handleScroll}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              onTouchStart={() => setIsHovered(true)}
+              onTouchEnd={() => setIsHovered(false)}
+              className="flex gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scroll-smooth no-scrollbar"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
+              {filteredProjects.map((project, idx) => (
+                <Tilt3DCard
+                  key={project.id}
+                  maxTilt={10}
+                  className="project-card group shrink-0 w-[300px] sm:w-[380px] md:w-[420px] snap-center rounded-3xl bg-slate-900/65 backdrop-blur-2xl border border-white/15 hover:border-cyan-400/50 overflow-hidden shadow-[0_12px_40px_0_rgba(0,0,0,0.35)] hover:shadow-[0_18px_50px_0_rgba(56,189,248,0.22)] transition-all duration-300 flex flex-col justify-between"
+                >
+                  <div>
+                    {/* Top Telemetry Strip */}
+                    <div className="px-5 py-3 border-b border-white/[0.08] bg-slate-950/40 backdrop-blur-md flex items-center justify-between text-[11px] font-mono">
+                      <div className="flex items-center gap-2 text-cyan-400 font-bold tracking-wider">
+                        <span>{project.sysId}</span>
+                        <span className="text-slate-600">//</span>
+                        <span className="text-slate-300 uppercase truncate max-w-[140px]">
+                          {project.category}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-emerald-400">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        <span className="text-[10px] uppercase font-semibold">{project.status}</span>
+                      </div>
+                    </div>
+
+                    {/* Cinematic Media Window */}
+                    <div className="relative h-52 overflow-hidden bg-slate-950">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60" />
+                      
+                      {/* Floating Badge */}
+                      <div className="absolute top-3 left-3">
+                        <span className="px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[11px] font-semibold text-cyan-300 shadow-md">
+                          {project.badge}
+                        </span>
+                      </div>
+
+                      {/* Micro Metric Badge */}
+                      <div className="absolute bottom-3 right-3">
+                        <div className="px-2.5 py-1 rounded-lg bg-slate-900/90 backdrop-blur-md border border-cyan-400/30 text-right">
+                          <span className="block text-[9px] font-mono text-slate-400 leading-none">
+                            {project.metricLabel}
+                          </span>
+                          <span className="text-xs font-mono font-bold text-cyan-300">
+                            {project.metric}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Card Body */}
+                    <div className="p-5 space-y-3">
+                      <div>
+                        <h3 className="text-lg font-bold text-slate-100 group-hover:text-cyan-300 transition-colors">
+                          {project.title}
+                        </h3>
+                        <p className="text-xs text-cyan-400/80 font-medium mt-0.5">
+                          {project.tagline}
+                        </p>
+                      </div>
+
+                      <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                        {project.description}
+                      </p>
+
+                      {/* Tech Chips */}
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {project.technologies.slice(0, 3).map((tech, i) => (
+                          <span
+                            key={i}
+                            className="text-[10px] px-2 py-0.5 rounded-md bg-white/[0.05] text-slate-300 border border-white/10 font-mono"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                        {project.technologies.length > 3 && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-white/[0.05] text-slate-500 font-mono">
+                            +{project.technologies.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bottom Action Footer */}
+                  <div className="p-5 pt-3 border-t border-white/[0.08] bg-slate-950/40 backdrop-blur-md flex items-center justify-between text-xs">
+                    <button
+                      onClick={() => setActiveModalProject(project)}
+                      className="text-cyan-400 hover:text-cyan-300 font-medium flex items-center gap-1.5 cursor-pointer py-1.5 transition-colors group/btn"
+                    >
+                      <FaInfoCircle className="text-xs group-hover/btn:scale-110 transition-transform" />
+                      <span>Quick Details</span>
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                      <a
+                        href={project.code}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.12] text-slate-300 hover:text-white border border-white/10 transition-all"
+                        title="Source Code"
+                        aria-label={`Source Code for ${project.title}`}
+                      >
+                        <FaGithub className="text-sm" />
+                      </a>
+
+                      {project.live && project.live !== "/" ? (
+                        <a
+                          href={project.live}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black font-semibold text-xs flex items-center gap-1.5 shadow-md transition-all active:scale-95"
+                        >
+                          <span>Live Demo</span>
+                          <FaExternalLinkAlt className="text-[9px]" />
+                        </a>
+                      ) : (
+                        <button
+                          onClick={() => setActiveModalProject(project)}
+                          className="px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-slate-300 hover:text-white border border-white/10 text-xs font-medium cursor-pointer transition-all"
+                        >
+                          Details
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </Tilt3DCard>
+              ))}
+            </div>
+
+            {/* Pagination Indicators */}
+            <div className="flex items-center justify-center gap-2 pt-2">
+              {filteredProjects.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => scrollToSlide(i)}
+                  className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                    currentSlide === i
+                      ? "w-8 bg-cyan-400"
+                      : "w-2 bg-white/20 hover:bg-white/40"
+                  }`}
+                  aria-label={`Jump to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          /* ── Standard Grid Matrix Mode ── */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProjects.map((project) => (
+              <Tilt3DCard
+                key={project.id}
+                maxTilt={12}
+                className="project-card group rounded-3xl bg-slate-900/65 backdrop-blur-2xl border border-white/15 hover:border-cyan-400/50 overflow-hidden shadow-[0_10px_35px_0_rgba(0,0,0,0.3)] hover:shadow-[0_16px_45px_0_rgba(56,189,248,0.2)] transition-all duration-300 flex flex-col justify-between"
+              >
+                <div>
+                  {/* Top System Bar */}
+                  <div className="px-4 py-2 border-b border-white/[0.06] bg-slate-950/40 flex items-center justify-between text-[10px] font-mono text-slate-400">
+                    <span className="text-cyan-400 font-bold">{project.sysId}</span>
+                    <span className="text-emerald-400 uppercase font-semibold">● {project.status}</span>
+                  </div>
+
+                  {/* Project Image */}
+                  <div className="relative h-48 overflow-hidden bg-slate-950">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-3 left-3">
+                      <span className="px-2.5 py-0.5 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-[11px] font-medium text-cyan-300">
+                        {project.badge}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Body Content */}
+                  <div className="p-5 space-y-2.5">
+                    <div className="text-[11px] font-mono text-purple-400 uppercase tracking-wider">
+                      {project.category}
+                    </div>
+
+                    <h3 className="text-lg font-bold text-slate-100 group-hover:text-cyan-300 transition-colors">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                      {project.description}
+                    </p>
+
+                    {/* Tech Chips */}
+                    <div className="flex flex-wrap gap-1.5 pt-2">
+                      {project.technologies.slice(0, 3).map((tech, i) => (
+                        <span
+                          key={i}
+                          className="text-[10px] px-2 py-0.5 rounded bg-white/[0.05] text-slate-300 border border-white/10 font-mono"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {project.technologies.length > 3 && (
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.05] text-slate-500 font-mono">
+                          +{project.technologies.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Actions */}
+                <div className="p-5 pt-0 border-t border-white/[0.06] mt-3 flex items-center justify-between text-xs">
+                  <button
+                    onClick={() => setActiveModalProject(project)}
+                    className="text-cyan-400 hover:text-cyan-300 font-medium flex items-center gap-1 cursor-pointer py-2"
+                  >
+                    <FaInfoCircle className="text-xs" />
+                    <span>Quick Details</span>
+                  </button>
+
+                  <div className="flex items-center gap-2">
+                    <a
+                      href={project.code}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-lg bg-white/[0.05] hover:bg-white/[0.12] text-slate-300 hover:text-white transition-all"
+                      title="Source Code"
+                    >
+                      <FaGithub className="text-sm" />
+                    </a>
+
+                    {project.live && project.live !== "/" ? (
+                      <a
+                        href={project.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-black font-semibold text-xs flex items-center gap-1 transition-all"
+                      >
+                        <span>Live Demo</span>
+                        <FaExternalLinkAlt className="text-[9px]" />
+                      </a>
+                    ) : (
+                      <button
+                        onClick={() => setActiveModalProject(project)}
+                        className="px-3 py-1.5 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] text-slate-300 text-xs font-medium cursor-pointer"
+                      >
+                        Details
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </Tilt3DCard>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* ── Interactive Project Details Modal ── */}
+      {activeModalProject && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xl animate-fade-in">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Project Details"
+            className="relative w-full max-w-2xl rounded-3xl bg-slate-900/90 backdrop-blur-2xl border border-white/20 p-6 sm:p-7 shadow-[0_25px_60px_0_rgba(0,0,0,0.65)] space-y-5 max-h-[90vh] overflow-y-auto"
+          >
+            {/* Modal Header */}
+            <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-4">
+              <div>
+                <div className="flex items-center gap-2 font-mono text-xs">
+                  <span className="text-cyan-400 font-bold">{activeModalProject.sysId}</span>
+                  <span className="text-slate-600">//</span>
+                  <span className="text-purple-400 uppercase font-semibold">
+                    {activeModalProject.category}
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white mt-1">
+                  {activeModalProject.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+                  {activeModalProject.tagline}
+                </p>
+              </div>
+
+              <button
+                onClick={() => setActiveModalProject(null)}
+                className="p-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-slate-300 hover:text-white transition-all cursor-pointer"
+                aria-label="Close"
+              >
+                <FaTimes />
+              </button>
+            </div>
+
+            {/* Modal Image Viewport */}
+            <div className="relative w-full h-56 rounded-2xl overflow-hidden border border-white/10 bg-slate-950">
+              <img
+                src={activeModalProject.image}
+                alt={activeModalProject.title}
+                className="w-full h-full object-cover object-top"
+              />
+              <div className="absolute top-3 left-3">
+                <span className="px-3 py-1 rounded-full bg-black/80 backdrop-blur-md border border-white/20 text-xs font-semibold text-cyan-300">
+                  {activeModalProject.badge}
+                </span>
+              </div>
+              <div className="absolute bottom-3 right-3">
+                <span className="px-3 py-1 rounded-lg bg-slate-900/90 backdrop-blur-md border border-cyan-400/40 text-xs font-mono text-cyan-300 font-bold">
+                  Telemetry: {activeModalProject.metric}
+                </span>
+              </div>
+            </div>
+
+            {/* In-Depth Architecture Analysis */}
+            <div className="space-y-3">
+              <h4 className="text-xs font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+                <FaCodeBranch />
+                <span>Architecture &amp; Engineering Solution</span>
+              </h4>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 space-y-1">
+                  <span className="text-slate-200 font-semibold block text-[11px] uppercase tracking-wider text-rose-400">
+                    Challenge
+                  </span>
+                  <p className="text-slate-400 leading-relaxed">
+                    {activeModalProject.architecture?.challenge || activeModalProject.description}
+                  </p>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 space-y-1">
+                  <span className="text-slate-200 font-semibold block text-[11px] uppercase tracking-wider text-emerald-400">
+                    Solution
+                  </span>
+                  <p className="text-slate-400 leading-relaxed">
+                    {activeModalProject.architecture?.solution || activeModalProject.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Highlights */}
+            <div className="space-y-2">
+              <span className="text-xs font-semibold text-slate-200">Key Engineering Features:</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {activeModalProject.highlights.map((h, i) => (
+                  <div key={i} className="flex items-center gap-2 text-xs text-slate-300 p-2 rounded-lg bg-white/[0.02]">
+                    <FaCheck className="text-emerald-400 text-[10px] shrink-0" />
+                    <span>{h}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Tech Stack */}
+            <div className="space-y-2">
+              <span className="text-xs font-semibold text-slate-200">Technologies Applied:</span>
+              <div className="flex flex-wrap gap-1.5">
+                {activeModalProject.technologies.map((t, i) => (
+                  <span
+                    key={i}
+                    className="px-2.5 py-1 rounded-lg bg-white/[0.05] border border-white/10 text-xs text-slate-300 font-mono"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Modal Footer Links */}
+            <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+              <span className="text-xs text-slate-400 font-mono">
+                Krishan Kant // Systems Portfolio
+              </span>
+
+              <div className="flex items-center gap-3">
+                <a
+                  href={activeModalProject.code}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-white text-xs font-medium flex items-center gap-1.5 transition-all"
+                >
+                  <FaGithub /> View Code
+                </a>
+                {activeModalProject.live && activeModalProject.live !== "/" && (
+                  <a
+                    href={activeModalProject.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-black font-semibold text-xs flex items-center gap-1.5 shadow-md transition-all"
+                  >
+                    <span>Open Live App</span>
+                    <FaExternalLinkAlt className="text-[10px]" />
+                  </a>
+                )}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </section>
   );
 }

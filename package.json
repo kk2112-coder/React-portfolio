@@ -211,6 +211,7 @@
     "strip-ansi": "^6.0.1",
     "strip-outer": "^1.0.1",
     "tapable": "^2.3.3",
+    "three": "^0.186.1",
     "tinyglobby": "^0.2.17",
     "to-regex-range": "^5.0.1",
     "toidentifier": "^1.0.1",
@@ -261,6 +262,7 @@
   },
   "homepage": "https://github.com/kk2112-coder/React-port#readme",
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/vite": "^4.3.3",
     "@vitejs/plugin-react": "^6.1.1",
     "autoprefixer": "^10.5.6",

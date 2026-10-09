@@ -1,260 +1,300 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { FaGraduationCap, FaBriefcase, FaCode, FaCheck, FaFileAlt } from "react-icons/fa";
 import myDp from "./Images/MyDp.jpg";
 import { StandingCharacterIllustration } from "./CharacterIllustrations";
-import { PlanetaryOrbitFrame, IridescentOrb, CrystalPrism } from "./IridescentSpheres";
+import Tilt3DCard from "./Tilt3DCard";
 
-const SKILLS = [
-  { name: "React & Next.js", level: 90, category: "Frontend" },
-  { name: "JavaScript / ES6+", level: 88, category: "Frontend" },
-  { name: "Tailwind CSS & Glassmorphism", level: 92, category: "UI/UX" },
-  { name: "React Native (Mobile)", level: 75, category: "Mobile" },
-  { name: "Node.js & Express APIs", level: 78, category: "Backend" },
-  { name: "Firebase & Firestore", level: 82, category: "Backend" },
-  { name: "AI UI & Prompt Interfaces", level: 85, category: "AI Engineering" },
-  { name: "Git & Collaborative Dev", level: 80, category: "Tools" },
+const SKILLS_DATA = [
+  {
+    name: "React 19 & Next.js",
+    category: "Frontend",
+    level: 92,
+    projects: "AI Portfolio, Phishing Detector, Webroj UI",
+  },
+  {
+    name: "JavaScript (ES6+)",
+    category: "Frontend",
+    level: 90,
+    projects: "All projects, REST API consumers",
+  },
+  {
+    name: "Tailwind CSS & Glassmorphism",
+    category: "Frontend",
+    level: 94,
+    projects: "Portfolio, Phishing Detector, NowFloat",
+  },
+  {
+    name: "Node.js & Express.js",
+    category: "Backend & APIs",
+    level: 84,
+    projects: "Phishing Threat API, REST services",
+  },
+  {
+    name: "REST APIs & JSON Heuristics",
+    category: "Backend & APIs",
+    level: 86,
+    projects: "Phishing Website Detector engine",
+  },
+  {
+    name: "Firebase & Firestore",
+    category: "Backend & APIs",
+    level: 80,
+    projects: "Document storage, Authentication",
+  },
+  {
+    name: "AI Prompting & Copilot UIs",
+    category: "AI & Security",
+    level: 88,
+    projects: "Interactive AI Copilot, Generative widgets",
+  },
+  {
+    name: "Phishing Threat Analysis",
+    category: "AI & Security",
+    level: 86,
+    projects: "Phishing Detector, Lexical scanner",
+  },
+  {
+    name: "React Native & Expo",
+    category: "Mobile & Tools",
+    level: 78,
+    projects: "LifeOS Mobile, Handheld Threat Scanner",
+  },
+  {
+    name: "Git, GitHub & Vite",
+    category: "Mobile & Tools",
+    level: 85,
+    projects: "Version control, Build pipelines",
+  },
 ];
 
-const EDUCATION = [
-  {
-    year: "2025 – 2027",
-    degree: "Master of Computer Applications (M.C.A.)",
-    institution: "Dr. A.P.J. Abdul Kalam Technical University (AKTU)",
-    status: "Currently Pursuing",
-    badge: "In Progress",
-    highlight: true,
-  },
-  {
-    year: "2022 – 2025",
-    degree: "Bachelor of Computer Applications (B.C.A.)",
-    institution: "Chaudhary Charan Singh University (CCSU)",
-    status: "Completed",
-    badge: "Graduated",
-  },
-  {
-    year: "2022",
-    degree: "Higher Secondary (12th)",
-    institution: "Central Board of Secondary Education (C.B.S.E)",
-    status: "Completed",
-  },
-];
+const CATEGORIES = ["All Skills", "Frontend", "Backend & APIs", "AI & Security", "Mobile & Tools"];
 
-export default function About() {
+export default function About({ onOpenID }) {
   const [viewMode, setViewMode] = useState("illustration"); // "illustration" | "photo"
-  const [activeTab, setActiveTab] = useState("skills"); // "skills" | "education" | "story"
+  const [activeCategory, setActiveCategory] = useState("All Skills");
+  const [selectedSkill, setSelectedSkill] = useState(null);
+
+  const filteredSkills =
+    activeCategory === "All Skills"
+      ? SKILLS_DATA
+      : SKILLS_DATA.filter((s) => s.category === activeCategory);
 
   return (
-    <section
-      id="about"
-      className="relative min-h-screen py-24 px-5 sm:px-10 lg:px-16 overflow-hidden cosmic-nebula flex flex-col justify-center"
-    >
-      {/* Background Floating Orbs */}
-      <div className="absolute top-10 right-10 hidden lg:block opacity-60">
-        <IridescentOrb size={80} glowColor="cyan" />
+    <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+      
+      {/* ── Section Header ── */}
+      <div className="text-center space-y-3 max-w-2xl mx-auto pb-12">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-xs font-medium text-cyan-300">
+          <span>✦</span>
+          <span>Background &amp; Expertise</span>
+        </div>
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-100 tracking-tight">
+          About &amp; Credentials.
+        </h2>
+        <p className="text-sm sm:text-base text-slate-400">
+          Scholarly background, verified engineering pass, and interactive skills linked directly to real-world code.
+        </p>
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl w-full">
-        {/* Section Header */}
-        <div className="text-center mb-16 space-y-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-500/10 border border-purple-400/20 text-xs font-semibold text-purple-300">
-            <span>✦</span>
-            <span>Creative Background</span>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        
+        {/* ── Left Column: Interactive Avatar & Bio Card ── */}
+        <div className="lg:col-span-5 rounded-3xl bg-slate-900/65 dark:bg-slate-900/65 border border-white/15 p-6 sm:p-7 space-y-5 shadow-[0_12px_40px_0_rgba(0,0,0,0.35)] backdrop-blur-2xl flex flex-col items-center text-center min-h-[350px]" data-testid="about-avatar-column">
+          
+          {/* Avatar Display Frame */}
+          <div className="relative w-52 h-52 flex items-center justify-center">
+            {viewMode === "illustration" ? (
+              <div className="w-full h-full flex items-center justify-center animate-fade-in">
+                <StandingCharacterIllustration />
+              </div>
+            ) : (
+              <div className="w-44 h-44 rounded-full overflow-hidden border-2 border-cyan-400 shadow-xl animate-fade-in">
+                <img
+                  src={myDp}
+                  alt="Krishan Kant"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            About Me
-          </h2>
-          <p className="max-w-xl mx-auto text-sm sm:text-base text-slate-400">
-            Passionate developer blending artistic visual design with robust engineering and modern AI concepts.
-          </p>
+
+          {/* Interactive Toggle */}
+          <div className="flex items-center justify-center gap-1.5 p-1.5 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-xl shadow-inner">
+            <button
+              onClick={() => setViewMode("illustration")}
+              className={`px-3.5 py-1 rounded-full text-xs font-medium transition-all cursor-pointer ${
+                viewMode === "illustration"
+                  ? "bg-cyan-500 text-black font-semibold shadow-md"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              ✦ Developer Art
+            </button>
+            <button
+              onClick={() => setViewMode("photo")}
+              className={`px-3.5 py-1 rounded-full text-xs font-medium transition-all cursor-pointer ${
+                viewMode === "photo"
+                  ? "bg-cyan-500 text-black font-semibold shadow-md"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              Photograph
+            </button>
+          </div>
+
+          {/* Dedicated 3D Office ID Badge Launcher Pill */}
+          <button
+            type="button"
+            data-testid="about-id-button"
+            onClick={onOpenID}
+            className="w-full py-2.5 px-3.5 rounded-xl bg-gradient-to-r from-cyan-500/15 via-purple-500/15 to-pink-500/15 hover:from-cyan-500/25 hover:via-purple-500/25 hover:to-pink-500/25 border border-cyan-400/40 hover:border-cyan-400/60 text-slate-100 text-xs font-semibold flex items-center justify-center gap-2 shadow-sm hover:shadow-[0_0_20px_rgba(56,189,248,0.2)] backdrop-blur-xl transition-all cursor-pointer group"
+            title="Inspect 3D Office ID Badge"
+          >
+            <span className="text-cyan-400 group-hover:scale-110 transition-transform text-sm">🪪</span>
+            <span>View 3D Office ID Pass</span>
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/40 text-cyan-300 border border-cyan-400/20">
+              L4 CLEARANCE
+            </span>
+          </button>
+
+          {/* Bio text */}
+          <div className="space-y-2 text-left w-full pt-2 border-t border-white/10">
+            <h3 className="text-lg font-bold text-slate-100 text-center">
+              Krishan Kant
+            </h3>
+            <p className="text-xs text-slate-400 leading-relaxed text-center">
+              Full-Stack Developer passionate about creating responsive user interfaces, algorithmic security tools, and intelligent software.
+            </p>
+          </div>
+
+          {/* Quick Education / Career Milestones */}
+          <div className="w-full space-y-2.5 text-left text-xs">
+            <div className="p-3.5 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/12 hover:border-cyan-400/30 flex items-start gap-2.5 transition-all shadow-sm">
+              <FaGraduationCap className="text-cyan-400 text-sm mt-0.5 shrink-0" />
+              <div>
+                <span className="font-semibold text-slate-200 block">M.C.A. (2025–2027)</span>
+                <span className="text-slate-400 text-[11px]">Dr. A.P.J. Abdul Kalam Technical University (AKTU)</span>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/12 hover:border-cyan-400/30 flex items-start gap-2.5 transition-all shadow-sm">
+              <FaGraduationCap className="text-purple-400 text-sm mt-0.5 shrink-0" />
+              <div>
+                <span className="font-semibold text-slate-200 block">B.C.A. (2022–2025)</span>
+                <span className="text-slate-400 text-[11px]">Chaudhary Charan Singh University</span>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/12 hover:border-cyan-400/30 flex items-start gap-2.5 transition-all shadow-sm">
+              <FaGraduationCap className="text-cyan-400 text-sm mt-0.5 shrink-0" />
+              <div>
+                <span className="font-semibold text-slate-200 block">Secondary Education (2022)</span>
+                <span className="text-slate-400 text-[11px]">C.B.S.E</span>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/12 hover:border-cyan-400/30 flex items-start gap-2.5 transition-all shadow-sm">
+              <FaGraduationCap className="text-cyan-400 text-sm mt-0.5 shrink-0" />
+              <div>
+                <span className="font-semibold text-slate-200 block">Higher Education (2020)</span>
+                <span className="text-slate-400 text-[11px]">C.B.S.E</span>
+              </div>
+            </div>
+          </div>
+
+          <Link
+            to="/resume"
+            className="w-full py-2.5 rounded-xl bg-purple-500/15 hover:bg-purple-500/25 border border-purple-400/30 text-purple-300 hover:text-white font-medium text-xs flex items-center justify-center gap-2 backdrop-blur-md transition-all shadow-sm"
+          >
+            <FaFileAlt /> View Complete Resume
+          </Link>
         </div>
 
-        {/* Main Content Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        {/* ── Right Column: Interactive Skills Explorer ── */}
+        <div className="lg:col-span-7 space-y-5">
           
-          {/* ── Left / Center Column: Concentric Planetary Orbit with Character Illustration ── */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
-            <PlanetaryOrbitFrame size={380} className="w-full max-w-[380px] h-[380px]">
-              {viewMode === "illustration" ? (
-                <StandingCharacterIllustration />
-              ) : (
-                <div className="relative w-52 h-52 rounded-full overflow-hidden border-2 border-cyan-400/60 shadow-[0_0_35px_rgba(56,189,248,0.5)]">
-                  <img
-                    src={myDp}
-                    alt="Krishan Kant"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-            </PlanetaryOrbitFrame>
-
-            {/* Toggle view: Illustration vs Real Photo */}
-            <div className="mt-6 flex items-center gap-2 p-1 rounded-full bg-slate-900/80 border border-white/10 backdrop-blur-md">
+          {/* Skill Filter Chips */}
+          <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-white/[0.06] border border-white/15 backdrop-blur-2xl shadow-sm w-fit">
+            {CATEGORIES.map((cat) => (
               <button
-                onClick={() => setViewMode("illustration")}
-                className={`px-3.5 py-1 rounded-full text-xs font-medium transition-all ${
-                  viewMode === "illustration"
-                    ? "bg-purple-600 text-white shadow-md"
+                key={cat}
+                onClick={() => {
+                  setActiveCategory(cat);
+                  setSelectedSkill(null);
+                }}
+                className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                  activeCategory === cat
+                    ? "bg-cyan-500 text-black font-semibold shadow-md"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                Art Illustration
+                {cat}
               </button>
-              <button
-                onClick={() => setViewMode("photo")}
-                className={`px-3.5 py-1 rounded-full text-xs font-medium transition-all ${
-                  viewMode === "photo"
-                    ? "bg-cyan-500 text-slate-950 font-bold shadow-md"
-                    : "text-slate-400 hover:text-white"
-                }`}
-              >
-                Real Photo
-              </button>
-            </div>
+            ))}
           </div>
 
-          {/* ── Right Column: Frosted Glass Bio, Skills & Education Tabs ── */}
-          <div className="lg:col-span-7 space-y-6">
-            
-            {/* Glass Navigation Tabs */}
-            <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-900/60 border border-white/10 backdrop-blur-md w-fit">
-              {[
-                { id: "skills", label: "Skills & AI Stack" },
-                { id: "education", label: "Education" },
-                { id: "story", label: "Bio & Journey" },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
-                    activeTab === tab.id
-                      ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-[0_0_20px_rgba(168,85,247,0.4)]"
-                      : "text-slate-400 hover:text-white hover:bg-white/5"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
+          {/* Interactive Selected Skill Banner */}
+          {selectedSkill && (
+            <div className="p-4 rounded-2xl bg-cyan-500/15 border border-cyan-400/40 backdrop-blur-xl text-xs text-slate-200 flex items-start justify-between gap-3 shadow-md animate-fade-in">
+              <div>
+                <span className="font-bold text-cyan-300">{selectedSkill.name}</span>
+                <p className="text-slate-300 mt-1">
+                  <strong>Projects utilizing this tech:</strong> {selectedSkill.projects}
+                </p>
+              </div>
+              <button
+                onClick={() => setSelectedSkill(null)}
+                className="text-slate-400 hover:text-white text-xs cursor-pointer"
+              >
+                ✕
+              </button>
             </div>
+          )}
 
-            {/* Tab 1: Skills & AI Stack */}
-            {activeTab === "skills" && (
-              <div className="glass-panel p-6 sm:p-8 rounded-3xl space-y-6 animate-fade-in">
-                <div>
-                  <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                    <span>Technical Proficiencies</span>
-                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">
-                      Frontend &amp; AI
-                    </span>
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                    Modern frameworks, design tools, and intelligent user interaction models.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {SKILLS.map((skill, idx) => (
-                    <div
-                      key={idx}
-                      className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-purple-400/30 transition-all duration-300"
-                    >
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-xs sm:text-sm font-semibold text-slate-200">
-                          {skill.name}
-                        </span>
-                        <span className="text-xs font-mono text-cyan-400 font-bold">
-                          {skill.level}%
-                        </span>
-                      </div>
-                      <div className="w-full h-1.5 rounded-full bg-slate-800/80 overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 transition-all duration-1000"
-                          style={{ width: `${skill.level}%` }}
-                        />
-                      </div>
+          {/* Skills Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            {filteredSkills.map((skill, index) => {
+              const isSelected = selectedSkill?.name === skill.name;
+              return (
+                <Tilt3DCard key={index} maxTilt={12} className="rounded-2xl">
+                  <div
+                    onClick={() => setSelectedSkill(skill)}
+                    className={`p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                      isSelected
+                        ? "bg-cyan-500/20 border-cyan-400 shadow-[0_8px_30px_0_rgba(6,182,212,0.25)] scale-[1.02] backdrop-blur-xl"
+                        : "bg-slate-900/55 hover:bg-slate-900/80 border-white/12 hover:border-cyan-400/50 backdrop-blur-xl shadow-sm"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between text-xs mb-1.5">
+                      <span className="font-semibold text-slate-100">{skill.name}</span>
+                      <span className="text-cyan-400 font-mono text-[11px]">{skill.level}%</span>
                     </div>
-                  ))}
-                </div>
 
-                {/* AI Competencies Banner */}
-                <div className="p-4 rounded-2xl bg-purple-950/40 border border-purple-500/30 flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">⚡</span>
-                    <div>
-                      <h4 className="text-xs sm:text-sm font-bold text-white">AI-Powered Portfolio &amp; Interfaces</h4>
-                      <p className="text-xs text-slate-400">Integrating conversational agents, generative UI, and smart predictive UX.</p>
+                    {/* Level Progress Bar */}
+                    <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden mb-2">
+                      <div
+                        className="h-full bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full transition-all duration-500"
+                        style={{ width: `${skill.level}%` }}
+                      />
+                    </div>
+
+                    {/* Micro Hint */}
+                    <div className="text-[10px] text-slate-400 truncate">
+                      Used in: {skill.projects}
                     </div>
                   </div>
-                  <Link
-                    to="/resume"
-                    className="shrink-0 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white border border-white/10"
-                  >
-                    View All
-                  </Link>
-                </div>
-              </div>
-            )}
-
-            {/* Tab 2: Education */}
-            {activeTab === "education" && (
-              <div className="glass-panel p-6 sm:p-8 rounded-3xl space-y-6 animate-fade-in">
-                <h3 className="text-xl font-bold text-white">Academic Journey</h3>
-                <div className="space-y-4">
-                  {EDUCATION.map((edu, idx) => (
-                    <div
-                      key={idx}
-                      className={`p-4 rounded-2xl border transition-all ${
-                        edu.highlight
-                          ? "bg-purple-900/20 border-purple-400/40 shadow-[0_0_25px_rgba(168,85,247,0.15)]"
-                          : "bg-white/[0.03] border-white/10"
-                      }`}
-                    >
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="text-xs font-mono font-bold text-cyan-400">
-                          {edu.year}
-                        </span>
-                        {edu.badge && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-                            {edu.badge}
-                          </span>
-                        )}
-                      </div>
-                      <h4 className="text-base font-bold text-white mt-1">
-                        {edu.degree}
-                      </h4>
-                      <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
-                        {edu.institution}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Tab 3: Bio & Journey */}
-            {activeTab === "story" && (
-              <div className="glass-panel p-6 sm:p-8 rounded-3xl space-y-4 animate-fade-in">
-                <h3 className="text-xl font-bold text-white">About Krishan Kant</h3>
-                <p className="text-sm leading-relaxed text-slate-300">
-                  I am a passionate software developer focused on frontend innovation, interactive user experiences, and web applications. My philosophy is grounded in creating designs that are not only aesthetically breathtaking through glassmorphism and motion, but also intuitive, accessible, and fast.
-                </p>
-                <p className="text-sm leading-relaxed text-slate-300">
-                  Whether developing full-stack security tools like the Phishing Detector, emergency response apps like the Women Security App, or futuristic mobile systems like LifeOS, I embrace solving complex problems with elegance.
-                </p>
-                <div className="pt-3 flex flex-wrap gap-2">
-                  <span className="px-3 py-1 rounded-full text-xs bg-cyan-500/10 text-cyan-300 border border-cyan-400/20">
-                    Clean Code
-                  </span>
-                  <span className="px-3 py-1 rounded-full text-xs bg-purple-500/10 text-purple-300 border border-purple-400/20">
-                    Generative UI &amp; AI
-                  </span>
-                  <span className="px-3 py-1 rounded-full text-xs bg-pink-500/10 text-pink-300 border border-pink-400/20">
-                    Full Responsive
-                  </span>
-                </div>
-              </div>
-            )}
+                </Tilt3DCard>
+              );
+            })}
           </div>
+
+          <div className="text-center sm:text-left text-xs text-slate-500 pt-2">
+            💡 Tip: Click any skill to inspect where it was applied.
+          </div>
+
         </div>
+
       </div>
     </section>
   );

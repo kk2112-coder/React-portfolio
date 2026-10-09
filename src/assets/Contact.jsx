@@ -1,261 +1,203 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { FaEnvelope, FaGithub, FaInstagram, FaPaperPlane, FaCheck, FaCopy } from "react-icons/fa";
 import { SittingCharacterIllustration } from "./CharacterIllustrations";
-import { IridescentOrb, CrystalPrism } from "./IridescentSpheres";
-import { FaInstagram, FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subject: "",
     message: "",
   });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formMessage, setFormMessage] = useState("");
-  const [messageType, setMessageType] = useState(""); // "success" | "error"
-  const [errors, setErrors] = useState({});
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const validate = () => {
-    const errs = {};
-    if (!formData.name.trim()) errs.name = "Please enter your name.";
-    if (!formData.email.trim()) {
-      errs.email = "Please enter your email.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
-      errs.email = "Please enter a valid email address.";
-    }
-    if (!formData.subject.trim()) errs.subject = "Please enter a subject.";
-    if (!formData.message.trim()) {
-      errs.message = "Please write a message.";
-    } else if (formData.message.trim().length < 8) {
-      errs.message = "Message must be at least 8 characters.";
-    }
-    setErrors(errs);
-    return Object.keys(errs).length === 0;
-  };
+  const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormMessage("");
-    setMessageType("");
+    if (!formData.name || !formData.email || !formData.message) return;
 
-    if (!validate()) {
-      setFormMessage("Please fill in all required fields.");
-      setMessageType("error");
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    // Simulated submission delay (replace with alternative backend call like EmailJS, Web3Forms, etc. if needed)
+    setSending(true);
     setTimeout(() => {
-      setFormMessage("Thank you! Your message has been sent successfully.");
-      setMessageType("success");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setErrors({});
-      setIsSubmitting(false);
-    }, 1000);
+      setSending(false);
+      setSubmitted(true);
+    }, 600);
+  };
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText("krishankantrajput2112@gmail.com");
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2000);
   };
 
   return (
-    <section
-      id="contact"
-      className="relative min-h-screen py-24 px-5 sm:px-10 lg:px-16 overflow-hidden cosmic-nebula flex flex-col justify-center"
-    >
-      {/* Background Floating Orbs & Prism */}
-      <div className="absolute top-16 right-16 hidden lg:block opacity-60">
-        <IridescentOrb size={75} glowColor="purple" />
+    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+      
+      {/* ── Section Header ── */}
+      <div className="text-center space-y-3 max-w-2xl mx-auto pb-12">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-xs font-medium text-cyan-300">
+          <span>✦</span>
+          <span>Get In Touch</span>
+        </div>
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-100 tracking-tight">
+          Let’s Connect.
+        </h2>
+        <p className="text-sm sm:text-base text-slate-400">
+          Whether you have an engineering role, a freelance project, or just want to chat about AI &amp; React, feel free to reach out.
+        </p>
       </div>
-      <div className="absolute bottom-12 left-10 hidden xl:block opacity-60">
-        <CrystalPrism size={85} />
-      </div>
 
-      <div className="relative z-10 mx-auto max-w-5xl w-full">
-        {/* Main Frosted Glass Panel Container */}
-        <div className="glass-panel rounded-3xl p-6 sm:p-10 lg:p-12 shadow-[0_25px_60px_rgba(0,0,0,0.5)] border border-white/10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-            
-            {/* ── Left Column: Character with Laptop & "Get in touch" info ── */}
-            <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
-              
-              {/* Sitting Developer Character Illustration */}
-              <div className="w-full flex justify-center lg:justify-start">
-                <SittingCharacterIllustration />
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        
+        {/* ── Left Column: Sitting Male Developer Art + Direct Links ── */}
+        <div className="lg:col-span-5 flex flex-col items-center text-center space-y-6">
+          <div className="relative w-full max-w-[280px]">
+            <SittingCharacterIllustration />
+          </div>
 
-              {/* Get In Touch Title & Copy */}
-              <div className="space-y-2">
-                <h3 className="text-2xl sm:text-3xl font-black text-white">
-                  Get in touch
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-md">
-                  I'm very approachable and would love to speak to you. Feel free to call, send me an email, or simply complete the enquiry form.
-                </p>
-              </div>
-
-              {/* Direct Details */}
-              <div className="space-y-2 text-xs sm:text-sm text-slate-300">
-                <div className="flex items-center justify-center lg:justify-start gap-2.5">
-                  <span className="text-cyan-400">📞</span>
-                  <span>+91 8810419209</span>
+          <div className="w-full max-w-sm space-y-3">
+            {/* Copyable Email Pill */}
+            <div className="p-4 rounded-2xl bg-slate-900/65 backdrop-blur-2xl border border-white/15 flex items-center justify-between shadow-sm">
+              <div className="flex items-center gap-3 text-left">
+                <div className="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-sm">
+                  <FaEnvelope />
                 </div>
-                <div className="flex items-center justify-center lg:justify-start gap-2.5">
-                  <span className="text-purple-400">✉️</span>
-                  <span>krishankant2112@gmail.com</span>
-                </div>
-                <div className="flex items-center justify-center lg:justify-start gap-2.5">
-                  <span className="text-pink-400">📍</span>
-                  <span>Delhi / NCR, India</span>
+                <div>
+                  <div className="text-[10px] text-slate-400">Email Address</div>
+                  <div className="text-xs sm:text-sm font-semibold text-slate-100">
+                    krishankantrajput2112@gmail.com
+                  </div>
                 </div>
               </div>
-
-              {/* Social Icons */}
-              <div className="flex items-center gap-3 pt-2">
-                {[
-                  { href: "https://www.instagram.com/kkrajput_002/", Icon: FaInstagram, color: "hover:text-pink-400 hover:border-pink-500/40" },
-                  { href: "https://github.com/kk2112-coder", Icon: FaGithub, color: "hover:text-cyan-400 hover:border-cyan-500/40" },
-                  { href: "https://www.linkedin.com/in/krishan-kant-615740305/", Icon: FaLinkedin, color: "hover:text-blue-400 hover:border-blue-500/40" },
-                  { href: "https://x.com/", Icon: FaTwitter, color: "hover:text-sky-400 hover:border-sky-500/40" },
-                ].map(({ href, Icon, color }, i) => (
-                  <a
-                    key={i}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`w-9 h-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-slate-300 transition-all duration-300 hover:scale-110 ${color}`}
-                  >
-                    <Icon className="text-sm" />
-                  </a>
-                ))}
-              </div>
+              <button
+                onClick={copyEmail}
+                className="px-3 py-1.5 rounded-lg bg-white/[0.06] hover:bg-cyan-500/20 border border-white/15 text-xs font-medium text-cyan-300 transition-all cursor-pointer flex items-center gap-1 backdrop-blur-md"
+                title="Copy Email"
+              >
+                {copiedEmail ? <FaCheck className="text-emerald-400" /> : <FaCopy />}
+                <span>{copiedEmail ? "Copied!" : "Copy"}</span>
+              </button>
             </div>
 
-            {/* ── Right Column: "Send me a message" Form ── */}
-            <div className="lg:col-span-6 bg-slate-950/40 rounded-2xl p-6 sm:p-8 border border-white/10 backdrop-blur-xl">
-              <h4 className="text-lg sm:text-xl font-bold text-white mb-5">
-                Send me a message
-              </h4>
-
-              {formMessage && (
-                <div
-                  className={`p-3 rounded-xl mb-4 text-xs font-semibold ${
-                    messageType === "success"
-                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                      : "bg-red-500/20 text-red-300 border border-red-500/30"
-                  }`}
-                >
-                  {formMessage}
-                </div>
-              )}
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Name */}
+            {/* Social Buttons */}
+            <div className="grid grid-cols-2 gap-3">
+              <a
+                href="https://github.com/kk2112-coder"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3.5 rounded-2xl bg-slate-900/65 backdrop-blur-2xl hover:bg-white/[0.08] border border-white/15 flex items-center gap-2.5 transition-all group text-left shadow-sm"
+              >
+                <FaGithub className="text-lg text-slate-300 group-hover:text-cyan-400" />
                 <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Your name"
-                    className="w-full px-4 py-2.5 rounded-xl glass-input text-xs sm:text-sm placeholder-slate-500"
-                  />
-                  {errors.name && (
-                    <span className="text-[11px] text-red-400 mt-1 block">
-                      {errors.name}
-                    </span>
-                  )}
+                  <div className="text-[10px] text-slate-400">GitHub</div>
+                  <div className="text-xs font-semibold text-slate-100">@kk2112-coder</div>
                 </div>
+              </a>
 
-                {/* Email Address */}
+              <a
+                href="https://www.instagram.com/kkrajput_002/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3.5 rounded-2xl bg-slate-900/65 backdrop-blur-2xl hover:bg-pink-500/10 border border-white/15 flex items-center gap-2.5 transition-all group text-left shadow-sm"
+              >
+                <FaInstagram className="text-lg text-pink-400 group-hover:scale-110 transition-transform" />
                 <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="example@domain.com"
-                    className="w-full px-4 py-2.5 rounded-xl glass-input text-xs sm:text-sm placeholder-slate-500"
-                  />
-                  {errors.email && (
-                    <span className="text-[11px] text-red-400 mt-1 block">
-                      {errors.email}
-                    </span>
-                  )}
+                  <div className="text-[10px] text-slate-400">Instagram</div>
+                  <div className="text-xs font-semibold text-slate-100">@kkrajput_002</div>
                 </div>
-
-                {/* Subject */}
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Subject
-                  </label>
-                  <input
-                    type="text"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    placeholder="Project Inquiry / Job Opportunity"
-                    className="w-full px-4 py-2.5 rounded-xl glass-input text-xs sm:text-sm placeholder-slate-500"
-                  />
-                  {errors.subject && (
-                    <span className="text-[11px] text-red-400 mt-1 block">
-                      {errors.subject}
-                    </span>
-                  )}
-                </div>
-
-                {/* Message */}
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Enter Message
-                  </label>
-                  <textarea
-                    rows={4}
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="Write your message here..."
-                    className="w-full px-4 py-2.5 rounded-xl glass-input text-xs sm:text-sm placeholder-slate-500 resize-none"
-                  />
-                  {errors.message && (
-                    <span className="text-[11px] text-red-400 mt-1 block">
-                      {errors.message}
-                    </span>
-                  )}
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-600 hover:from-purple-500 hover:via-indigo-500 hover:to-cyan-500 text-white font-bold text-xs sm:text-sm shadow-[0_0_25px_rgba(168,85,247,0.4)] hover:shadow-[0_0_35px_rgba(56,189,248,0.5)] transition-all duration-300 disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
-                      <span>Sending Message...</span>
-                    </>
-                  ) : (
-                    <span>Send message</span>
-                  )}
-                </button>
-              </form>
+              </a>
             </div>
           </div>
         </div>
+
+        {/* ── Right Column: Clean Contact Form ── */}
+        <div className="lg:col-span-7">
+          <div className="rounded-3xl bg-slate-900/65 dark:bg-slate-900/65 border border-white/15 p-6 sm:p-8 shadow-[0_12px_40px_0_rgba(0,0,0,0.35)] backdrop-blur-2xl">
+            
+            {submitted ? (
+              <div className="py-10 text-center space-y-3 animate-fade-in">
+                <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-400 text-xl flex items-center justify-center mx-auto">
+                  <FaCheck />
+                </div>
+                <h3 className="text-xl font-bold text-white">Message Received!</h3>
+                <p className="text-xs sm:text-sm text-slate-300 max-w-sm mx-auto leading-relaxed">
+                  Message sent successfully! Krishan will reply back to <strong className="text-cyan-300">{formData.email}</strong> as soon as possible.
+                </p>
+                <button
+                  onClick={() => {
+                    setSubmitted(false);
+                    setFormData({ name: "", email: "", message: "" });
+                  }}
+                  className="px-4 py-2 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-xs text-cyan-300 cursor-pointer backdrop-blur-md"
+                >
+                  Send Another Message
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label htmlFor="name" className="text-xs font-medium text-slate-300">Name</label>
+                    <input
+                      id="name"
+                      aria-label="Name"
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="e.g. John Doe"
+                      className="w-full px-4 py-2.5 rounded-xl bg-white/90 dark:bg-black/35 backdrop-blur-md border border-slate-200 dark:border-white/15 focus:border-cyan-500 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-cyan-400/30 transition-all"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label htmlFor="email" className="text-xs font-medium text-slate-700 dark:text-slate-300">Email</label>
+                    <input
+                      id="email"
+                      aria-label="Email"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="john@example.com"
+                      className="w-full px-4 py-2.5 rounded-xl bg-white/90 dark:bg-black/35 backdrop-blur-md border border-slate-200 dark:border-white/15 focus:border-cyan-500 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-cyan-400/30 transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label htmlFor="message" className="text-xs font-medium text-slate-700 dark:text-slate-300">Message</label>
+                  <textarea
+                    id="message"
+                    aria-label="Message"
+                    required
+                    rows={4}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder="Tell me about your project, idea, or questions..."
+                    className="w-full px-4 py-2.5 rounded-xl bg-white/90 dark:bg-black/35 backdrop-blur-md border border-slate-200 dark:border-white/15 focus:border-cyan-500 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-cyan-400/30 transition-all resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-[0_0_25px_rgba(6,182,212,0.35)] transition-all cursor-pointer disabled:opacity-50"
+                >
+                  {sending ? (
+                    <span>Sending message...</span>
+                  ) : (
+                    <>
+                      <FaPaperPlane className="text-xs" />
+                      <span>Send Message</span>
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+
+          </div>
+        </div>
+
       </div>
     </section>
   );
