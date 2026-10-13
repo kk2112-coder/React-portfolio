@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Logo, { LogoIcon } from "./Logo";
+import { ScrollReveal } from "./ScrollAnimations";
 import {
   FaGithub,
   FaInstagram,
@@ -15,13 +16,16 @@ import {
   FaShieldAlt,
   FaMobileAlt,
   FaCode,
+  FaPhoneAlt,
 } from "react-icons/fa";
 
 export default function Footer({ onOpenAI, onOpenID }) {
   const currentYear = new Date().getFullYear();
   const [copiedEmail, setCopiedEmail] = useState(false);
 
-  const emailAddress = "kkrishankantrajput2112@gmail.com";
+  const emailAddress = "krishankantrajput2112@gmail.com";
+  const phoneNumber = "+91 8810419209";
+  const phoneRaw = "+918810419209";
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(emailAddress);
@@ -35,7 +39,11 @@ export default function Footer({ onOpenAI, onOpenID }) {
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.location.href = `/#${id}`;
+    }
   };
 
   return (
@@ -45,24 +53,34 @@ export default function Footer({ onOpenAI, onOpenID }) {
       <div className="absolute -top-32 left-1/3 w-80 h-80 rounded-full bg-cyan-500/10 blur-[100px] pointer-events-none" />
       <div className="absolute -top-32 right-1/4 w-80 h-80 rounded-full bg-purple-600/10 blur-[100px] pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto space-y-12">
+      <ScrollReveal variant="fade-up" className="max-w-6xl mx-auto space-y-12">
         {/* Main 4-Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
           
           {/* Column 1: Brand, Identity & Current Status */}
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
+            <a
+              href="/#hero"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo("hero");
+              }}
+              className="group flex items-center gap-3 focus:outline-none cursor-pointer"
+              aria-label="Back to top - Home"
+            >
               <LogoIcon size={42} />
               <div>
                 <div className="flex items-center gap-1.5 leading-none">
-                  <span className="font-extrabold text-slate-100 text-base">Krishan</span>
+                  <span className="font-extrabold text-slate-100 group-hover:text-white text-base transition-colors">
+                    Krishan
+                  </span>
                   <span className="font-extrabold bg-gradient-to-r from-cyan-400 via-sky-300 to-purple-400 bg-clip-text text-transparent text-base">
                     Kant
                   </span>
                 </div>
                 <p className="text-xs text-cyan-400 font-mono pt-1">Full-Stack &amp; AI Developer</p>
               </div>
-            </div>
+            </a>
 
             <p className="text-xs text-slate-400 leading-relaxed">
               M.C.A. scholar at AKTU crafting responsive web architectures, intelligent heuristic cybersecurity tools, and cross-platform mobile apps with modern glassmorphism.
@@ -288,6 +306,21 @@ export default function Footer({ onOpenAI, onOpenID }) {
               </div>
             </div>
 
+            {/* Direct Phone with Clickable tel: */}
+            <div className="space-y-1.5">
+              <span className="text-[11px] text-slate-500 font-mono">DIRECT CALL</span>
+              <div className="flex items-center gap-2">
+                <FaPhoneAlt className="text-purple-400 text-xs shrink-0" />
+                <a
+                  href={`tel:${phoneRaw}`}
+                  className="truncate text-xs font-mono text-purple-300 hover:text-purple-200 underline"
+                  title="Call Krishan Kant"
+                >
+                  {phoneNumber}
+                </a>
+              </div>
+            </div>
+
             {/* Social Links */}
             <div className="flex items-center gap-3 pt-1">
               <a
@@ -364,7 +397,7 @@ export default function Footer({ onOpenAI, onOpenID }) {
             </button>
           </div>
         </div>
-      </div>
+      </ScrollReveal>
     </footer>
   );
 }

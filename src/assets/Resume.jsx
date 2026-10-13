@@ -105,13 +105,28 @@ function Card({ title, children }) {
    Resume Page
 ───────────────────────────────────────────────────────────── */
 export default function Resume() {
+  React.useEffect(() => {
+    document.title = "Resume | Krishan Kant - Full-Stack & AI Developer";
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#020617] pt-24 text-white">
       <div className="mx-auto max-w-4xl px-5 pb-24 sm:px-8">
 
         {/* ─────────────────────────────────────────────────────
-            Top Action Bar
+            Top Action Bar & Back Link
         ────────────────────────────────────────────────────── */}
+        <div className="mb-4">
+          <a
+            href="/"
+            className="inline-flex items-center gap-2 text-xs font-medium text-cyan-400 hover:text-cyan-300 transition-colors py-1"
+          >
+            <span>←</span>
+            <span>Back to Portfolio</span>
+          </a>
+        </div>
+
         <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div>
             <h1 className="mt-1 text-3xl font-extrabold text-white">

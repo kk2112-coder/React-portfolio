@@ -4,6 +4,7 @@ import { FaGraduationCap, FaBriefcase, FaCode, FaCheck, FaFileAlt } from "react-
 import myDp from "./Images/MyDp.jpg";
 import { StandingCharacterIllustration } from "./CharacterIllustrations";
 import Tilt3DCard from "./Tilt3DCard";
+import { ScrollReveal } from "./ScrollAnimations";
 
 const SKILLS_DATA = [
   {
@@ -81,10 +82,10 @@ export default function About({ onOpenID }) {
       : SKILLS_DATA.filter((s) => s.category === activeCategory);
 
   return (
-    <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+    <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto overflow-hidden">
       
       {/* ── Section Header ── */}
-      <div className="text-center space-y-3 max-w-2xl mx-auto pb-12">
+      <ScrollReveal variant="fade-up" className="text-center space-y-3 max-w-2xl mx-auto pb-12">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-xs font-medium text-cyan-300">
           <span>✦</span>
           <span>Background &amp; Expertise</span>
@@ -95,7 +96,7 @@ export default function About({ onOpenID }) {
         <p className="text-sm sm:text-base text-slate-400">
           Scholarly background, verified engineering pass, and interactive skills linked directly to real-world code.
         </p>
-      </div>
+      </ScrollReveal>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
         
@@ -113,6 +114,8 @@ export default function About({ onOpenID }) {
                 <img
                   src={myDp}
                   alt="Krishan Kant"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -212,7 +215,7 @@ export default function About({ onOpenID }) {
         </div>
 
         {/* ── Right Column: Interactive Skills Explorer ── */}
-        <div className="lg:col-span-7 space-y-5">
+        <ScrollReveal variant="fade-left" delay={100} className="lg:col-span-7 space-y-5">
           
           {/* Skill Filter Chips */}
           <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-white/[0.06] border border-white/15 backdrop-blur-2xl shadow-sm w-fit">
@@ -257,34 +260,36 @@ export default function About({ onOpenID }) {
             {filteredSkills.map((skill, index) => {
               const isSelected = selectedSkill?.name === skill.name;
               return (
-                <Tilt3DCard key={index} maxTilt={12} className="rounded-2xl">
-                  <div
-                    onClick={() => setSelectedSkill(skill)}
-                    className={`p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
-                      isSelected
-                        ? "bg-cyan-500/20 border-cyan-400 shadow-[0_8px_30px_0_rgba(6,182,212,0.25)] scale-[1.02] backdrop-blur-xl"
-                        : "bg-slate-900/55 hover:bg-slate-900/80 border-white/12 hover:border-cyan-400/50 backdrop-blur-xl shadow-sm"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between text-xs mb-1.5">
-                      <span className="font-semibold text-slate-100">{skill.name}</span>
-                      <span className="text-cyan-400 font-mono text-[11px]">{skill.level}%</span>
-                    </div>
+                <ScrollReveal key={skill.name} variant="fade-up" delay={Math.min(index * 45, 250)}>
+                  <Tilt3DCard maxTilt={12} className="rounded-2xl">
+                    <div
+                      onClick={() => setSelectedSkill(skill)}
+                      className={`p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                        isSelected
+                          ? "bg-cyan-500/20 border-cyan-400 shadow-[0_8px_30px_0_rgba(6,182,212,0.25)] scale-[1.02] backdrop-blur-xl"
+                          : "bg-slate-900/55 hover:bg-slate-900/80 border-white/12 hover:border-cyan-400/50 backdrop-blur-xl shadow-sm"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between text-xs mb-1.5">
+                        <span className="font-semibold text-slate-100">{skill.name}</span>
+                        <span className="text-cyan-400 font-mono text-[11px]">{skill.level}%</span>
+                      </div>
 
-                    {/* Level Progress Bar */}
-                    <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden mb-2">
-                      <div
-                        className="h-full bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full transition-all duration-500"
-                        style={{ width: `${skill.level}%` }}
-                      />
-                    </div>
+                      {/* Level Progress Bar */}
+                      <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden mb-2">
+                        <div
+                          className="h-full bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full transition-all duration-500"
+                          style={{ width: `${skill.level}%` }}
+                        />
+                      </div>
 
-                    {/* Micro Hint */}
-                    <div className="text-[10px] text-slate-400 truncate">
-                      Used in: {skill.projects}
+                      {/* Micro Hint */}
+                      <div className="text-[10px] text-slate-400 truncate">
+                        Used in: {skill.projects}
+                      </div>
                     </div>
-                  </div>
-                </Tilt3DCard>
+                  </Tilt3DCard>
+                </ScrollReveal>
               );
             })}
           </div>
@@ -293,7 +298,7 @@ export default function About({ onOpenID }) {
             💡 Tip: Click any skill to inspect where it was applied.
           </div>
 
-        </div>
+        </ScrollReveal>
 
       </div>
     </section>

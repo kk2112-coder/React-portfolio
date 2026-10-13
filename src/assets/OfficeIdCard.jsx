@@ -12,6 +12,7 @@ import {
   FaMapMarkerAlt,
   FaCode,
   FaCheckCircle,
+  FaPhoneAlt,
 } from "react-icons/fa";
 import myDp from "./Images/MyDp.jpg";
 
@@ -173,6 +174,8 @@ export default function OfficeIdCard() {
                   <img
                     src={myDp}
                     alt="Krishan Kant ID Photo"
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover rounded-xl"
                   />
                 </div>
@@ -337,7 +340,15 @@ export default function OfficeIdCard() {
               <div className="bg-white/[0.03] p-2 rounded-xl border border-white/5 space-y-1 text-[8px]">
                 <div className="flex items-center gap-1.5 text-slate-300 truncate">
                   <FaEnvelope className="text-cyan-400 text-[8px] shrink-0" />
-                  <span className="truncate text-slate-200">krishankantrajput2112@gmail.com</span>
+                  <a href="mailto:krishankantrajput2112@gmail.com" className="truncate text-slate-200 hover:text-cyan-300">
+                    krishankantrajput2112@gmail.com
+                  </a>
+                </div>
+                <div className="flex items-center gap-1.5 text-slate-300">
+                  <FaPhoneAlt className="text-purple-400 text-[8px] shrink-0" />
+                  <a href="tel:+918810419209" className="text-slate-200 hover:text-purple-300">
+                    +91 8810419209
+                  </a>
                 </div>
                 <div className="flex items-center justify-between text-slate-300">
                   <div className="flex items-center gap-1.5">

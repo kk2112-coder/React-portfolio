@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
   Route,
-  Navigate,
+  useLocation,
 } from "react-router-dom";
 
 import "./App.css";
@@ -17,7 +17,9 @@ import Footer from "./assets/Footer";
 import AIAssistantModal from "./assets/AIAssistantModal";
 import IDCardModal from "./assets/IDCardModal";
 import Resume from "./assets/Resume";
+import NotFound from "./assets/NotFound";
 import Background3DCanvas from "./assets/Background3DCanvas";
+import { ScrollProgressBar } from "./assets/ScrollAnimations";
 
 /**
  * Main Home Page: Simple, Minimal, and Highly Interactive
@@ -27,8 +29,26 @@ import Background3DCanvas from "./assets/Background3DCanvas";
  * 4) Contact with sitting male developer art, 1-click email copy, and message form
  */
 function HomePage({ onOpenAI, onOpenID }) {
+  const location = useLocation();
+
+  useEffect(() => {
+    document.title = "Krishan Kant | Full-Stack Web & AI Developer Portfolio";
+
+    // Handle deep link / sub-route scrolling
+    const cleanPath = location.pathname.replace(/^\//, "");
+    const targetId = cleanPath || (location.hash ? location.hash.replace("#", "") : null);
+
+    if (targetId && ["projects", "about", "contact", "hero"].includes(targetId)) {
+      const timer = setTimeout(() => {
+        const el = document.getElementById(targetId);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [location]);
+
   return (
-    <main className="relative min-h-screen z-10">
+    <main className="relative min-h-screen z-10 overflow-x-hidden">
       <Hero onOpenAI={onOpenAI} onOpenID={onOpenID} />
       <Work />
       <About onOpenID={onOpenID} />
@@ -50,6 +70,9 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+
+      {/* Motion Scroll-Linked Reading Progress Bar */}
+      <ScrollProgressBar />
 
       {/* 3D WebGL Spatial Universe Canvas */}
       <Background3DCanvas />
@@ -87,7 +110,7 @@ function App() {
         <Route path="/projects" element={<HomePage onOpenAI={openAI} onOpenID={openID} />} />
         <Route path="/about" element={<HomePage onOpenAI={openAI} onOpenID={openID} />} />
         <Route path="/contact" element={<HomePage onOpenAI={openAI} onOpenID={openID} />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       {/* Rich Informative Glassmorphism Footer */}

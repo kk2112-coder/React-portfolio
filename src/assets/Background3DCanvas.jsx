@@ -245,6 +245,10 @@ export default function Background3DCanvas() {
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
+
+      // Skip frame processing if tab is hidden in background
+      if (document.hidden) return;
+
       const elapsedTime = clock.getElapsedTime();
 
       if (!prefersReducedMotion) {

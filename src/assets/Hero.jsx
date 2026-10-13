@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaArrowDown, FaPaperPlane, FaCopy, FaCheck, FaExternalLinkAlt } from "react-icons/fa";
 import Tilt3DCard from "./Tilt3DCard";
+import { ScrollReveal } from "./ScrollAnimations";
 
 const ROLES = [
   "Full-Stack Web Developer",
@@ -272,10 +273,10 @@ export default function Hero({ onOpenAI, onOpenID }) {
         </div>
 
         {/* ── Quick Stats Grid with 3D Perspective Tilt ── */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto pt-4 text-center">
+        <ScrollReveal variant="scale-up" delay={100} className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto pt-4 text-center w-full">
           <Tilt3DCard maxTilt={14} className="rounded-2xl">
             <div className="p-3.5 rounded-2xl bg-slate-900/55 backdrop-blur-xl border border-white/12 hover:border-cyan-400/30 transition-all shadow-sm">
-              <div className="text-xl sm:text-2xl font-bold text-slate-100">6+</div>
+              <div className="text-xl sm:text-2xl font-bold text-slate-100">7+</div>
               <div className="text-[11px] text-slate-400">Projects Built</div>
             </div>
           </Tilt3DCard>
@@ -300,7 +301,7 @@ export default function Hero({ onOpenAI, onOpenID }) {
               <div className="text-[11px] text-slate-400">M.C.A. Scholar</div>
             </div>
           </Tilt3DCard>
-        </div>
+        </ScrollReveal>
 
       </div>
     </section>

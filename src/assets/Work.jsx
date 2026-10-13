@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import gsap from "gsap";
 import {
   FaExternalLinkAlt,
   FaGithub,
@@ -21,7 +22,9 @@ import image3 from "./Images/PortFolio.png";
 import image4 from "./Images/PhishingDetector.png";
 import image5 from "./Images/Phishing-DetectorURL.jpg";
 import image6 from "./Images/LifeOs.jpg";
+import image7 from "./Images/CloudStorage.png";
 import Tilt3DCard from "./Tilt3DCard";
+import { ScrollReveal } from "./ScrollAnimations";
 
 const PROJECTS = [
   {
@@ -109,7 +112,7 @@ const PROJECTS = [
       "Full conversational AI Copilot (⌘K)",
       "Accessible dark and light themes with persistence",
     ],
-    technologies: ["React 19", "Tailwind CSS", "Vite", "AI Assistant", "CSS Motion"],
+    technologies: ["React 19", "Tailwind CSS", "Vite", "AI Assistant", "GSAP Motion"],
   },
   {
     id: 4,
@@ -198,6 +201,35 @@ const PROJECTS = [
     ],
     technologies: ["React Native", "Expo", "REST API", "Mobile Security"],
   },
+  {
+    id: 7,
+    sysId: "SYS.07",
+    title: "Cloud Storage",
+    tagline: "Nebula iCloud • Store Seamlessly, Access Instantly",
+    category: "Web Apps",
+    badge: "Cloud Platform",
+    status: "Live Cloud",
+    metric: "Dual-Portal",
+    metricLabel: "User & Admin IAM",
+    image: image7,
+    live: "/",
+    code: "https://github.com/kk2112-coder",
+    description:
+      "A next-generation cloud storage and file management platform (Nebula iCloud) featuring dual User ID & Admin ID authentication portals, one-tap credential autofill, and isolated personal cloud workspaces.",
+    architecture: {
+      challenge:
+        "Cloud storage dashboards often suffer from slow authentication flows and lack clear separation between personal user vaults and administrative oversight.",
+      solution:
+        "Engineered a unified dual-mode IAM portal supporting instant User ID (e.g., USR-101) and Admin ID sign-in with role-scoped workspace routing and dark/light theme synchronization.",
+    },
+    highlights: [
+      "Dual User ID & Admin ID authentication portals",
+      "One-tap demo User ID autofill for instant workspace preview",
+      "Isolated personal cloud storage interface & telemetry",
+      "Adaptive dark/light glassmorphic UI architecture",
+    ],
+    technologies: ["React", "Tailwind CSS", "Node.js", "Cloud Storage API", "Role-Based IAM"],
+  },
 ];
 
 const CATEGORIES = ["All", "AI & Cyber Defense", "Mobile Apps", "Web Apps"];
@@ -211,11 +243,55 @@ export default function Work() {
   const [isAutoPlay, setIsAutoPlay] = useState(true);
 
   const galleryRef = useRef(null);
+  const showcaseRef = useRef(null);
+  const modalCardRef = useRef(null);
 
   const filteredProjects =
     activeCategory === "All"
       ? PROJECTS
       : PROJECTS.filter((p) => p.category === activeCategory);
+
+  // GSAP staggered animation when category or viewMode changes
+  useEffect(() => {
+    if (!showcaseRef.current) return;
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    const cards = showcaseRef.current.querySelectorAll(".project-card");
+    if (!cards.length) return;
+
+    gsap.killTweensOf(cards);
+    gsap.fromTo(
+      cards,
+      {
+        opacity: 0,
+        y: 28,
+        scale: 0.95,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.55,
+        stagger: 0.07,
+        ease: "power3.out",
+        clearProps: "transform,opacity",
+      }
+    );
+  }, [activeCategory, viewMode]);
+
+  // GSAP modal entrance animation when project details modal opens
+  useEffect(() => {
+    if (!activeModalProject || !modalCardRef.current) return;
+    gsap.fromTo(
+      modalCardRef.current,
+      { opacity: 0, y: 24, scale: 0.94 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.38, ease: "back.out(1.4)" }
+    );
+  }, [activeModalProject]);
 
   // Close modal on escape key
   useEffect(() => {
@@ -228,27 +304,40 @@ export default function Work() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Update current slide index on horizontal scroll
+  // Update current slide index accurately on horizontal scroll across all 7 projects
   const handleScroll = () => {
     if (!galleryRef.current) return;
-    const { scrollLeft, clientWidth } = galleryRef.current;
-    if (clientWidth > 0) {
-      const idx = Math.round(scrollLeft / (clientWidth * 0.75));
-      setCurrentSlide(Math.min(Math.max(idx, 0), filteredProjects.length - 1));
+    const { scrollLeft, scrollWidth, clientWidth } = galleryRef.current;
+    const maxScroll = scrollWidth - clientWidth;
+    if (maxScroll <= 0) {
+      setCurrentSlide(0);
+      return;
     }
+    const progress = Math.min(Math.max(scrollLeft / maxScroll, 0), 1);
+    const idx = Math.round(progress * (filteredProjects.length - 1));
+    setCurrentSlide(Math.min(Math.max(idx, 0), filteredProjects.length - 1));
   };
 
   const scrollGallery = (direction) => {
     if (!galleryRef.current) return;
-    const cardWidth = 420;
-    const scrollAmount = direction === "left" ? -cardWidth : cardWidth;
+    const itemWidth = galleryRef.current.firstElementChild?.offsetWidth || 420;
+    const gap = 24;
+    const scrollAmount = direction === "left" ? -(itemWidth + gap) : itemWidth + gap;
     galleryRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
   };
 
   const scrollToSlide = (index) => {
     if (!galleryRef.current) return;
-    const cardWidth = 420;
-    galleryRef.current.scrollTo({ left: index * cardWidth, behavior: "smooth" });
+    const card = galleryRef.current.children[index];
+    if (card) {
+      galleryRef.current.scrollTo({
+        left: card.offsetLeft - galleryRef.current.offsetLeft,
+        behavior: "smooth",
+      });
+    } else {
+      const cardWidth = 420;
+      galleryRef.current.scrollTo({ left: index * cardWidth, behavior: "smooth" });
+    }
     setCurrentSlide(index);
   };
 
@@ -287,7 +376,7 @@ export default function Work() {
     <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto overflow-hidden">
       
       {/* ── Section Header ── */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-white/10">
+      <ScrollReveal variant="fade-up" className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-white/10">
         <div className="space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-xs font-medium text-cyan-300">
             <span className="relative flex h-2 w-2">
@@ -354,7 +443,7 @@ export default function Work() {
             </button>
           </div>
         </div>
-      </div>
+      </ScrollReveal>
 
       {/* ── Gallery Reel Navigation Header (Only in Gallery Mode) ── */}
       {viewMode === "gallery" && (
@@ -415,7 +504,8 @@ export default function Work() {
       )}
 
       {/* ── Main Showcase Display: Gallery or Grid ── */}
-      <div className="pt-4">
+      <ScrollReveal variant="3d-flip" delay={80} className="pt-4">
+        <div ref={showcaseRef}>
         {viewMode === "gallery" ? (
           /* ── Horizontal Gallery Reel Mode ── */
           <div className="relative">
@@ -456,6 +546,8 @@ export default function Work() {
                       <img
                         src={project.image}
                         alt={project.title}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60" />
@@ -684,12 +776,14 @@ export default function Work() {
             ))}
           </div>
         )}
-      </div>
+        </div>
+      </ScrollReveal>
 
       {/* ── Interactive Project Details Modal ── */}
       {activeModalProject && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xl animate-fade-in">
           <div
+            ref={modalCardRef}
             role="dialog"
             aria-modal="true"
             aria-label="Project Details"
@@ -727,6 +821,8 @@ export default function Work() {
               <img
                 src={activeModalProject.image}
                 alt={activeModalProject.title}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-top"
               />
               <div className="absolute top-3 left-3">
