@@ -18,7 +18,6 @@ import AIAssistantModal from "./assets/AIAssistantModal";
 import IDCardModal from "./assets/IDCardModal";
 import Resume from "./assets/Resume";
 import NotFound from "./assets/NotFound";
-import Background3DCanvas from "./assets/Background3DCanvas";
 import { ScrollProgressBar } from "./assets/ScrollAnimations";
 
 /**
@@ -74,30 +73,12 @@ function App() {
       {/* Motion Scroll-Linked Reading Progress Bar */}
       <ScrollProgressBar />
 
-      {/* 3D WebGL Spatial Universe Canvas */}
-      <Background3DCanvas />
-
-      {/* Ambient Animated Glassmorphism Aurora Backdrop */}
+      {/* Simple & Smooth Ambient Backdrop */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
-        {/* Cyan Aurora Orb Top Left */}
-        <div
-          className="absolute -top-40 -left-40 w-[480px] sm:w-[600px] h-[480px] sm:h-[600px] rounded-full bg-gradient-to-br from-cyan-500/20 via-sky-400/15 to-transparent blur-[110px] animate-pulse pointer-events-none"
-          style={{ animationDuration: "9s" }}
-        />
-        {/* Violet/Purple Aurora Orb Center Right */}
-        <div
-          className="absolute top-1/4 -right-40 w-[480px] sm:w-[650px] h-[480px] sm:h-[650px] rounded-full bg-gradient-to-bl from-purple-600/20 via-fuchsia-500/15 to-transparent blur-[120px] animate-pulse pointer-events-none"
-          style={{ animationDuration: "11s" }}
-        />
-        {/* Indigo/Pink Aurora Orb Bottom Left */}
-        <div
-          className="absolute top-2/3 -left-32 w-[420px] sm:w-[580px] h-[420px] sm:h-[580px] rounded-full bg-gradient-to-tr from-indigo-600/20 via-pink-500/15 to-transparent blur-[110px] animate-pulse pointer-events-none"
-          style={{ animationDuration: "10s" }}
-        />
-        {/* Sky Aurora Orb Bottom Center */}
-        <div className="absolute -bottom-20 right-1/4 w-[380px] sm:w-[500px] h-[380px] sm:h-[500px] rounded-full bg-cyan-400/15 blur-[100px] pointer-events-none" />
-        {/* Subtle Frosted Grid Matrix */}
-        <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.07)_1px,transparent_1px)] [background-size:24px_24px] opacity-60" />
+        {/* Soft, calm top ambient glow */}
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[650px] sm:w-[800px] h-[350px] rounded-full bg-gradient-to-b from-cyan-500/[0.08] via-purple-500/[0.04] to-transparent blur-[140px]" />
+        {/* Subtle bottom ambient warmth */}
+        <div className="absolute -bottom-24 right-1/4 w-[450px] h-[350px] rounded-full bg-purple-500/[0.04] blur-[130px]" />
       </div>
 
       {/* Clean Floating Navbar */}

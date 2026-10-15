@@ -359,8 +359,8 @@ export default function Footer({ onOpenAI, onOpenID }) {
                 <span className="text-cyan-400 font-semibold">React 19 + Vite</span>
               </div>
               <div className="flex items-center justify-between text-slate-400">
-                <span>3D Canvas</span>
-                <span className="text-purple-400 font-semibold">Three.js WebGL</span>
+                <span>Motion &amp; 3D</span>
+                <span className="text-purple-400 font-semibold">GSAP + Tilt 3D</span>
               </div>
               <div className="flex items-center justify-between text-slate-400">
                 <span>Core Telemetry</span>
@@ -382,7 +382,7 @@ export default function Footer({ onOpenAI, onOpenID }) {
               © {currentYear} Krishan Kant. All rights reserved.
             </p>
             <p className="text-[10px] text-slate-600">
-              Designed with Glassmorphism UI • Powered by React 19, Tailwind CSS &amp; Three.js
+              Designed with Glassmorphism UI • Powered by React 19, Tailwind CSS &amp; GSAP
             </p>
           </div>
 
